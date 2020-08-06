@@ -38,6 +38,12 @@ def main(revisions=None):
                     build_options=['issue680_OSI%s_CPLEX%s' % (osi, cplex)],
                     driver_options=['--build=issue680_OSI%s_CPLEX%s' % (osi, cplex)]
                 ),
+                IssueConfig(
+                    'astar_mutex_based_potential_OSI%s_CPLEX%s' % (osi, cplex),
+                    ['--search', 'astar(mutex_based_potential())'],
+                    build_options=['issue680_OSI%s_CPLEX%s' % (osi, cplex)],
+                    driver_options=['--build=issue680_OSI%s_CPLEX%s' % (osi, cplex)]
+                ),
             ]
 
     exp = IssueExperiment(
@@ -57,7 +63,7 @@ def main(revisions=None):
     exp.add_absolute_report_step(filter_domain=domains)
 
     for attribute in ["memory", "total_time"]:
-        for config in ['astar_initial_state_potential', 'astar_sample_based_potentials', 'astar_all_states_potential']:
+        for config in ['astar_initial_state_potential', 'astar_sample_based_potentials', 'astar_all_states_potential', 'astar_mutex_based_potential']:
             exp.add_report(
                 RelativeScatterPlotReport(
                     attributes=[attribute],

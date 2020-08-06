@@ -8,7 +8,7 @@ import suites
 configs = [
     IssueConfig(
         func,
-        ["--search", "astar({}([ipdb(max_time=5),diverse_potentials(),all_states_potential(),initial_state_potential(),sample_based_potentials()]))".format(func)])
+        ["--search", "astar({}([ipdb(max_time=5),diverse_potentials(),all_states_potential(),initial_state_potential(),sample_based_potentials(),mutex_based_potential()]))".format(func)])
     for func in ["max", "ipc_max"]
 ]
 revisions = ["8f1563b36fc7"]
