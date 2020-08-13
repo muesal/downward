@@ -90,6 +90,25 @@ void PotentialOptimizer::optimize_for_samples(const vector<State> &samples) {
     solve_and_extract();
 }
 
+void PotentialOptimizer::optimize_for_weighted_samples(
+    const std::vector<State> &samples, std::vector<std::vector<int>> &weights) {
+        //TODO: is vector of vector a good way to represent this?
+        // need each state (outer vector) and the weight of each fact (inner vector)
+    vector<double> coefficients(num_lp_vars, 0.0);
+    int s = 0;
+    int f = 0;
+    for (const State &state : samples) {
+        for (FactProxy fact : state) {
+            coefficients[get_lp_var_id(fact)] += weights[s][f];
+            f++;
+        }
+        s++;
+        f = 0;
+    }
+    lp_solver.set_objective_coefficients(coefficients);
+    solve_and_extract();
+}
+
 const shared_ptr<AbstractTask> PotentialOptimizer::get_task() const {
     return task;
 }

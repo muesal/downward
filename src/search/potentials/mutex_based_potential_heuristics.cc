@@ -23,15 +23,17 @@ using Tuple = std::vector<FactPair>;
 
 namespace potentials {
 
-    //TODO: these need a class partial_state...
+    /* TODO: these need a class partial_state...*/
 
     static void single_fact_diasambiguation(State &state){
         //while state changes check for single fact disambiguations and assign them
+        state.get_task(); //placeholder
     }
 
     static void multi_fact_diasambiguation(State &state){
         //while the set changes, check for disambiguations.
-    }
+        state.get_task(); //placeholder
+    } 
 
     static unique_ptr<PotentialFunction> create_mutex_based_potential_function(
             const Options &opts) {
