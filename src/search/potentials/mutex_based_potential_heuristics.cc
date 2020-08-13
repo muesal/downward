@@ -2,13 +2,15 @@
 // Created by salome on 02.08.20.
 //
 #include "potential_function.h"
-#include "potential_max_heuristic.h"
+#include "potential_heuristic.h"
 #include "potential_optimizer.h"
 #include "util.h"
 
+ #include "../heuristics/hm_heuristic.h"
+
 #include "../option_parser.h"
 #include "../plugin.h"
-
+#include "../global_state.h"
 #include "../utils/rng.h"
 #include "../utils/rng_options.h"
 
@@ -16,72 +18,59 @@
 #include <vector>
 
 using namespace std;
+using namespace hm_heuristic;
+using Tuple = std::vector<FactPair>;
 
 namespace potentials {
-    static void filter_dead_ends(PotentialOptimizer &optimizer, vector<State> &samples) {
-        assert(!optimizer.potentials_are_bounded());
-        vector<State> non_dead_end_samples;
-        for (const State &sample : samples) {
-            optimizer.optimize_for_state(sample);
-            if (optimizer.has_optimal_solution())
-                non_dead_end_samples.push_back(sample);
-        }
-        swap(samples, non_dead_end_samples);
+
+    //TODO: these need a class partial_state...
+
+    static void single_fact_diasambiguation(State &state){
+        //while state changes check for single fact disambiguations and assign them
     }
 
-    static void optimize_for_samples(
-            PotentialOptimizer &optimizer,
-            int num_samples,
-            utils::RandomNumberGenerator &rng) {
-        vector<State> samples = sample_without_dead_end_detection(
-                optimizer, num_samples, rng);
-        if (!optimizer.potentials_are_bounded()) {
-            filter_dead_ends(optimizer, samples);
-        }
-        optimizer.optimize_for_samples(samples);
+    static void multi_fact_diasambiguation(State &state){
+        //while the set changes, check for disambiguations.
     }
 
-/*
-  Compute multiple potential functions that are optimized for different
-  sets of samples.
-*/
-    static vector<unique_ptr<PotentialFunction>> create_sample_based_potential_functions(
+    static unique_ptr<PotentialFunction> create_mutex_based_potential_function(
             const Options &opts) {
-        vector<unique_ptr<PotentialFunction>> functions;
         PotentialOptimizer optimizer(opts);
-        shared_ptr<utils::RandomNumberGenerator> rng(utils::parse_rng_from_options(opts));
-        for (int i = 0; i < opts.get<int>("num_heuristics"); ++i) {
-            optimize_for_samples(optimizer, opts.get<int>("num_samples"), *rng);
-            functions.push_back(optimizer.get_potential_function());
+        const AbstractTask &task = *opts.get<shared_ptr<AbstractTask>>("transform");
+        TaskProxy task_proxy(task);
+
+        //get all pairs which are mutex
+        auto hm = make_shared<HMHeuristic>(opts);
+        State initial = task_proxy.get_initial_state();
+        //TODO: get the table
+        //GlobalState gs_initial;
+        //hm->compute_heuristic(task.);
+        std::map<Tuple, int> mutexes;
+        for (pair<Tuple, int> pair: hm->hm_table) {
+            if (pair.second == numeric_limits<int>::max())
+                mutexes.insert(pair);
         }
-        return functions;
+        hm.reset();
+
+        // optimize the optimizer for the initial state
+        optimizer.optimize_for_state(initial);
+        return optimizer.get_potential_function();
     }
 
     static shared_ptr<Heuristic> _parse(OptionParser &parser) {
         parser.document_synopsis(
                 "Mutex-based potential heuristics",
-                "Maximum over multiple potential heuristics optimized for samples. " +
                 get_admissible_potentials_reference());
-        parser.add_option<int>(
-                "num_heuristics",
-                "number of potential heuristics",
-                "1",
-                Bounds("0", "infinity"));
-        parser.add_option<int>(
-                "num_samples",
-                "Number of states to sample",
-                "1000",
-                Bounds("0", "infinity"));
+        parser.add_option<int>("m", "use h2 heuristic", "2", Bounds("0", "infinity"));
         prepare_parser_for_admissible_potentials(parser);
-        utils::add_rng_options(parser);
         Options opts = parser.parse();
         if (parser.dry_run())
             return nullptr;
 
-        return make_shared<PotentialMaxHeuristic>(
-                opts, create_sample_based_potential_functions(opts));
+        return make_shared<PotentialHeuristic>(
+                opts, create_mutex_based_potential_function(opts));
     }
 
-    static Plugin<Evaluator> _plugin(
+static Plugin<Evaluator> _plugin(
             "mutex_based_potential", _parse, "heuristics_potentials");
 }
