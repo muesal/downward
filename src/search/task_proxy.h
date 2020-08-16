@@ -600,6 +600,21 @@ public:
         return values.size();
     }
 
+    bool is_partial() {
+        return std::count(values.begin(), values.end(), -1) > 0;
+    }
+
+    int add_variable(int variable, int value){
+        if (values[variable] == -1 && value > 0) { //TODO: assert value < domain?
+            values[variable] = value;
+        }
+        return values[variable];
+    }
+
+    bool is_defined(int variable) {
+        return values[variable] != -1;
+    }
+
     FactProxy operator[](std::size_t var_id) const {
         assert(var_id < size());
         return FactProxy(*task, var_id, values[var_id]);
@@ -630,6 +645,7 @@ public:
         }
         return State(*task, std::move(new_values));
     }
+
 };
 
 
