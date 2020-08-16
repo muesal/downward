@@ -30,7 +30,7 @@ class HMHeuristic : public Heuristic {
     const Tuple goals;
 
     // h^m table
-public:
+protected:
     std::map<Tuple, int> hm_table;
     bool was_updated;
 
@@ -59,6 +59,9 @@ public:
     void dump_table() const;
 
     virtual int compute_heuristic(const GlobalState &global_state);
+
+public:
+    std::vector<Tuple> get_unreachable_tuples(const State &state);
 
     explicit HMHeuristic(const options::Options &opts);
 
