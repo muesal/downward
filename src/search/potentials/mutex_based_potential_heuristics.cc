@@ -35,10 +35,8 @@ namespace potentials {
         }
         return set_minus;
     }
-
-    // Overload, to have method call wihthout argument mf?
-    // or to have one which only takes elements in mf?
-    // save all FactPairs which are mmutex to the fact <variable, value>
+    
+    // save all FactPairs which are mutex to the fact <variable, value>
     static void get_mutex_with_fact(int variable, int value, vector<Tuple> &mutexes, vector<FactPair> &mf) {
         for (Tuple mutex : mutexes) {
             if (mutex[0].var == variable && mutex[0].value == value){
@@ -62,6 +60,18 @@ namespace potentials {
         return mf;
     }
 
+    static vector<FactPair> intersection(vector<FactPair> one, vector<FactPair> two) {
+        vector<FactPair> three;
+        for (FactPair fact : one) {
+            for (FactPair f : two) {
+                if (f == fact) {
+                    three.push_back(fact);
+                    break;
+                }
+            }
+        }
+        return three;
+    }
     /**
      * TODO: The following probably have the first 11 lines in common...
      */
@@ -131,12 +141,13 @@ namespace potentials {
 
                     //algorithm 2 l. 8
                     if (domains[v].size() < size) {
-                        vector<FactPair> mf;
+                        vector<FactPair> mf, mf2;
                         get_mutex_with_fact(variable_id[v], domains[v][0], mutexes, mf);
                         for (size_t f = 1; f < domains[v].size(); f++) {
-                            //TODO: this does append all mutex facts, instead of deleteing the ones, which should not be taken... better solution, then appending to mf?
-                            get_mutex_with_fact(variable_id[v], domains[v][f], mutexes, mf);
-                            if(mf.size() == 0) {
+                            get_mutex_with_fact(variable_id[v], domains[v][f], mutexes, mf2);
+                            mf = intersection(mf, mf2);
+                            mf2.clear();
+                            if(mf2.size() == 0 || mf.size() == 0) {
                                 break;
                             }
                         }
