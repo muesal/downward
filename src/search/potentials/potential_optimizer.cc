@@ -99,8 +99,10 @@ void PotentialOptimizer::optimize_for_weighted_samples(
     int f = 0;
     for (const State &state : samples) {
         for (FactProxy fact : state) {
-            coefficients[get_lp_var_id(fact)] += weights[s][f];
-            f++;
+            if (fact.get_value() >= 0) {
+                coefficients[get_lp_var_id(fact)] += weights[s][f];
+                f++;
+            }
         }
         s++;
         f = 0;
