@@ -91,7 +91,7 @@ void PotentialOptimizer::optimize_for_samples(const vector<State> &samples) {
 }
 
 void PotentialOptimizer::optimize_for_weighted_samples(
-    const std::vector<State> &samples, std::vector<std::vector<int>> &weights) {
+    const std::vector<State> &samples, std::vector<std::vector<float>> &weights) {
         //TODO: is vector of vector a good way to represent this?
         // need each state (outer vector) and the weight of each fact (inner vector)
     vector<double> coefficients(num_lp_vars, 0.0);
