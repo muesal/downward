@@ -17,6 +17,10 @@
 #include <memory>
 #include <vector>
 
+//For the table:
+#include <iostream>
+#include <fstream>
+
 using namespace std;
 using namespace hm_heuristic;
 using Tuple = vector<FactPair>;
@@ -306,9 +310,49 @@ namespace potentials {
         State initial = task_proxy.get_initial_state();
 
         //get all mutexes
-        auto hm = make_shared<HMHeuristic>(opts);
-        std::vector<Tuple> mutexes = hm->get_unreachable_tuples(initial);
-        hm.reset();
+        //This creates a file containing the mutex table. If one already exists, it will be used instead.
+        std::vector<Tuple> mutexes;
+        string filename = "mutex_table.txt";
+        ifstream table;
+        table.open(filename);
+        if(!table) {
+            cout << "Perform hm-heuristic and store mutexes to " << filename << endl;
+            auto hm = make_shared<HMHeuristic>(opts);
+            mutexes = hm->get_unreachable_tuples(initial);
+            hm.reset();
+            //write to file
+            ofstream create (filename);
+            if (create.is_open()){
+                for (Tuple mutex : mutexes) {
+                    create << mutex[0].var << " " << mutex[0].value << " ";
+                    create << mutex[1].var << " " << mutex[1].value << "\n";
+                }
+                create.close();
+            }else {
+                cout << "Unable to store mutex table";
+            }
+        } else {
+            //read from file
+            string line;
+            string number;
+            int var, value;
+            while(getline(table, line)) {
+                istringstream ss (line);
+                ss >> number;
+                var = stoi(number);
+                ss >> number;
+                value = stoi(number);
+                FactPair fact1 (var, value);
+                ss >> number;
+                var = stoi(number);
+                ss >> number;
+                value = stoi(number);
+                FactPair fact2 (var, value);
+                
+                mutexes.push_back({fact1, fact2});
+            }
+            table.close();
+        }
 
         int k = 1; //TODO: get from options
         Sates_Weights weighted_states = opt_k_m(k, variables, mutexes, task_proxy);
