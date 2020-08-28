@@ -721,7 +721,8 @@ public:
 inline FactProxy::FactProxy(const AbstractTask &task, const FactPair &fact)
     : task(&task), fact(fact) {
     assert(fact.var >= 0 && fact.var < task.get_num_variables());
-    assert(fact.value >= 0 && fact.value < get_variable().get_domain_size());
+    assert(fact.value >= -1 && fact.value < get_variable().get_domain_size());
+    //TODO: -1 is for unassigned variables in a partial state...
 }
 
 inline FactProxy::FactProxy(const AbstractTask &task, int var_id, int value)

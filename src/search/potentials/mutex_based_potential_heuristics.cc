@@ -28,20 +28,34 @@ using Sates_Weights = tuple<vector<State>, vector<vector<float>>>;
 
 namespace potentials {
 
-    // take the domain and FactPairs which are mutex to the current state, return the remaining possible vlues for this variable.
-    vector<int> set_minus(vector<int> domain, Tuple mutex, int variable_id) {
+    /**
+     * Used in fact_disambiguation's, to substract all non-possible values (mutexes) from the domain of a variabel
+     * @param domain domain of the variable
+     * @param mutex facts which are mutex with the current state
+     * @param variable_id id of the variable
+     * @return the remaining domain of the variable
+     */
+    vector<int> set_minus(const vector<int>& domain, const Tuple& mutex, int variable_id) {
         vector<int> set_minus;
         for (FactPair m : mutex) {
-            for (auto i = domain.begin(); i < domain.end(); i++) {
-                if (m.var == variable_id && m.value == *i) {
-                    domain.erase(i);
+            if (m.var == variable_id) {
+                for (int d : domain) {
+                    if (m.value != d) {
+                        set_minus.push_back(d);
+                    }
                 }
             }
         }
         return set_minus;
     }
 
-    // save all FactPairs which are mutex to the fact <variable, value>
+     /**
+      * save all FactPairs which are mutex to the fact <variable, value>
+      * @param variable id of the fact
+      * @param value of the fact
+      * @param mutexes set of mutexes
+      * @param mf tuple in which to save the mutexes
+      */
     static void get_mutex_with_fact(int variable, int value, vector<Tuple> &mutexes, Tuple &mf) {
         for (Tuple mutex : mutexes) {
             if (mutex[0].var == variable && mutex[0].value == value) {
@@ -52,7 +66,13 @@ namespace potentials {
         }
     }
 
-    // Save all mutex pairs which are unreachable for this (partial) state
+    /**
+      * Save all mutex pairs which are unreachable for this (partial) state
+      * @param variable id of the fact
+      * @param value of the fact
+      * @param mutexes set of mutexes
+      * @return mf tuple in which to save the mutexes
+      */
     static Tuple get_mutex_with_state(State &state, vector<Tuple> &mutexes) {
         Tuple mf;
         for (Tuple mutex : mutexes) {
@@ -65,7 +85,13 @@ namespace potentials {
         return mf;
     }
 
-    static Tuple intersection(Tuple one, Tuple two) {
+    /**
+     * Used in multi_fact_disambiguation to get elements which are in both mutex sets.
+     * @param one mutexset ones
+     * @param two mutexset two
+     * @return three facts i both one and two
+     */
+    static Tuple intersection(const Tuple& one, const Tuple& two) {
         Tuple three;
         for (FactPair fact : one) {
             for (FactPair f : two) {
@@ -79,23 +105,25 @@ namespace potentials {
     }
 
     /**
-     * Parameters:
-     *  state: vector containing the facts of a partial state
-     *  k: amount of remaining variables to assign
-     *  f_v: position of the first assigned variable
-     *  domains: domains of all variables
-     *  last_assigned_variable: last variable which was assigned
-     *  extended: list of all states enough extended states
-     */
+      * Extend the partial state to all possible states with k more assigned values
+      * @param state vector containing the facts of a partial state
+      * @param task
+      * @param k amount of remaining variables to assign
+      * @param f_v position of the first assigned variable
+      * @param domains domains of all variables
+      * @param extended the states which have been extended
+      * @param last_assigned_variable the variable which was assigned last
+      * @return a vector of all extended vectors
+      */
     static vector<State>
     get_all_extensions(vector<int> state, TaskProxy &task, int k, int f_v, vector<vector<int>> &domains,
                        int last_assigned_variable,
                        vector<State> &extended) {
         if (k == 0) {
-            extended.push_back(task.create_state(move(state)));
+            vector<int>temp = state;
+            extended.push_back(task.create_state(move(temp)));
             return extended;
         }
-        vector<State> ex;
         // variables assigned from beginning to end, therefore enough unassigned variables need to remain
         // size - k if only not assigned values left, size - k - 1 otherwise
         int before = f_v < last_assigned_variable ? 0 : 1;
@@ -103,23 +131,24 @@ namespace potentials {
             for (int d : domains[i]) {
                 state[i] = d;
                 //TODO: nur aufrufe, falls k > 0, sonst e anhängen? für bessere performance...
-                for (State s : get_all_extensions(state, task, k - 1, f_v, domains, i + 1, extended)) {
+                for (const State& s : get_all_extensions(state, task, k - 1, f_v, domains, i + 1, extended)) {
                     extended.push_back(s);
                 }
                 state[i] = -1;
-                ex.clear();
             }
         }
         return extended;
     }
 
     /**
-     * Parameters:
-     *  state: vector containing the facts of a partial state
-     *  k: amount of remaining variables to assign
-     *  f_v: position of the first assigned variable
-     *  domains: domains of all variables
-     */
+      * Extend the partial state to all possible states with k more assigned values
+      * @param state vector containing the facts of a partial state
+      * @param task
+      * @param k amount of remaining variables to assign
+      * @param f_v position of the first assigned variable
+      * @param domains domains of all variables
+      * @return a vector of all extended vectors
+      */
     static vector<State>
     get_all_extensions(vector<int> state, TaskProxy &task, int k, int f_v, vector<vector<int>> &domains) {
         vector<State> states;
@@ -168,6 +197,13 @@ namespace potentials {
     }
     */
 
+    /**
+     * Smaller all the domains of all variables by pruning unreachable facts
+     * @param state the state of interest
+     * @param variables all variables of this task
+     * @param mutexes the set of mutexes for this task
+     * @return the smallered domains
+     */
     static vector<vector<int>>
     multi_fact_diasambiguation(State state, VariablesProxy &variables, vector<Tuple> &mutexes) {
         //get all domains and id's of the variables
@@ -221,14 +257,13 @@ namespace potentials {
         return domains;
     }
 
-    /**
-     * Parameters:
-     *  state: partial state
-     *  k: size of extended states
-     *  f_v: position of the already assigned variable
-     *  variables: all variables in state
-     *  mutexes: all mutex tuples
-     */
+     /**
+      * Calculate C^k_f(M) for one state, i.e. his extensions states
+      * @param states the extensions of the state of interest (P^t_k)
+      * @param variables the variables of this task
+      * @param mutexes the set of mutexes for this task
+      * @return the sum over the product of all reachable facts of each state
+      */
     static int c_k_f(vector<State> states, VariablesProxy &variables, vector<Tuple> &mutexes) {
         int sum = 0;
         int mult;
@@ -245,14 +280,13 @@ namespace potentials {
     }
 
     /**
-     * weights of Eq 12, inner vector for facts, outer for the different variables. ordered the same way as
-     * variables in proxy, i suppose....
-     * 
-     * k: size extended states should have
-     * variables: all variables
-     * mutexes: all mutex facts
-     * state: empty state, which is used to create other states...
-     */
+      * Calculates the weights of all facts for all states (Eq. 12)
+      * @param k size extended states should have
+      * @param variables all variables
+      * @param mutexes all mutex facts
+      * @param task the task
+      * @return a vector containing for each state (outer vector) the weights of each fact (inner vectors)
+      */
     static Sates_Weights opt_k_m(int k, VariablesProxy &variables, vector<Tuple> &mutexes, TaskProxy task) {
         // variables to return
         vector<State> extended_states;
@@ -260,11 +294,11 @@ namespace potentials {
 
         //needed to calculate the weights
         vector<float> weights_f;
-        float w;
-        float sum;
+        float w = 0;
+        float sum = 0;
 
         //needed to get all states
-        vector<int> values(variables.size(), -1);
+        vector<int> values (variables.size(), -1);
         vector<State> states;
         vector<vector<int>> domains;
         //TODO: generate all states and look for them, instead of generating all multiple times?
@@ -275,9 +309,11 @@ namespace potentials {
             for (int d = 0; d < variables[i].get_domain_size(); d++) {
                 //get and add the new state and all its extensions
                 values[i] = d;
-                domains = multi_fact_diasambiguation(task.create_state(move(values)), variables, mutexes);
+                //TODO: move values removes the values!!! need a copy instead. This might be a problem at some other places as well...
+                vector<int> temp = values;
+                domains = multi_fact_diasambiguation(task.create_state(move(temp)), variables, mutexes);
                 states = get_all_extensions(values, task, k, i, domains);
-                for (State s : states) {
+                for (State& s : states) {
                     extended_states.push_back(s);
                 }
 
