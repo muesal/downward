@@ -66,7 +66,7 @@ public:
     void optimize_for_state(const State &state);
     void optimize_for_all_states();
     void optimize_for_samples(const std::vector<State> &samples);
-    void optimize_for_weighted_samples(const std::vector<State> &samples, std::vector<std::vector<float>> &weights);
+    void optimize_for_weighted_samples(const std::vector<std::vector<std::tuple<int, int, float>>> &weights);
 
     bool has_optimal_solution() const;
 
