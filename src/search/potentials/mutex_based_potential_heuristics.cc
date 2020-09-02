@@ -84,25 +84,6 @@ namespace potentials {
     }
 
     /**
-      * Save all mutex pairs which are unreachable for this (partial) state
-      * @param variable id of the fact
-      * @param value of the fact
-      * @param mutexes set of mutexes
-      * @return mf tuple in which to save the mutexes
-      */ //TODO: löschen, falls multi_fact_disambiguation (state) gelöscht wurde
-    static Tuple get_mutex_with_state(State &state, vector<Tuple> &mutexes) {
-        Tuple mf;
-        for (Tuple mutex : mutexes) {
-            if (state[mutex[0].var].get_value() == mutex[0].value) {
-                mf.push_back(mutex[1]);
-            } else if (state[mutex[1].var].get_value() == mutex[1].value) {
-                mf.push_back(mutex[0]);
-            }
-        }
-        return mf;
-    }
-
-    /**
       * Save all facts which are unreachable for this (partial) state
       * @param variable id of the fact
       * @param value of the fact
@@ -145,7 +126,7 @@ namespace potentials {
             if (state.find(i) == state.end()) { // if the variable is unassigned
                 for (int d : domains[i]) {
                     state[i] = d;               // assign it to all domains and get all extensions
-                    get_all_extensions(state, k - 1, i + 1, domains, extended); //TODO: does this change extended?
+                    get_all_extensions(state, k - 1, (int) i + 1, domains, extended); //TODO: does this change extended?
                 }
                 state.erase(i);                 // unassign the variable
             }
@@ -208,67 +189,6 @@ namespace potentials {
         return true;
     }
     */
-
-    /**
-     * Smaller all the domains of all variables by pruning unreachable facts
-     * @param state the state of interest
-     * @param variables all variables of this task
-     * @param mutexes the set of mutexes for this task
-     * @return the smalled domains
-     */
-    //TODO: löschen?
-    static vector<vector<int>>
-    multi_fact_diasambiguation(State state, VariablesProxy &variables, vector<Tuple> &mutexes) {
-        //get all domains and id's of the variables
-        vector<vector<int>> domains;
-        vector<int> variable_id;
-        for (VariableProxy v : variables) {
-            vector<int> dom;
-            // TODO: for assigned values, add all values or only the assigned one?
-            if (!state.is_defined(v.get_id())) {
-                for (int d = 0; d < v.get_domain_size(); d++) {
-                    dom.push_back(d);
-                }
-            } else {
-                dom.push_back(state[v.get_id()].get_value());
-            }
-            domains.push_back(dom);
-            variable_id.push_back(v.get_id());
-        }
-        Tuple a = get_mutex_with_state(state, mutexes);
-
-        //while state changes check for single fact disambiguations and assign them
-        bool changed = true;
-        while (changed) {
-            changed = false;
-            for (size_t v = 0; v < state.size(); v++) {
-                if (!state.is_defined(v)) {
-                    auto size = domains[v].size();
-                    //algorithm 2 l. 7 (D_V <- D_V \ a)
-                    domains[v] = set_minus(domains[v], a, variable_id[v]);
-
-                    //algorithm 2 l. 8
-                    if (domains[v].size() < size) {
-                        vector<FactPair> mf, mf2;
-                        get_mutex_with_fact(variable_id[v], domains[v][0], mutexes, mf);
-                        for (size_t f = 1; f < domains[v].size(); f++) {
-                            get_mutex_with_fact(variable_id[v], domains[v][f], mutexes, mf2);
-                            mf = intersection(mf, mf2);
-                            mf2.clear();
-                            if (mf2.empty() || mf.empty()) {
-                                break;
-                            }
-                        }
-                        if (!mf.empty()) {
-                            a.insert(a.begin(), mf.begin(), mf.end());
-                        }
-                        changed = true;
-                    }
-                }
-            }
-        }
-        return domains;
-    }
 
     /**
      * Smaller all the domains of all variables by pruning unreachable facts
