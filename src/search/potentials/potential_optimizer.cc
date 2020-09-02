@@ -92,14 +92,12 @@ void PotentialOptimizer::optimize_for_samples(const vector<State> &samples) {
 
 // this mehod is used for mutex based potential heuristics.
 // as partial states are used, no states are delivered, but tuples of variable id and value adn their weight.
-void PotentialOptimizer::optimize_for_weighted_samples(
-    const std::vector<std::vector<tuple<int, int, float>>> &weights) {
+void PotentialOptimizer::   optimize_for_weighted_samples(
+    const std::vector<tuple<int, int, long double>> &weights) {
     vector<double> coefficients(num_lp_vars, 0.0);
-    for (const vector<tuple<int, int, float>>& states : weights) {
-        for (const tuple<int, int, float> fact : states) {
+        for (const tuple<int, int, float> fact : weights) {
             coefficients[lp_var_ids[get<0>(fact)][get<1>(fact)]] += get<2>(fact);
         }
-    }
     lp_solver.set_objective_coefficients(coefficients);
     solve_and_extract();
 }
