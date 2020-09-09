@@ -3,6 +3,7 @@
 //
 #include "potential_function.h"
 #include "potential_heuristic.h"
+#include "potential_max_heuristic.h"
 #include "potential_optimizer.h"
 #include "util.h"
 
@@ -111,27 +112,31 @@ namespace potentials {
       * Extend the partial state to all possible states with k more assigned values
       * @param state vector containing the facts of a partial state
       * @param k amount of remaining variables to assign
+      * @param assigned vector of variable ids which were assigned from the beginning
       * @param domains domains of all variables
       * @param extended the states which have been extended so far
       * @return a vector of all extended vectors
       */
     static vector<map<int, int>>
-    get_all_extensions(map<int, int> &state, int k, int last_assigned, vector<vector<int>> &domains,
-                       vector<map<int, int>> &extended) {
+    get_all_extensions(map<int, int> &state, int k, int last_assigned, vector<int> &assigned,
+                       vector<vector<int>> &domains, vector<map<int, int>> &extended) {
         if (k == 0) {
             extended.push_back(state);  // Add the state to the list, if it is fully extended.
             return extended;
         }
 
         // variables assigned from beginning to end, therefore enough unassigned variables need to remain free
-        // size - k if only not assigned values left, size - k - 1 otherwise
-        int before = state.begin()->second < last_assigned ? 0 : 1;
+        int before = assigned.size();
+        while (before > 0 && last_assigned < assigned[before - 1]) {
+            before--;
+        }
+        before = (int) assigned.size() - before;
         for (size_t i = last_assigned; i < domains.size() - k -
                                            before; i++) { //domains.size(), as there are exactly as many domains as variables in the state
             if (state.find(i) == state.end()) { // if the variable is unassigned
                 for (int d : domains[i]) {
                     state[i] = d;               // assign it to all domains and get all extensions
-                    get_all_extensions(state, k - 1, (int) i + 1, domains, extended);
+                    get_all_extensions(state, k - 1, (int) i + 1, assigned, domains, extended);
                 }
                 state.erase(i);                 // unassign the variable
             }
@@ -150,7 +155,12 @@ namespace potentials {
     static vector<map<int, int>>
     get_all_extensions(map<int, int> &state, int k, vector<vector<int>> &domains) {
         vector<map<int, int>> states;
-        return get_all_extensions(state, k, 0, domains, states);
+        vector<int> variables;
+        variables.reserve(state.size());
+        for (auto s : state) {
+            variables.push_back(s.first);
+        }
+        return get_all_extensions(state, k, 0, variables, domains, states);
     }
 
     /**
@@ -161,7 +171,7 @@ namespace potentials {
      * @return the smalled domains
      */
     static vector<vector<int>>
-    multi_fact_disambiguation(map<int, int> state, VariablesProxy &variables, vector<Tuple> &mutexes) {
+    multi_fact_disambiguation(map<int, int> &state, VariablesProxy &variables, vector<Tuple> &mutexes) {
         // get all domains and id's of the variables (D_V<- F_V for every V in Variables)
         vector<vector<int>> domains;
         for (VariableProxy v : variables) {
@@ -222,15 +232,14 @@ namespace potentials {
      * @param mutexes the set of mutexes for this task
      * @return the sum over the product of all reachable facts of each state
      */
-    static long double c_k_f(const vector<map<int, int>> &states, VariablesProxy &variables, vector<Tuple>
+    static long double c_k_f(vector<map<int, int>> &states, VariablesProxy &variables, vector<Tuple>
     &mutexes) {
         long double sum = 0;
         long double mult;
-        for (const map<int, int> &e : states) {
+        for (map<int, int> &e : states) {
             mult = 1;
             vector<vector<int>> domains = multi_fact_disambiguation(e, variables,
-                                                mutexes); // This probably does some redundant work, would it be useful to give more narrowed down domains?
-
+                                                                    mutexes); // This probably does some redundant work, would it be useful to give more narrowed down domains?
 
             for (const vector<int> &d : domains) {
                 mult *= d.size();
@@ -241,19 +250,18 @@ namespace potentials {
         return sum;
     }
 
-/**
-  * Calculates the weights of all facts for all states (Eq. 12)
-  * @param k size extended states should have
-  * @param variables all variables
-  * @param mutexes all mutex facts
-  * @param task the task
-  * @return a vector containing for each state (outer vector) the weights of each fact (inner vectors)
-  */
-    static vector<Weight> opt_k_m(int k, VariablesProxy &variables, vector<Tuple> &mutexes) {
+    /**
+      * Calculates the weights of all facts for all states (Eq. 12)
+      * @param k amount of variables to extend
+      * @param variables all variables
+      * @param mutexes all mutex facts
+      * @param task the task
+      * @return a vector containing for each state (outer vector) the weights of each fact (inner vectors)
+      */
+    static vector<Weight> opt_k_m(int k, map<int, int> &assigned_variables, VariablesProxy &variables, vector<Tuple> &mutexes) {
         // TODO: weights_f could be replaced by a pointer to the last entry of the last variable in facts...
         vector<Weight> facts;               // vector containing facts and their corresponding weight.
         vector<Weight> weights_f;           // to temporarily store the c_k_f values of one variable
-        map<int, int> assigned_variables;   // to temporarily store one 'state'
         vector<map<int, int >> states;      // to temporarily store the extended states of a fact
         vector<vector<int>> domains;        // temporarily contain the multi_fact_disambiguated domain with one fact
         long double w, sum;
@@ -262,16 +270,15 @@ namespace potentials {
             sum = 0;
             weights_f.clear();
             for (int d = 0; d < variables[i].get_domain_size(); d++) {
-                assigned_variables.clear();                     // empty the 'state'
-                assigned_variables[i] = d;                      // add this fact
+                assigned_variables[i] = d;                          // add this fact
                 domains = multi_fact_disambiguation(assigned_variables, variables,
-                                                    mutexes);// get all non-mutex domains
+                                                    mutexes);   // get all non-mutex domains
+                // TODO: if k == 1: states = {state} else: ?
                 states = get_all_extensions(assigned_variables, k - 1,
-                                            domains);        // get all extended states for this fact (k - 1, as one variables is assigned)
-                w = c_k_f(states, variables,
-                          mutexes);                  // Get the non-normalized weight of this fact ... TODO: hand over domains instead of variables?
+                                            domains);           // get all extended states for this fact (k - 1, as one variables is assigned)
+                w = c_k_f(states, variables,mutexes);        // Get the non-normalized weight of this fact ... TODO: hand over domains instead of variables?
                 states.clear();
-                weights_f.emplace_back(i, d, w);                // and add it to the list.
+                weights_f.emplace_back(i, d, w);                    // and add it to the list.
                 sum += w;
             }
 
@@ -280,9 +287,50 @@ namespace potentials {
                 get<2>(weights_f[d]) = get<2>(weights_f[d]) / sum;
                 facts.push_back(weights_f[d]);
             }
-        }
 
+            // remove state[i]
+            assigned_variables.erase(assigned_variables.find(i));
+        }
         return facts;
+    }
+
+    /**
+      * Calculates the weights of all facts for all states (Eq. 12)
+      * @param k amount of variables to extend
+      * @param variables all variables
+      * @param mutexes all mutex facts
+      * @param task the task
+      * @return a vector containing for each state (outer vector) the weights of each fact (inner vectors)
+      */
+    static vector<Weight> opt_k_m(int k, VariablesProxy &variables, vector<Tuple> &mutexes) {
+        map<int, int> assigned_variables;   // to temporarily store one 'state'
+        return opt_k_m(k, assigned_variables, variables, mutexes);
+    }
+
+    /**
+     * Generates a partial state of size t with randomly chosen and assigned variables
+     * TODO: Implement. probably hand over a map of all possible facts, to truely chose uniformly.
+     * @param t
+     * @param variables
+     * @return
+     */
+    static map<int, int> get_random_state(int t, VariablesProxy &variables) {
+        map<int, int> none;
+        return none;
+    }
+
+    /**
+      * Calculates the weights of all facts, considering the partially assigned state
+      * @param t size of partial state to extend
+      * @param k amount of variables to extend
+      * @param variables all variables
+      * @param mutexes all mutex facts
+      * @param task the task
+      * @return a vector containing for each state (outer vector) the weights of each fact (inner vectors)
+      */
+    static vector<Weight> opt_t_k_m(int t, int k, VariablesProxy &variables, vector<Tuple> &mutexes) {
+        map<int, int> state = get_random_state(t, variables);
+        return opt_k_m(k - t, state, variables, mutexes);
     }
 
     static unique_ptr<PotentialFunction> create_mutex_based_potential_function(
@@ -340,9 +388,26 @@ namespace potentials {
             }
             table.close();
         }
+
+        //TODO: ensemble in eigene Methode auslagern?
+        bool ensemble = false;
         int k = 1; //TODO: get from options
-        vector<Weight> weights = opt_k_m(k, variables, mutexes);
-        optimizer.optimize_for_weighted_samples(weights);
+        if (ensemble) {
+            vector<unique_ptr<PotentialFunction>> functions;
+            int n = 50; //TODO: get from options
+            int t = 1; //TODO: get from options
+            // TODO: for loop hier, oder in opt_t_k_m?
+            vector<Weight> weights;
+            for (int i = 0; i < n; i++) {
+                weights = opt_t_k_m(t, k, variables, mutexes);
+                optimizer.optimize_for_weighted_samples(weights);
+                functions.push_back(optimizer.get_potential_function());
+            }
+            //return functions;
+        } else {
+            vector<Weight> weights = opt_k_m(k, variables, mutexes);
+            optimizer.optimize_for_weighted_samples(weights);
+        }
         return optimizer.get_potential_function();
     }
 
