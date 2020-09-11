@@ -32,6 +32,11 @@ using Weight = tuple<int, int, long double>; // Variable id, value and correspon
 
 namespace potentials {
 
+    /**
+     * @param state the state
+     * @param variable_id the id of the variable
+     * @return wether this variables is assigned
+     */
     static bool unassigned(map<int, int> &state, int variable_id) {
         return state.find(variable_id) == state.end();
     }
@@ -236,9 +241,9 @@ namespace potentials {
         long double mult;
         for (map<int, int> &e : states) {
             mult = 1;
+            // This probably does some redundant work, would it be useful to give more narrower domains?
             vector<vector<int>> domains = multi_fact_disambiguation(e, variables,
-                                                                    mutexes); // This probably does some redundant work, would it be useful to give more narrowed down domains?
-
+                                                                    mutexes);
             for (const vector<int> &d : domains) {
                 mult *= d.size();
                 if (mult == 0) break;
@@ -507,9 +512,9 @@ namespace potentials {
                 opts, create_mutex_based_ensemble_potential_function(opts));
     }
 
-    static Plugin<Evaluator> _plugin_single(
+     static Plugin<Evaluator> _plugin_single(
             "mutex_based_potential", _parse_single, "heuristics_potentials");
-    
+
     static Plugin<Evaluator> _plugin_ensemble(
             "mutex_based_ensemble_potential", _parse_ensemble, "heuristics_potentials");
 }
