@@ -9,7 +9,7 @@ import suites
 heuristics = [
     "{}(cache_estimates=false)".format(h) for h in (
         "pdb", "cpdbs", "diverse_potentials", "all_states_potential",
-        "initial_state_potential", "sample_based_potentials", "mutex_based_potential")]
+        "initial_state_potential", "sample_based_potentials", "mutex_based_potential", "mutex_based_ensemble_potential")]
 
 max_eval = "max([{}])".format(",".join(heuristics))
 ipc_max = "ipc_max([{}],cache_estimates=false)".format(",".join(heuristics))
