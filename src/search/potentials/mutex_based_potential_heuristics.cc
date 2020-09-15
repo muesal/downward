@@ -35,7 +35,7 @@ namespace potentials {
     /**
      * @param state the state
      * @param variable_id the id of the variable
-     * @return wether this variables is assigned
+     * @return whether this variables is assigned
      */
     static bool unassigned(map<int, int> &state, int variable_id) {
         return state.find(variable_id) == state.end();
@@ -47,7 +47,7 @@ namespace potentials {
      * @param mutex facts which are mutex with the current state
      * @param variable_id id of the variable
      * @return the remaining domain of the variable
-     */ //TODO: better name...
+     */
     vector<int> set_minus(const vector<int> &domain, const Tuple &mutex, int variable_id) {
         set<int> dom(domain.begin(), domain.end()); // Sets are unique
         for (FactPair m : mutex) {                  // For each fact in mutex...
@@ -63,7 +63,7 @@ namespace potentials {
      * @param one mutex-set one
      * @param two mutex-set two
      * @return three facts i both one and two
-     */ //TODO: better name...
+     */
     static Tuple intersection(const Tuple &one, const Tuple &two) {
         Tuple three;
         for (FactPair fact : one) {
@@ -171,7 +171,7 @@ namespace potentials {
     /**
      * Smaller all the domains of all variables by pruning unreachable facts
      * @param state the state of interest as vector of facts (pairs<int, int>)
-     * @param variables all variables of this task  TODO: it could also just get all domains as vector<vector<int>>?
+     * @param variables all variables of this task
      * @param mutexes the set of mutexes for this task
      * @return the smalled domains
      */
@@ -263,7 +263,6 @@ namespace potentials {
       */
     static vector<Weight>
     opt_k_m(int k, map<int, int> &assigned_variables, VariablesProxy &variables, vector<Tuple> &mutexes) {
-        // TODO: weights_f could be replaced by a pointer to the last entry of the last variable in facts...
         vector<Weight> facts;               // vector containing facts and their corresponding weight.
         vector<Weight> weights_f;           // to temporarily store the c_k_f values of one variable
         vector<map<int, int >> states;      // to temporarily store the extended states of a fact
@@ -277,12 +276,12 @@ namespace potentials {
                 for (int d = 0; d < variables[i].get_domain_size(); d++) {
                     assigned_variables[i] = d;                          // add this fact
                     domains = multi_fact_disambiguation(assigned_variables, variables,
-                                                        mutexes);   // get all non-mutex domains
-                    // TODO: if k == 1: states = {state} else: ?
+                                                        mutexes);    // get all non-mutex domains
                     states = get_all_extensions(assigned_variables, k - 1,
-                                                domains);           // get all extended states for this fact (k - 1, as one variables is assigned)
+                                                domains);            // get all extended states for this fact
+                    // (k - 1, as one additional variables is already assigned)
                     w = c_k_f(states, variables,
-                              mutexes);        // Get the non-normalized weight of this fact ... TODO: hand over domains instead of variables?
+                              mutexes);        // Get the non-normalized weight of this fact ...
                     states.clear();
                     weights_f.emplace_back(i, d, w);                    // and add it to the list.
                     sum += w;
@@ -326,16 +325,9 @@ namespace potentials {
      */
     static vector<unique_ptr<PotentialFunction>>
     opt_t_k_m(int t, int k, int n, VariablesProxy &variables, vector<Tuple> &mutexes, PotentialOptimizer &optimizer) {
-        vector<pair<int, int>> facts;
-        for (VariableProxy var : variables) {
-            for (int d = 0; d < var.get_domain_size(); d++) {
-                facts.emplace_back(var.get_id(), d);
-            }
-        }
-
         random_device rd;
         mt19937 gen(rd()); // apparently this is necessary for uniform int distribution...
-        uniform_int_distribution<> dist(0, facts.size() - 1);
+        uniform_int_distribution<> dist_v(0, variables.size() - 1);
 
         // generate n optimization functions for one randomly sampled state
         vector<unique_ptr<PotentialFunction>> functions;
@@ -344,11 +336,13 @@ namespace potentials {
         for (int i = 0; i < n; i++) {
             state.clear();
             for (int t_i = 0; t_i < t; t_i++) {
-                int f = dist(gen);
-                if (unassigned(state, f)) state[facts[f].first] = facts[f].second;
-                else t_i--;
+                int v = dist_v(gen);
+                if (unassigned(state, v)) {
+                    uniform_int_distribution<> dist_f(0, variables[v].get_domain_size() - 1); // mit oder ohne -1?
+                    state[v] = dist_f(gen);
+                } else t_i--;
             }
-            weights = opt_k_m(k, state, variables, mutexes);
+            weights = opt_k_m(k - t, state, variables, mutexes);
             optimizer.optimize_for_weighted_samples(weights);
             functions.push_back(optimizer.get_potential_function());
         }
@@ -412,7 +406,8 @@ namespace potentials {
             table.close();
         }
 
-        int k = 1; //TODO: get from options -> may not be bigger then variables.size
+        int k = opts.get<int>("k");
+        assert(k < (int) variables.size()); // k my not be bigger than the size of one state TODO richtig so?
         vector<Weight> weights = opt_k_m(k, variables, mutexes);
         optimizer.optimize_for_weighted_samples(weights);
         return optimizer.get_potential_function();
@@ -475,9 +470,11 @@ namespace potentials {
             table.close();
         }
 
-        int k = 1;      //TODO: get from options -> may not be bigger then variables.size - t
-        int n = 50;     //TODO: get from options
-        int t = 1;      //TODO: get from options -> may not be bigger then variables.size
+        int k = opts.get<int>("k");
+        assert(k < (int) variables.size()); // k my not be bigger than the size of one state TODO richtig so?
+        int t = opts.get<int>("t");
+        assert(t <= k);                     // t my not be bigger than k TODO richtig so?
+        int n = opts.get<int>("n");
 
         vector<unique_ptr<PotentialFunction>> pot = opt_t_k_m(t, k, n, variables, mutexes, optimizer);
         return pot;
@@ -487,7 +484,16 @@ namespace potentials {
         parser.document_synopsis(
                 "Mutex-based potential heuristics",
                 get_admissible_potentials_reference());
-        parser.add_option<int>("m", "use h2 heuristic", "2", Bounds("0", "infinity"));
+        parser.add_option<int>(
+                "m",
+                "use h2 heuristic",
+                "2",
+                Bounds("0", "infinity"));
+        parser.add_option<int>(
+                "k",
+                "size of extended state",
+                "1",
+                Bounds("0", "infinity"));
         prepare_parser_for_admissible_potentials(parser);
         Options opts = parser.parse();
         if (parser.dry_run())
@@ -497,12 +503,30 @@ namespace potentials {
                 opts, create_mutex_based_potential_function(opts));
     }
 
-    // TODO: this is just the above copy pasted...?
     static shared_ptr<Heuristic> _parse_ensemble(OptionParser &parser) {
         parser.document_synopsis(
                 "Mutex-based ensemble potential heuristics",
                 get_admissible_potentials_reference());
-        parser.add_option<int>("m", "use h2 heuristic", "2", Bounds("0", "infinity"));
+        parser.add_option<int>(
+                "m",
+                "use h2 heuristic",
+                "2",
+                Bounds("0", "infinity"));
+        parser.add_option<int>(
+                "k",
+                "size of extended state",
+                "2",
+                Bounds("0", "infinity"));
+        parser.add_option<int>(
+                "t",
+                "amount of uniformly randomly chosen facts (t <= k)",
+                "1",
+                Bounds("0", "infinity"));
+        parser.add_option<int>(
+                "n",
+                "Number of states to sample",
+                "50",
+                Bounds("0", "infinity"));
         prepare_parser_for_admissible_potentials(parser);
         Options opts = parser.parse();
         if (parser.dry_run())
@@ -512,7 +536,7 @@ namespace potentials {
                 opts, create_mutex_based_ensemble_potential_function(opts));
     }
 
-     static Plugin<Evaluator> _plugin_single(
+    static Plugin<Evaluator> _plugin_single(
             "mutex_based_potential", _parse_single, "heuristics_potentials");
 
     static Plugin<Evaluator> _plugin_ensemble(
