@@ -1,3 +1,0 @@
-/cygdrive/c/Users/salom/Documents/downward/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/cygdrive/c/Users/salom/Documents/downward/cmake-build-debug/CMakeFiles/downward.dir
-/cygdrive/c/Users/salom/Documents/downward/cmake-build-debug/CMakeFiles/edit_cache.dir
