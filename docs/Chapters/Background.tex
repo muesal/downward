@@ -1,0 +1,88 @@
+%! Author = salom
+%! Date = 11.09.2020
+
+\chapter{Background}
+
+The following is meant to define and explain the used terminology in this thesis.
+For visualization the 8-Tiles problem is used as an example.
+This is a classical AI-problem, in which 8 tiles are arranged in a 3x3-Field.
+One spot remains empty, the goal is to bring the tiles in a specific order by sliding them around.
+
+\section {Planning Tasks}
+\label{sec:my-label}
+In AI problems are often represented as a planning task.
+It defines the problem with a bunch of variables and constraints in order to solve it mathematically.
+Fi\u{s}er, Hor\u{c}\'{i}k and Komenda use the finite domain representation (FDR) to define a planning task.
+A FDR planning task $\Pi$ is specified by a tuple $ \Pi = \langle \mathcal{V}, \mathcal{O}, \mathcal{I}, \mathcal{G} \rangle$.
+
+$\mathcal{V}$ is a set finite set of variables, each of the variables $V\in\mathcal{V}$ has a finite set of domomains $dom(V)$.
+For 8-Tiles, the variables would be the 9 fields, and their domains hold the values of all tiles and the blank space.
+A fact $f=\langle V, v\rangle$ consists of a variable $V\in\mathcal{V}$ and one of its values $v\in\text{dom}(V)$.
+The fact for tile number 5 being in the first position would be $\langle 1,5\rangle$.
+$\mathcak{F}_V$ is the set of facts of the variable $V\in\mathcal{V}$ while $\mathcal{F}$ is the set of all facts of this problem.
+
+A partial state $p$ of size $t$ contains $t$ facts of $t$ different variables, i.e. it is the variable assignment over the variables $\text{vars}(p)\in\mathcal{V}$ with $|\text{vars}(p)|=t$.
+$p[V]$ is the value assigned to $V$ in $p$.
+in other words $p=\{\langle V, p[v] \rangle | V\in vars(p)\}$.
+A state $s$ is not partial, if all variables are assigned, i.e. $\text{vars}(s)=\mathcal{V}$.
+It extends the partial state $p$, $p\subseteq s$, if $s[v] = p[v]$ for all $v \in\text{vars}(p)$.
+
+$\mathcal{I}$ is the initial state, in 8-Tiles this is some random order of the tiles.
+$\mathcal{G}$ is a partial state, the goal. $s$ is a goal state, if it is an extension of $\mathcal{G}$.
+In 8-Tiles it is one specific order of the tiles, e.g. the tiles sorted by number.
+
+
+$\mathcal{O}$ is a finite set of operators.
+Each $o\in\mathcal{O}$ has a precondition $\text{pre}(o)$, an effect $\text{eff}(o)$ and a cost $\text{cost}(o)$.
+$o$ is applicable in state $s$ iff $\text{pre}(o)\subseteq s$.
+$o[s][v] = \text{eff}(o)[v]$ holds for all $v\in \text{eff}(o)$ in resulting state $o[s]$, while $o[s][v]=s[v]$ for all $v\notin \text{eff}(o)$.
+In 8-Tiles the operators are to move one tile to the blank space.
+The precondition assures that the tile is next to the blank space, the effect swaps their values for the corresponding two variables, while all other tiles remain at the same position.
+
+
+In order to reach the goal multiple operators need to be applied in a specific order.
+Such a sequence of operators $\pi=\langle o_1,\dots, o_n\rangle$ is a plan, $\pi[[s]] = s_n$.
+$\pi$ is a s-plan, if $\pi$ is applicable in $s$ and $\pi[[s]]$ is a goal state.
+If it has minimal costs among all s-plans, it is optimal.
+
+The set $\mathcal{R}$ contains all reachable states.
+A state $s$ is reachable, if a plan $\pi$ is applicable in $\mathcal{I}$ such that $\pi[[I]] = s$.
+A state is a dead-end if it does not extend the goal state, and no s-plan exists.
+
+
+\section{Heuristics}
+A heuristic $h:\mathcal{R} \rightarrow \mathbb{R} \cup \{\infty\} $ estimates the cost of the optimal plan for a state $s$.
+For 8-Tiles it would estimate how many tiles need to be slid to reach the goal state.
+The optimal heuristic $h^*(s)$ maps each state $s$  to its actual optimal cost, or to $\infty$ if it is a dead-end state.
+We aim to approach this heuristic.
+
+A heuristic is admissible, if it never overestimates the optimal heuristic ($h(s)\leq h^*(s)$).
+It is goal aware iff $h(s)\leq 0$ for all reachable goal states, i.e. it recognizes a goal sate as such.
+Further, it is consistent iff $h(s)\leq h(o[[s]])+c(o)$.
+This means, the heuristic does not overestimate the cost of one state.
+
+As this thesis uses heuristics only in the forward heuristic search they are defined over $\mathcal{R}$ instead of over all states.
+Therefore the above defined rules hold only for reachable states.
+
+
+\section{Mutexes and Disambiguations}
+In order to approach $h^*(s)$ mutexes and disambiguations are used to smaller the domains and estimate more accurately, how often facts may appear.
+Mutex means, that two or more things mutually exclude each other.
+If $p[3]=1$, then tile one may not be in any other spot of the grid, i.e. the fact $\langle 3, 1\rangle$ is mutex with all
+other facts $\langle v, 1\rangle$ with $v\in \mathcal{V}\setminus \{3\}$.
+
+\begin{definition}
+    Let $\Pi$ denote a planning task with facts $\mathca{F}$.
+    A set of facts $\mathcal{M}\subseteq \mathcal{F}$ is a mutex if $\mathcal{M}\nsubseteq s$ for every reachable state $s\in\mathca{R}$
+\end{definition}
+A mutex $M\subseteq\mathcal{F}$ is a set of fact, such that $M\nsubseteq s$ for every $s\in\mathcal{R}$.
+
+The mutex-set $\mathcal{M}\subseteq 2^{\mathcal{F}}$ contains all mutexes $M$
+
+\section{Potential Heuristics}
+Very useful
+
+\section{Optimization}
+Very complex
+
+

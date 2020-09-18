@@ -1,0 +1,69 @@
+%% ----------------------------------------------------------------
+%% Thesis.tex -- main
+%% ---------------------------------------------------------------- 
+
+\documentclass[a4paper, 10pt, oneside]{memoir}
+%% Use the option citeauthor to be able to use citet. The default cite will still work.
+\usepackage[citeauthor]{basilea}
+\newtheorem{definition}{Definition}
+
+%% ----------------------------------------------------------------
+
+\title				{Mutex Based Potential Heuristics}
+\thesistype			{Bachelor thesis}
+
+\department 		{Department of Mathematics and Computer Science}
+\faculty			{Natural Science Faculty of the University of Basel}
+\research		    {Artificial Intelligence \\ https://ai.dmi.unibas.ch}
+
+\examiner    		{Prof. Dr. Malte Helmert}
+\supervisor  		{Salom\'e Eriksson}
+
+\authors     		{Salome M\"uller}
+\email				{salo.mueller@unibas.ch}
+\immatriculnr		{2017-063-xxx}
+
+\date				{06. 11. 2020}
+
+% switch here for the german logo to logo-de
+\ulogo				{Template/logo-en} 
+
+
+%% ----------------------------------------------------------------
+\begin{document}
+
+% for english use \selectlanguage{english}, for german use \selectlanguage{ngerman}
+\selectlanguage{english}
+
+\thesisfront
+\maketitle
+\pagestyle{thesis}
+%% ----------------------------------------------------------------
+% \input{./Front/Acknowledgment}
+%% ----------------------------------------------------------------
+%\input{./Front/Abstract}
+%% ----------------------------------------------------------------
+\thesistoc
+%% ----------------------------------------------------------------
+%\thesisnomencl
+%% ----------------------------------------------------------------
+\thesismain
+\input{./Chapters/Introduction}
+\input{./Chapters/Background}
+\input{./Chapters/Implementation}
+\input{./Chapters/Evaluation}
+\input{./Chapters/Conclusion}
+%\input{./Chapters/Chapter1}
+%\input{./Chapters/Chapter2}
+%% ----------------------------------------------------------------
+\thesisappendix
+\thesisbib
+\begin{appendices}
+	\input{./Back/AppendixA} 
+\end{appendices}
+%% ----------------------------------------------------------------
+\thesisback
+\input{./Back/DeclarationOfAuthorship}
+%% ----------------------------------------------------------------
+\end{document}
+%% ----------------------------------------------------------------
