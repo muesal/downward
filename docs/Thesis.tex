@@ -5,7 +5,11 @@
 \documentclass[a4paper, 10pt, oneside]{memoir}
 %% Use the option citeauthor to be able to use citet. The default cite will still work.
 \usepackage[citeauthor]{basilea}
-\newtheorem{definition}{Definition}
+\usepackage{stmaryrd}
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}[theorem]{Definition}
+\newcommand\mytodo[1]{\textbf{\textcolor{magenta}{#1}}}
+%\renewcommand\mytodo[1]{} % TODO: this hides all todos
 
 %% ----------------------------------------------------------------
 
@@ -21,7 +25,7 @@
 
 \authors     		{Salome M\"uller}
 \email				{salo.mueller@unibas.ch}
-\immatriculnr		{2017-063-xxx}
+\immatriculnr		{2017-063-058}
 
 \date				{06. 11. 2020}
 
@@ -50,6 +54,7 @@
 \thesismain
 \input{./Chapters/Introduction}
 \input{./Chapters/Background}
+\input{./Chapters/Strengthening.tex}
 \input{./Chapters/Implementation}
 \input{./Chapters/Evaluation}
 \input{./Chapters/Conclusion}

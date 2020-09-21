@@ -1,0 +1,19 @@
+%! Author = salom
+%! Date = 11.09.2020
+
+\chapter{Strengthening Potential Heuristics}\label{ch:strengthening-potential-heuristics}
+
+
+\begin{theorem}
+    Let $\Pi = \langle \mathcal{V}, \mathcal{O}, \mathcal{I}, \mathcal{G} \rangle$ denote a planning task, $\mathtt{P}$ a
+    potential function, and for every operator $o\in\mathcal{O}$, let
+    $\mathrm{pre}^*(o)=\{\langle V, \mathrm{pre}(o)[V]\rangle |V\in \mathrm{vars(pre}(o))\cap\mathrm{vars(eff}(o))\}$ and
+    $\mathrm{vars}^*(o)=\mathrm{vars(eff}(o))\setminus\mathrm{vars(pre}(o))$. If
+    \[\sum_{f\in G}\mathtt{P}(f)+\sum_{V\in\mathcal{V}\setminus\mathrm{vars}(G)}\max_{f\in\mathcal{F}_V}\mathtt{P}(f)\leq0\]
+    and for every operator $o\in\mathcal{O}$ it holds that
+    \[\sum_{f\in\mathrm{pre}^*(o)}\mathtt{P}(f)+\sum_{V\in\mathrm{vars}^*(o)}\max_{f\in\mathcal{F}_V}\mathtt{P}(f)-\sum_{f\in\mathrm{eff}(o)}\mathtt{P}(f)\leq c(o)\]
+    then the potential heuristic for $\mathtt{P}$ is admissible.
+\end{theorem}
+
+The theorem~\cite{fivser2020strengthening} shows that potential heur
+\mytodo{explain, with 8-tiles?}
