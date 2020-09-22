@@ -11,7 +11,7 @@ One spot remains empty, the goal is to bring the tiles in a specific order by sl
 
 \section {Planning Tasks}\label{sec:planning-tasks}
 In order to solve a classical planning problem with heuristic search it is represented as a \textbf{planning task}.
-\citeauthor{fivser2020strengthening} use the finite domain representation (\textbf{FDR}) where $\Pi$ is specified by a tuple $ \Pi = \langle \mathcal{V}, \mathcal{O}, \mathcal{I}, \mathcal{G} \rangle$.
+\citeauthor{fivser2020strengthening} use the finite domain representation (\textbf{FDR}) where $\Pi$ is specified by a tuple $ \Pi = \langle \mathcal{V}, \mathcal{O}, I, G \rangle$.
 
 $\mathcal{V}$ is a set finite set of \textbf{variables}, each of the variables $V\in\mathcal{V}$ has a finite set of \textbf{domains} $\text{dom}(V)$.
 For 8-Tiles, the variables could be defined as the 9 fields in the grid (1 to 9), and their domains hold the values of all tiles and the blank space (1 to 8 and 0 for the blank tile).
@@ -26,8 +26,8 @@ A \textbf{state} $s$ is not partial, if all variables are assigned, i.e., $\text
 It \textbf{extends} the partial state $p\subseteq s$, if $s[v] = p[v]$ for all $v \in\text{vars}(p)$.
 The partial state $p = \{1\mapsto0, 2\mapsto1\}$ represents the state where the first grid in the field of the 8-Tiles puzzle is the blank space while tile number one lies in the first field.
 
-$\mathcal{I}$ is the \textbf{initial state}, in 8-Tiles this is some specific random order of the tiles.
-$\mathcal{G}$ is a partial state representing the \textbf{goal}. $s$ is a \textbf{goal state}, if it is an extension of $\mathcal{G}$.
+$I$ is the \textbf{initial state}, in 8-Tiles this is some specific random order of the tiles.
+$G$ is a partial state representing the \textbf{goal}. $s$ is a \textbf{goal state}, if it is an extension of $G$.
 In 8-Tiles it is one specific order of the tiles e.g. sorted by number:
 $s = \{1\mapsto1, 2\mapsto2, 3\mapsto3, 4\mapsto4, 5\mapsto5, 6\mapsto6, 7\mapsto7, 8\mapsto8, 9\mapsto0\}$.
 
@@ -41,13 +41,15 @@ The precondition assures that the tile is next to the blank space, the effect sw
 
 In order to reach the goal multiple operators need to be applied in a specific order.
 Such a sequence of operators $\pi=\langle o_1,\dots, o_n\rangle$ is called a plan, $\pi\llbracket s\rrbracket = s_n$.
-$\pi$ is a \textbf{s-plan}, if $\pi$ is applicable in $s$ and $\pi\llbracket s\rrbracket$ is a an extension of $\mathcal{G}$.
+$\pi$ is a \textbf{s-plan}, if $\pi$ is applicable in $s$ and $\pi\llbracket s\rrbracket$ is a an extension of $G$.
 If it has minimal cost among all s-plans it is called \textbf{optimal}.
 
 The set $\mathcal{R}$ is defined as the set of all \textbf{reachable} states.
-A state $s$ is reachable, if a plan $\pi$ is applicable in $\mathcal{I}$ such that $\pi\llbracket I\rrbracket = s$.
+A state $s$ is reachable, if a plan $\pi$ is applicable in $I$ such that $\pi\llbracket I\rrbracket = s$.
 An operator $o$ is reachable, if it is applicable in a reachable state.
 A state is a \textbf{dead-end state} if it does not extend the goal state, and no s-plan exists.
+
+%TODO: introduce transition normal form?
 
 \section{Heuristics}\label{sec:heuristics}
 A \textbf{heuristic} $h:\mathcal{R} \rightarrow \mathbb{R} \cup \{\infty\} $ estimates the cost of the optimal plan for a state $s$.
@@ -73,6 +75,9 @@ One class of heuristics are potential heuristics which assign a potential to eac
 
 Potential heuristics are goal aware, consistent and admissible~\cite{fivser2020strengthening}.
 The potentials themselves are obtained through optimization which will be further analyzed in chapter~\ref{ch:strengthening-potential-heuristics}.
+
+One further approach are \textbf{ensemble heuristics}.
+\mytodo{TODO: Lektuere?}
 
 \section{Mutexes and Disambiguations}\label{sec:mutexes-and-disambiguations}
 Mutex means, that two or more things mutually exclude each other.
@@ -111,7 +116,7 @@ This means, that each fact of $V$ which is not in $F$ is a mutex with $p$.
 If $F$ contains exactly one fact then $p$ can be safely extended with that fact, as it is the only non-dead-end extension of the state.
 If $F$ is the empty set every extended state of $p$ is a dead-end.
 This knowledge can be used to prune operators $o$ for which $p\subseteq\text{pre}(o)$ and unreachable states $s\subseteq p$.
-If the goal state $\mathcal{G}$ is one of this states, the problem is unsolvable.
+If the goal state $G$ is one of this states, the problem is unsolvable.
 
 If a partial state $s$ of the 8-Tiles problem holds $p[3] = 1$ and $p[2] = 1$, then it is a dead-end, as these facts are a mutex.
 If $p = \{1\mapsto1, 2\mapsto2, 3\mapsto3, 4\mapsto4, 5\mapsto5, 6\mapsto6, 7\mapsto7, 8\mapsto8\}$ then $p$ is not a dead-end and 9 can safely be assigned with $0$, as it is the only fact in $\mathcal{F}_9$ which does not form a mutex with any of the already assigned facts.

@@ -3,17 +3,93 @@
 
 \chapter{Strengthening Potential Heuristics}\label{ch:strengthening-potential-heuristics}
 
+\citeauthor{fivser2020strengthening} proposed to improve potential heuristics with mutexes and disambiguations
+This chapter contains the changes of the transformation of the planning task into TNF and the adaption of the optimization functions.
+It shows how the equations which were implemented were derived.
+
+\section{Potential Heuristics}\label{sec:potential-heuristics}
+
+When~\citeauthor{pommerening2015non} first introduced potential heuristics, they showed that two inequalities are sufficient to proof admissibility.
 
 \begin{theorem}
-    Let $\Pi = \langle \mathcal{V}, \mathcal{O}, \mathcal{I}, \mathcal{G} \rangle$ denote a planning task, $\mathtt{P}$ a
+    \label{theorem:theorem 5} % Theorem 6
+    Let $\Pi = \langle \mathcal{V}, \mathcal{O}, I, G \rangle$ denote a planning task, $\mathtt{P}$ a
     potential function, and for every operator $o\in\mathcal{O}$, let
     $\mathrm{pre}^*(o)=\{\langle V, \mathrm{pre}(o)[V]\rangle |V\in \mathrm{vars(pre}(o))\cap\mathrm{vars(eff}(o))\}$ and
     $\mathrm{vars}^*(o)=\mathrm{vars(eff}(o))\setminus\mathrm{vars(pre}(o))$. If
-    \[\sum_{f\in G}\mathtt{P}(f)+\sum_{V\in\mathcal{V}\setminus\mathrm{vars}(G)}\max_{f\in\mathcal{F}_V}\mathtt{P}(f)\leq0\]
+    \[\sum_{f\in G}\mathtt{P}(f)+\sum_{V\in\mathcal{V}\setminus\mathrm{vars}(G)}\max_{f\in\mathcal{F}_V}\mathtt{P}(f)\leq0\label{eq:1}\tag{1}\]
     and for every operator $o\in\mathcal{O}$ it holds that
-    \[\sum_{f\in\mathrm{pre}^*(o)}\mathtt{P}(f)+\sum_{V\in\mathrm{vars}^*(o)}\max_{f\in\mathcal{F}_V}\mathtt{P}(f)-\sum_{f\in\mathrm{eff}(o)}\mathtt{P}(f)\leq c(o)\]
+    \[\sum_{f\in\mathrm{pre}^*(o)}\mathtt{P}(f)+\sum_{V\in\mathrm{vars}^*(o)}\max_{f\in\mathcal{F}_V}\mathtt{P}(f)-\sum_{f\in\mathrm{eff}(o)}\mathtt{P}(f)\leq c(o)\label{eq:2}\tag{2}\]
     then the potential heuristic for $\mathtt{P}$ is admissible.
 \end{theorem}
 
-The theorem~\cite{fivser2020strengthening} shows that potential heur
-\mytodo{explain, with 8-tiles?}
+
+Eq.~\eqref{eq:1} of the theorem by~\citeauthor{fivser2020strengthening} assures goal-awareness of the potential heuristic.
+As all variables are assigned in the goal state, the potential of one fact per variable has to be summed up.
+For the variables $v\in\text{vars}(G)$ we can simply use the potentials of their respective facts.
+Meanwhile we assume the worst case for the other variables, by using the maximal potential over their facts, as we do not know what fact they are assigned.
+
+Eq.\eqref{eq:2} assures consistency.
+Recall the general consistency equation $h(s)\leq h(o\llbracket s\rrbracket)+\text{c}(o)$.
+It can be rewritten as $h(s)-h(o\llbracket s\rrbracket)\leq\text{c}(o)$.
+As the facts which do not occur in the effect are the same in both $s$ and $o\llbracket s\rrbracket$ we cam leave them aside. % da substraktion
+For $s$ we know what facts of the variables of the preconditions are assigned and sum the potentials of those which are also in effect.
+For the variables which are in effect but not in the precondition we proceed similar to ~\eqref{eq:1}, as we do not know their values.
+The potentials of the facts in the effect can be used without modification for  $o\llbracket s\rrbracket$.
+
+The Advantage of this equations is that they are not state-dependent, even though they do not tell us what exactly the potentials should be.
+However, they can be used as the constraints for a linear program (\textbf{LP}), the solution of which is a potential function that forms an admissible potential heuristic.
+More about this in~\ref{subsec:transition-normal-form}.
+
+\subsection{Generalize with Mutexes}\label{subsec:generalize-with-mutexes}
+\mytodo { some general writng about how mutexes can be used for narrowing down domains}
+
+Using this [above],~\ref{theorem:theorem 5} can be generalized by the following theorem.
+
+\begin{theorem}
+    \label{theorem:7}
+    Let $\Pi = \langle \mathcal{V}, \mathcal{O}, I, G \rangle$ denote a planning task with facts $\mathcal{F}$, and let $\mathtt{P}$ denote a potential function, and
+    \begin{enumerate}[(i)]
+        \item for every variable $V\in\mathcal{V}$, let $G_V\subseteq\mathcal{F}_V$ denote a disambiguation of $V$ for $G$ s.t. $|G_V|\geq1$, and
+        \item for every operator $o\in\mathcal{O}$ and every variable $V\in\mathrm{vars(eff}(o))$, let $E^o_V\subseteq\mathcal{F}_V $ denote a disambiguation of $V$ for $\mathrm{pre}(o)$ s.t. $|E^o_V|\geq1$.
+    \end{enumerate}
+
+    If
+    \[\sum_{V\in\mathcal{V}}\max_{f\in G_V}\mathtt{P}(f)\leq0\label{eq:3}\]
+    and for every operator $o\in\mathcal{O}$ it holds that
+    \[\sum_{V\in\mathrm{vars(eff}(o))}\max_{f\in E^o_V}\mathtt{P}(f) - \sum_{f\in\mathrm{eff}(o)}\mathtt{P}(f)\leq\mathrm{c}(o)\label{eq:4}\]
+    then the potential heuristic $\mathtt{P}$ is admissible.
+\end{theorem}
+
+\citeauthor{fivser2020strengthening} proof the theorem by showing that equations~\eqref{eq:3} and~\eqref{eq:4} are generalizations of equations~\eqref{eq:1} and~\eqref{eq:2} respectively.
+
+$G_V$ is the disambiguation of $V\in\mathcal{V}$ for $G$, i.e., it holds all facts of $\mathcal{F}_V$ which are not a mutex with any of tha facts $f\in G$.
+If it is empty for any of the variables, then the problem is unsolvable.
+$E^o_V$ is the disambiguation of $V\in\text{vars(eff}(o))$ for $\text{pre}(o)$, $o\in\mathcal{O}$.
+In words, for all variables which are affected by the application of $o$, remove facts which are a mutex with any of the facts in the precondition.
+$o$ is not applicable in any (partial) state, if $E^o_V$ is empty for any  $V\in\text{vars(eff}(o))$.
+
+\mytodo{anything else for this subsection? something kind of concluding is missing}
+
+
+\subsection{Transition Normal Form}\label{subsec:transition-normal-form}
+\mytodo{What is TNF?}
+
+\mytodo{does some of this belong to the background?}
+
+
+\begin{comment}
+    %TODO: this is for the LP solver, from one of helmerts papers?
+    \begin{definition}
+        Let $f$ be a solution to the following LP:
+        Maximize $\mathrm{opt}$ subject to $\sum_{V\in\mathcal{V}}\mathtt{P}_{\langle V, s[V]\rangle}\leq0$ and
+        $\sum_{V\in\mathrm{vars(eff}(o))}(\mathtt{P}_{\langle V, \mathrm{pre}(o)[V]\rangle}-\mathtt{P}_{\langle V, \mathrm{eff}(o)[V]\rangle})\leq\mathrm{c}(o)$
+        for all $o\in\mathcal{O}$, where the objective function $\athrm{opt}$ can be chosen arbitrarily.
+        Then the function $\mathrm{pot}_{\mathrm{opt}}(\langle V,v\rangle)=f()$
+    \end{definition}
+\end{comment}
+
+
+\section{Optimization}\label{sec:optimization}
+
+
