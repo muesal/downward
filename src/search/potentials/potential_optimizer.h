@@ -5,6 +5,8 @@
 
 #include "../lp/lp_solver.h"
 
+#include "mutexes.h"
+
 #include <memory>
 #include <vector>
 

@@ -1968,9 +1968,22 @@ CMakeFiles/downward.dir/src/search/potentials/mutex_based_potential_heuristics.c
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/downward.dir/src/search/potentials/mutex_based_potential_heuristics.cc.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/salome/Documents/downward/src/search/potentials/mutex_based_potential_heuristics.cc -o CMakeFiles/downward.dir/src/search/potentials/mutex_based_potential_heuristics.cc.s
 
+CMakeFiles/downward.dir/src/search/potentials/mutexes.cc.o: CMakeFiles/downward.dir/flags.make
+CMakeFiles/downward.dir/src/search/potentials/mutexes.cc.o: ../src/search/potentials/mutexes.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_148) "Building CXX object CMakeFiles/downward.dir/src/search/potentials/mutexes.cc.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/potentials/mutexes.cc.o -c /home/salome/Documents/downward/src/search/potentials/mutexes.cc
+
+CMakeFiles/downward.dir/src/search/potentials/mutexes.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/downward.dir/src/search/potentials/mutexes.cc.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/salome/Documents/downward/src/search/potentials/mutexes.cc > CMakeFiles/downward.dir/src/search/potentials/mutexes.cc.i
+
+CMakeFiles/downward.dir/src/search/potentials/mutexes.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/downward.dir/src/search/potentials/mutexes.cc.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/salome/Documents/downward/src/search/potentials/mutexes.cc -o CMakeFiles/downward.dir/src/search/potentials/mutexes.cc.s
+
 CMakeFiles/downward.dir/src/search/potentials/plugin_group.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/potentials/plugin_group.cc.o: ../src/search/potentials/plugin_group.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_148) "Building CXX object CMakeFiles/downward.dir/src/search/potentials/plugin_group.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_149) "Building CXX object CMakeFiles/downward.dir/src/search/potentials/plugin_group.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/potentials/plugin_group.cc.o -c /home/salome/Documents/downward/src/search/potentials/plugin_group.cc
 
 CMakeFiles/downward.dir/src/search/potentials/plugin_group.cc.i: cmake_force
@@ -1983,7 +1996,7 @@ CMakeFiles/downward.dir/src/search/potentials/plugin_group.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/potentials/potential_function.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/potentials/potential_function.cc.o: ../src/search/potentials/potential_function.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_149) "Building CXX object CMakeFiles/downward.dir/src/search/potentials/potential_function.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_150) "Building CXX object CMakeFiles/downward.dir/src/search/potentials/potential_function.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/potentials/potential_function.cc.o -c /home/salome/Documents/downward/src/search/potentials/potential_function.cc
 
 CMakeFiles/downward.dir/src/search/potentials/potential_function.cc.i: cmake_force
@@ -1996,7 +2009,7 @@ CMakeFiles/downward.dir/src/search/potentials/potential_function.cc.s: cmake_for
 
 CMakeFiles/downward.dir/src/search/potentials/potential_heuristic.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/potentials/potential_heuristic.cc.o: ../src/search/potentials/potential_heuristic.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_150) "Building CXX object CMakeFiles/downward.dir/src/search/potentials/potential_heuristic.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_151) "Building CXX object CMakeFiles/downward.dir/src/search/potentials/potential_heuristic.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/potentials/potential_heuristic.cc.o -c /home/salome/Documents/downward/src/search/potentials/potential_heuristic.cc
 
 CMakeFiles/downward.dir/src/search/potentials/potential_heuristic.cc.i: cmake_force
@@ -2009,7 +2022,7 @@ CMakeFiles/downward.dir/src/search/potentials/potential_heuristic.cc.s: cmake_fo
 
 CMakeFiles/downward.dir/src/search/potentials/potential_max_heuristic.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/potentials/potential_max_heuristic.cc.o: ../src/search/potentials/potential_max_heuristic.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_151) "Building CXX object CMakeFiles/downward.dir/src/search/potentials/potential_max_heuristic.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_152) "Building CXX object CMakeFiles/downward.dir/src/search/potentials/potential_max_heuristic.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/potentials/potential_max_heuristic.cc.o -c /home/salome/Documents/downward/src/search/potentials/potential_max_heuristic.cc
 
 CMakeFiles/downward.dir/src/search/potentials/potential_max_heuristic.cc.i: cmake_force
@@ -2022,7 +2035,7 @@ CMakeFiles/downward.dir/src/search/potentials/potential_max_heuristic.cc.s: cmak
 
 CMakeFiles/downward.dir/src/search/potentials/potential_optimizer.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/potentials/potential_optimizer.cc.o: ../src/search/potentials/potential_optimizer.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_152) "Building CXX object CMakeFiles/downward.dir/src/search/potentials/potential_optimizer.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_153) "Building CXX object CMakeFiles/downward.dir/src/search/potentials/potential_optimizer.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/potentials/potential_optimizer.cc.o -c /home/salome/Documents/downward/src/search/potentials/potential_optimizer.cc
 
 CMakeFiles/downward.dir/src/search/potentials/potential_optimizer.cc.i: cmake_force
@@ -2035,7 +2048,7 @@ CMakeFiles/downward.dir/src/search/potentials/potential_optimizer.cc.s: cmake_fo
 
 CMakeFiles/downward.dir/src/search/potentials/sample_based_potential_heuristics.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/potentials/sample_based_potential_heuristics.cc.o: ../src/search/potentials/sample_based_potential_heuristics.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_153) "Building CXX object CMakeFiles/downward.dir/src/search/potentials/sample_based_potential_heuristics.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_154) "Building CXX object CMakeFiles/downward.dir/src/search/potentials/sample_based_potential_heuristics.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/potentials/sample_based_potential_heuristics.cc.o -c /home/salome/Documents/downward/src/search/potentials/sample_based_potential_heuristics.cc
 
 CMakeFiles/downward.dir/src/search/potentials/sample_based_potential_heuristics.cc.i: cmake_force
@@ -2048,7 +2061,7 @@ CMakeFiles/downward.dir/src/search/potentials/sample_based_potential_heuristics.
 
 CMakeFiles/downward.dir/src/search/potentials/single_potential_heuristics.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/potentials/single_potential_heuristics.cc.o: ../src/search/potentials/single_potential_heuristics.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_154) "Building CXX object CMakeFiles/downward.dir/src/search/potentials/single_potential_heuristics.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_155) "Building CXX object CMakeFiles/downward.dir/src/search/potentials/single_potential_heuristics.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/potentials/single_potential_heuristics.cc.o -c /home/salome/Documents/downward/src/search/potentials/single_potential_heuristics.cc
 
 CMakeFiles/downward.dir/src/search/potentials/single_potential_heuristics.cc.i: cmake_force
@@ -2061,7 +2074,7 @@ CMakeFiles/downward.dir/src/search/potentials/single_potential_heuristics.cc.s: 
 
 CMakeFiles/downward.dir/src/search/potentials/util.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/potentials/util.cc.o: ../src/search/potentials/util.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_155) "Building CXX object CMakeFiles/downward.dir/src/search/potentials/util.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_156) "Building CXX object CMakeFiles/downward.dir/src/search/potentials/util.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/potentials/util.cc.o -c /home/salome/Documents/downward/src/search/potentials/util.cc
 
 CMakeFiles/downward.dir/src/search/potentials/util.cc.i: cmake_force
@@ -2074,7 +2087,7 @@ CMakeFiles/downward.dir/src/search/potentials/util.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/pruning/null_pruning_method.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/pruning/null_pruning_method.cc.o: ../src/search/pruning/null_pruning_method.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_156) "Building CXX object CMakeFiles/downward.dir/src/search/pruning/null_pruning_method.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_157) "Building CXX object CMakeFiles/downward.dir/src/search/pruning/null_pruning_method.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/pruning/null_pruning_method.cc.o -c /home/salome/Documents/downward/src/search/pruning/null_pruning_method.cc
 
 CMakeFiles/downward.dir/src/search/pruning/null_pruning_method.cc.i: cmake_force
@@ -2087,7 +2100,7 @@ CMakeFiles/downward.dir/src/search/pruning/null_pruning_method.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/pruning/stubborn_sets.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/pruning/stubborn_sets.cc.o: ../src/search/pruning/stubborn_sets.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_157) "Building CXX object CMakeFiles/downward.dir/src/search/pruning/stubborn_sets.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_158) "Building CXX object CMakeFiles/downward.dir/src/search/pruning/stubborn_sets.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/pruning/stubborn_sets.cc.o -c /home/salome/Documents/downward/src/search/pruning/stubborn_sets.cc
 
 CMakeFiles/downward.dir/src/search/pruning/stubborn_sets.cc.i: cmake_force
@@ -2100,7 +2113,7 @@ CMakeFiles/downward.dir/src/search/pruning/stubborn_sets.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/pruning/stubborn_sets_atom_centric.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/pruning/stubborn_sets_atom_centric.cc.o: ../src/search/pruning/stubborn_sets_atom_centric.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_158) "Building CXX object CMakeFiles/downward.dir/src/search/pruning/stubborn_sets_atom_centric.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_159) "Building CXX object CMakeFiles/downward.dir/src/search/pruning/stubborn_sets_atom_centric.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/pruning/stubborn_sets_atom_centric.cc.o -c /home/salome/Documents/downward/src/search/pruning/stubborn_sets_atom_centric.cc
 
 CMakeFiles/downward.dir/src/search/pruning/stubborn_sets_atom_centric.cc.i: cmake_force
@@ -2113,7 +2126,7 @@ CMakeFiles/downward.dir/src/search/pruning/stubborn_sets_atom_centric.cc.s: cmak
 
 CMakeFiles/downward.dir/src/search/pruning/stubborn_sets_ec.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/pruning/stubborn_sets_ec.cc.o: ../src/search/pruning/stubborn_sets_ec.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_159) "Building CXX object CMakeFiles/downward.dir/src/search/pruning/stubborn_sets_ec.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_160) "Building CXX object CMakeFiles/downward.dir/src/search/pruning/stubborn_sets_ec.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/pruning/stubborn_sets_ec.cc.o -c /home/salome/Documents/downward/src/search/pruning/stubborn_sets_ec.cc
 
 CMakeFiles/downward.dir/src/search/pruning/stubborn_sets_ec.cc.i: cmake_force
@@ -2126,7 +2139,7 @@ CMakeFiles/downward.dir/src/search/pruning/stubborn_sets_ec.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/pruning/stubborn_sets_simple.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/pruning/stubborn_sets_simple.cc.o: ../src/search/pruning/stubborn_sets_simple.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_160) "Building CXX object CMakeFiles/downward.dir/src/search/pruning/stubborn_sets_simple.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_161) "Building CXX object CMakeFiles/downward.dir/src/search/pruning/stubborn_sets_simple.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/pruning/stubborn_sets_simple.cc.o -c /home/salome/Documents/downward/src/search/pruning/stubborn_sets_simple.cc
 
 CMakeFiles/downward.dir/src/search/pruning/stubborn_sets_simple.cc.i: cmake_force
@@ -2139,7 +2152,7 @@ CMakeFiles/downward.dir/src/search/pruning/stubborn_sets_simple.cc.s: cmake_forc
 
 CMakeFiles/downward.dir/src/search/search_engines/eager_search.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/search_engines/eager_search.cc.o: ../src/search/search_engines/eager_search.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_161) "Building CXX object CMakeFiles/downward.dir/src/search/search_engines/eager_search.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_162) "Building CXX object CMakeFiles/downward.dir/src/search/search_engines/eager_search.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/search_engines/eager_search.cc.o -c /home/salome/Documents/downward/src/search/search_engines/eager_search.cc
 
 CMakeFiles/downward.dir/src/search/search_engines/eager_search.cc.i: cmake_force
@@ -2152,7 +2165,7 @@ CMakeFiles/downward.dir/src/search/search_engines/eager_search.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/search_engines/enforced_hill_climbing_search.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/search_engines/enforced_hill_climbing_search.cc.o: ../src/search/search_engines/enforced_hill_climbing_search.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_162) "Building CXX object CMakeFiles/downward.dir/src/search/search_engines/enforced_hill_climbing_search.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_163) "Building CXX object CMakeFiles/downward.dir/src/search/search_engines/enforced_hill_climbing_search.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/search_engines/enforced_hill_climbing_search.cc.o -c /home/salome/Documents/downward/src/search/search_engines/enforced_hill_climbing_search.cc
 
 CMakeFiles/downward.dir/src/search/search_engines/enforced_hill_climbing_search.cc.i: cmake_force
@@ -2165,7 +2178,7 @@ CMakeFiles/downward.dir/src/search/search_engines/enforced_hill_climbing_search.
 
 CMakeFiles/downward.dir/src/search/search_engines/iterated_search.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/search_engines/iterated_search.cc.o: ../src/search/search_engines/iterated_search.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_163) "Building CXX object CMakeFiles/downward.dir/src/search/search_engines/iterated_search.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_164) "Building CXX object CMakeFiles/downward.dir/src/search/search_engines/iterated_search.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/search_engines/iterated_search.cc.o -c /home/salome/Documents/downward/src/search/search_engines/iterated_search.cc
 
 CMakeFiles/downward.dir/src/search/search_engines/iterated_search.cc.i: cmake_force
@@ -2178,7 +2191,7 @@ CMakeFiles/downward.dir/src/search/search_engines/iterated_search.cc.s: cmake_fo
 
 CMakeFiles/downward.dir/src/search/search_engines/lazy_search.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/search_engines/lazy_search.cc.o: ../src/search/search_engines/lazy_search.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_164) "Building CXX object CMakeFiles/downward.dir/src/search/search_engines/lazy_search.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_165) "Building CXX object CMakeFiles/downward.dir/src/search/search_engines/lazy_search.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/search_engines/lazy_search.cc.o -c /home/salome/Documents/downward/src/search/search_engines/lazy_search.cc
 
 CMakeFiles/downward.dir/src/search/search_engines/lazy_search.cc.i: cmake_force
@@ -2191,7 +2204,7 @@ CMakeFiles/downward.dir/src/search/search_engines/lazy_search.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/search_engines/plugin_astar.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/search_engines/plugin_astar.cc.o: ../src/search/search_engines/plugin_astar.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_165) "Building CXX object CMakeFiles/downward.dir/src/search/search_engines/plugin_astar.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_166) "Building CXX object CMakeFiles/downward.dir/src/search/search_engines/plugin_astar.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/search_engines/plugin_astar.cc.o -c /home/salome/Documents/downward/src/search/search_engines/plugin_astar.cc
 
 CMakeFiles/downward.dir/src/search/search_engines/plugin_astar.cc.i: cmake_force
@@ -2204,7 +2217,7 @@ CMakeFiles/downward.dir/src/search/search_engines/plugin_astar.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/search_engines/plugin_eager.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/search_engines/plugin_eager.cc.o: ../src/search/search_engines/plugin_eager.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_166) "Building CXX object CMakeFiles/downward.dir/src/search/search_engines/plugin_eager.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_167) "Building CXX object CMakeFiles/downward.dir/src/search/search_engines/plugin_eager.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/search_engines/plugin_eager.cc.o -c /home/salome/Documents/downward/src/search/search_engines/plugin_eager.cc
 
 CMakeFiles/downward.dir/src/search/search_engines/plugin_eager.cc.i: cmake_force
@@ -2217,7 +2230,7 @@ CMakeFiles/downward.dir/src/search/search_engines/plugin_eager.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/search_engines/plugin_eager_greedy.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/search_engines/plugin_eager_greedy.cc.o: ../src/search/search_engines/plugin_eager_greedy.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_167) "Building CXX object CMakeFiles/downward.dir/src/search/search_engines/plugin_eager_greedy.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_168) "Building CXX object CMakeFiles/downward.dir/src/search/search_engines/plugin_eager_greedy.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/search_engines/plugin_eager_greedy.cc.o -c /home/salome/Documents/downward/src/search/search_engines/plugin_eager_greedy.cc
 
 CMakeFiles/downward.dir/src/search/search_engines/plugin_eager_greedy.cc.i: cmake_force
@@ -2230,7 +2243,7 @@ CMakeFiles/downward.dir/src/search/search_engines/plugin_eager_greedy.cc.s: cmak
 
 CMakeFiles/downward.dir/src/search/search_engines/plugin_eager_wastar.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/search_engines/plugin_eager_wastar.cc.o: ../src/search/search_engines/plugin_eager_wastar.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_168) "Building CXX object CMakeFiles/downward.dir/src/search/search_engines/plugin_eager_wastar.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_169) "Building CXX object CMakeFiles/downward.dir/src/search/search_engines/plugin_eager_wastar.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/search_engines/plugin_eager_wastar.cc.o -c /home/salome/Documents/downward/src/search/search_engines/plugin_eager_wastar.cc
 
 CMakeFiles/downward.dir/src/search/search_engines/plugin_eager_wastar.cc.i: cmake_force
@@ -2243,7 +2256,7 @@ CMakeFiles/downward.dir/src/search/search_engines/plugin_eager_wastar.cc.s: cmak
 
 CMakeFiles/downward.dir/src/search/search_engines/plugin_lazy.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/search_engines/plugin_lazy.cc.o: ../src/search/search_engines/plugin_lazy.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_169) "Building CXX object CMakeFiles/downward.dir/src/search/search_engines/plugin_lazy.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_170) "Building CXX object CMakeFiles/downward.dir/src/search/search_engines/plugin_lazy.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/search_engines/plugin_lazy.cc.o -c /home/salome/Documents/downward/src/search/search_engines/plugin_lazy.cc
 
 CMakeFiles/downward.dir/src/search/search_engines/plugin_lazy.cc.i: cmake_force
@@ -2256,7 +2269,7 @@ CMakeFiles/downward.dir/src/search/search_engines/plugin_lazy.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/search_engines/plugin_lazy_greedy.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/search_engines/plugin_lazy_greedy.cc.o: ../src/search/search_engines/plugin_lazy_greedy.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_170) "Building CXX object CMakeFiles/downward.dir/src/search/search_engines/plugin_lazy_greedy.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_171) "Building CXX object CMakeFiles/downward.dir/src/search/search_engines/plugin_lazy_greedy.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/search_engines/plugin_lazy_greedy.cc.o -c /home/salome/Documents/downward/src/search/search_engines/plugin_lazy_greedy.cc
 
 CMakeFiles/downward.dir/src/search/search_engines/plugin_lazy_greedy.cc.i: cmake_force
@@ -2269,7 +2282,7 @@ CMakeFiles/downward.dir/src/search/search_engines/plugin_lazy_greedy.cc.s: cmake
 
 CMakeFiles/downward.dir/src/search/search_engines/plugin_lazy_wastar.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/search_engines/plugin_lazy_wastar.cc.o: ../src/search/search_engines/plugin_lazy_wastar.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_171) "Building CXX object CMakeFiles/downward.dir/src/search/search_engines/plugin_lazy_wastar.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_172) "Building CXX object CMakeFiles/downward.dir/src/search/search_engines/plugin_lazy_wastar.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/search_engines/plugin_lazy_wastar.cc.o -c /home/salome/Documents/downward/src/search/search_engines/plugin_lazy_wastar.cc
 
 CMakeFiles/downward.dir/src/search/search_engines/plugin_lazy_wastar.cc.i: cmake_force
@@ -2282,7 +2295,7 @@ CMakeFiles/downward.dir/src/search/search_engines/plugin_lazy_wastar.cc.s: cmake
 
 CMakeFiles/downward.dir/src/search/search_engines/search_common.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/search_engines/search_common.cc.o: ../src/search/search_engines/search_common.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_172) "Building CXX object CMakeFiles/downward.dir/src/search/search_engines/search_common.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_173) "Building CXX object CMakeFiles/downward.dir/src/search/search_engines/search_common.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/search_engines/search_common.cc.o -c /home/salome/Documents/downward/src/search/search_engines/search_common.cc
 
 CMakeFiles/downward.dir/src/search/search_engines/search_common.cc.i: cmake_force
@@ -2295,7 +2308,7 @@ CMakeFiles/downward.dir/src/search/search_engines/search_common.cc.s: cmake_forc
 
 CMakeFiles/downward.dir/src/search/task_utils/causal_graph.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/task_utils/causal_graph.cc.o: ../src/search/task_utils/causal_graph.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_173) "Building CXX object CMakeFiles/downward.dir/src/search/task_utils/causal_graph.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_174) "Building CXX object CMakeFiles/downward.dir/src/search/task_utils/causal_graph.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/task_utils/causal_graph.cc.o -c /home/salome/Documents/downward/src/search/task_utils/causal_graph.cc
 
 CMakeFiles/downward.dir/src/search/task_utils/causal_graph.cc.i: cmake_force
@@ -2308,7 +2321,7 @@ CMakeFiles/downward.dir/src/search/task_utils/causal_graph.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/task_utils/sampling.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/task_utils/sampling.cc.o: ../src/search/task_utils/sampling.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_174) "Building CXX object CMakeFiles/downward.dir/src/search/task_utils/sampling.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_175) "Building CXX object CMakeFiles/downward.dir/src/search/task_utils/sampling.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/task_utils/sampling.cc.o -c /home/salome/Documents/downward/src/search/task_utils/sampling.cc
 
 CMakeFiles/downward.dir/src/search/task_utils/sampling.cc.i: cmake_force
@@ -2321,7 +2334,7 @@ CMakeFiles/downward.dir/src/search/task_utils/sampling.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/task_utils/successor_generator.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/task_utils/successor_generator.cc.o: ../src/search/task_utils/successor_generator.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_175) "Building CXX object CMakeFiles/downward.dir/src/search/task_utils/successor_generator.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_176) "Building CXX object CMakeFiles/downward.dir/src/search/task_utils/successor_generator.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/task_utils/successor_generator.cc.o -c /home/salome/Documents/downward/src/search/task_utils/successor_generator.cc
 
 CMakeFiles/downward.dir/src/search/task_utils/successor_generator.cc.i: cmake_force
@@ -2334,7 +2347,7 @@ CMakeFiles/downward.dir/src/search/task_utils/successor_generator.cc.s: cmake_fo
 
 CMakeFiles/downward.dir/src/search/task_utils/successor_generator_factory.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/task_utils/successor_generator_factory.cc.o: ../src/search/task_utils/successor_generator_factory.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_176) "Building CXX object CMakeFiles/downward.dir/src/search/task_utils/successor_generator_factory.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_177) "Building CXX object CMakeFiles/downward.dir/src/search/task_utils/successor_generator_factory.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/task_utils/successor_generator_factory.cc.o -c /home/salome/Documents/downward/src/search/task_utils/successor_generator_factory.cc
 
 CMakeFiles/downward.dir/src/search/task_utils/successor_generator_factory.cc.i: cmake_force
@@ -2347,7 +2360,7 @@ CMakeFiles/downward.dir/src/search/task_utils/successor_generator_factory.cc.s: 
 
 CMakeFiles/downward.dir/src/search/task_utils/successor_generator_internals.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/task_utils/successor_generator_internals.cc.o: ../src/search/task_utils/successor_generator_internals.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_177) "Building CXX object CMakeFiles/downward.dir/src/search/task_utils/successor_generator_internals.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_178) "Building CXX object CMakeFiles/downward.dir/src/search/task_utils/successor_generator_internals.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/task_utils/successor_generator_internals.cc.o -c /home/salome/Documents/downward/src/search/task_utils/successor_generator_internals.cc
 
 CMakeFiles/downward.dir/src/search/task_utils/successor_generator_internals.cc.i: cmake_force
@@ -2360,7 +2373,7 @@ CMakeFiles/downward.dir/src/search/task_utils/successor_generator_internals.cc.s
 
 CMakeFiles/downward.dir/src/search/task_utils/task_properties.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/task_utils/task_properties.cc.o: ../src/search/task_utils/task_properties.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_178) "Building CXX object CMakeFiles/downward.dir/src/search/task_utils/task_properties.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_179) "Building CXX object CMakeFiles/downward.dir/src/search/task_utils/task_properties.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/task_utils/task_properties.cc.o -c /home/salome/Documents/downward/src/search/task_utils/task_properties.cc
 
 CMakeFiles/downward.dir/src/search/task_utils/task_properties.cc.i: cmake_force
@@ -2373,7 +2386,7 @@ CMakeFiles/downward.dir/src/search/task_utils/task_properties.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/task_utils/variable_order_finder.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/task_utils/variable_order_finder.cc.o: ../src/search/task_utils/variable_order_finder.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_179) "Building CXX object CMakeFiles/downward.dir/src/search/task_utils/variable_order_finder.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_180) "Building CXX object CMakeFiles/downward.dir/src/search/task_utils/variable_order_finder.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/task_utils/variable_order_finder.cc.o -c /home/salome/Documents/downward/src/search/task_utils/variable_order_finder.cc
 
 CMakeFiles/downward.dir/src/search/task_utils/variable_order_finder.cc.i: cmake_force
@@ -2386,7 +2399,7 @@ CMakeFiles/downward.dir/src/search/task_utils/variable_order_finder.cc.s: cmake_
 
 CMakeFiles/downward.dir/src/search/tasks/cost_adapted_task.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/tasks/cost_adapted_task.cc.o: ../src/search/tasks/cost_adapted_task.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_180) "Building CXX object CMakeFiles/downward.dir/src/search/tasks/cost_adapted_task.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_181) "Building CXX object CMakeFiles/downward.dir/src/search/tasks/cost_adapted_task.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/tasks/cost_adapted_task.cc.o -c /home/salome/Documents/downward/src/search/tasks/cost_adapted_task.cc
 
 CMakeFiles/downward.dir/src/search/tasks/cost_adapted_task.cc.i: cmake_force
@@ -2399,7 +2412,7 @@ CMakeFiles/downward.dir/src/search/tasks/cost_adapted_task.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/tasks/delegating_task.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/tasks/delegating_task.cc.o: ../src/search/tasks/delegating_task.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_181) "Building CXX object CMakeFiles/downward.dir/src/search/tasks/delegating_task.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_182) "Building CXX object CMakeFiles/downward.dir/src/search/tasks/delegating_task.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/tasks/delegating_task.cc.o -c /home/salome/Documents/downward/src/search/tasks/delegating_task.cc
 
 CMakeFiles/downward.dir/src/search/tasks/delegating_task.cc.i: cmake_force
@@ -2412,7 +2425,7 @@ CMakeFiles/downward.dir/src/search/tasks/delegating_task.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/tasks/domain_abstracted_task.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/tasks/domain_abstracted_task.cc.o: ../src/search/tasks/domain_abstracted_task.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_182) "Building CXX object CMakeFiles/downward.dir/src/search/tasks/domain_abstracted_task.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_183) "Building CXX object CMakeFiles/downward.dir/src/search/tasks/domain_abstracted_task.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/tasks/domain_abstracted_task.cc.o -c /home/salome/Documents/downward/src/search/tasks/domain_abstracted_task.cc
 
 CMakeFiles/downward.dir/src/search/tasks/domain_abstracted_task.cc.i: cmake_force
@@ -2425,7 +2438,7 @@ CMakeFiles/downward.dir/src/search/tasks/domain_abstracted_task.cc.s: cmake_forc
 
 CMakeFiles/downward.dir/src/search/tasks/domain_abstracted_task_factory.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/tasks/domain_abstracted_task_factory.cc.o: ../src/search/tasks/domain_abstracted_task_factory.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_183) "Building CXX object CMakeFiles/downward.dir/src/search/tasks/domain_abstracted_task_factory.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_184) "Building CXX object CMakeFiles/downward.dir/src/search/tasks/domain_abstracted_task_factory.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/tasks/domain_abstracted_task_factory.cc.o -c /home/salome/Documents/downward/src/search/tasks/domain_abstracted_task_factory.cc
 
 CMakeFiles/downward.dir/src/search/tasks/domain_abstracted_task_factory.cc.i: cmake_force
@@ -2438,7 +2451,7 @@ CMakeFiles/downward.dir/src/search/tasks/domain_abstracted_task_factory.cc.s: cm
 
 CMakeFiles/downward.dir/src/search/tasks/modified_goals_task.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/tasks/modified_goals_task.cc.o: ../src/search/tasks/modified_goals_task.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_184) "Building CXX object CMakeFiles/downward.dir/src/search/tasks/modified_goals_task.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_185) "Building CXX object CMakeFiles/downward.dir/src/search/tasks/modified_goals_task.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/tasks/modified_goals_task.cc.o -c /home/salome/Documents/downward/src/search/tasks/modified_goals_task.cc
 
 CMakeFiles/downward.dir/src/search/tasks/modified_goals_task.cc.i: cmake_force
@@ -2451,7 +2464,7 @@ CMakeFiles/downward.dir/src/search/tasks/modified_goals_task.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/tasks/modified_operator_costs_task.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/tasks/modified_operator_costs_task.cc.o: ../src/search/tasks/modified_operator_costs_task.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_185) "Building CXX object CMakeFiles/downward.dir/src/search/tasks/modified_operator_costs_task.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_186) "Building CXX object CMakeFiles/downward.dir/src/search/tasks/modified_operator_costs_task.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/tasks/modified_operator_costs_task.cc.o -c /home/salome/Documents/downward/src/search/tasks/modified_operator_costs_task.cc
 
 CMakeFiles/downward.dir/src/search/tasks/modified_operator_costs_task.cc.i: cmake_force
@@ -2464,7 +2477,7 @@ CMakeFiles/downward.dir/src/search/tasks/modified_operator_costs_task.cc.s: cmak
 
 CMakeFiles/downward.dir/src/search/tasks/root_task.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/tasks/root_task.cc.o: ../src/search/tasks/root_task.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_186) "Building CXX object CMakeFiles/downward.dir/src/search/tasks/root_task.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_187) "Building CXX object CMakeFiles/downward.dir/src/search/tasks/root_task.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/tasks/root_task.cc.o -c /home/salome/Documents/downward/src/search/tasks/root_task.cc
 
 CMakeFiles/downward.dir/src/search/tasks/root_task.cc.i: cmake_force
@@ -2477,7 +2490,7 @@ CMakeFiles/downward.dir/src/search/tasks/root_task.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/utils/countdown_timer.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/utils/countdown_timer.cc.o: ../src/search/utils/countdown_timer.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_187) "Building CXX object CMakeFiles/downward.dir/src/search/utils/countdown_timer.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_188) "Building CXX object CMakeFiles/downward.dir/src/search/utils/countdown_timer.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/utils/countdown_timer.cc.o -c /home/salome/Documents/downward/src/search/utils/countdown_timer.cc
 
 CMakeFiles/downward.dir/src/search/utils/countdown_timer.cc.i: cmake_force
@@ -2490,7 +2503,7 @@ CMakeFiles/downward.dir/src/search/utils/countdown_timer.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/utils/logging.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/utils/logging.cc.o: ../src/search/utils/logging.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_188) "Building CXX object CMakeFiles/downward.dir/src/search/utils/logging.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_189) "Building CXX object CMakeFiles/downward.dir/src/search/utils/logging.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/utils/logging.cc.o -c /home/salome/Documents/downward/src/search/utils/logging.cc
 
 CMakeFiles/downward.dir/src/search/utils/logging.cc.i: cmake_force
@@ -2503,7 +2516,7 @@ CMakeFiles/downward.dir/src/search/utils/logging.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/utils/markup.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/utils/markup.cc.o: ../src/search/utils/markup.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_189) "Building CXX object CMakeFiles/downward.dir/src/search/utils/markup.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_190) "Building CXX object CMakeFiles/downward.dir/src/search/utils/markup.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/utils/markup.cc.o -c /home/salome/Documents/downward/src/search/utils/markup.cc
 
 CMakeFiles/downward.dir/src/search/utils/markup.cc.i: cmake_force
@@ -2516,7 +2529,7 @@ CMakeFiles/downward.dir/src/search/utils/markup.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/utils/math.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/utils/math.cc.o: ../src/search/utils/math.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_190) "Building CXX object CMakeFiles/downward.dir/src/search/utils/math.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_191) "Building CXX object CMakeFiles/downward.dir/src/search/utils/math.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/utils/math.cc.o -c /home/salome/Documents/downward/src/search/utils/math.cc
 
 CMakeFiles/downward.dir/src/search/utils/math.cc.i: cmake_force
@@ -2529,7 +2542,7 @@ CMakeFiles/downward.dir/src/search/utils/math.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/utils/memory.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/utils/memory.cc.o: ../src/search/utils/memory.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_191) "Building CXX object CMakeFiles/downward.dir/src/search/utils/memory.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_192) "Building CXX object CMakeFiles/downward.dir/src/search/utils/memory.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/utils/memory.cc.o -c /home/salome/Documents/downward/src/search/utils/memory.cc
 
 CMakeFiles/downward.dir/src/search/utils/memory.cc.i: cmake_force
@@ -2542,7 +2555,7 @@ CMakeFiles/downward.dir/src/search/utils/memory.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/utils/rng.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/utils/rng.cc.o: ../src/search/utils/rng.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_192) "Building CXX object CMakeFiles/downward.dir/src/search/utils/rng.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_193) "Building CXX object CMakeFiles/downward.dir/src/search/utils/rng.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/utils/rng.cc.o -c /home/salome/Documents/downward/src/search/utils/rng.cc
 
 CMakeFiles/downward.dir/src/search/utils/rng.cc.i: cmake_force
@@ -2555,7 +2568,7 @@ CMakeFiles/downward.dir/src/search/utils/rng.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/utils/rng_options.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/utils/rng_options.cc.o: ../src/search/utils/rng_options.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_193) "Building CXX object CMakeFiles/downward.dir/src/search/utils/rng_options.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_194) "Building CXX object CMakeFiles/downward.dir/src/search/utils/rng_options.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/utils/rng_options.cc.o -c /home/salome/Documents/downward/src/search/utils/rng_options.cc
 
 CMakeFiles/downward.dir/src/search/utils/rng_options.cc.i: cmake_force
@@ -2568,7 +2581,7 @@ CMakeFiles/downward.dir/src/search/utils/rng_options.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/utils/strings.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/utils/strings.cc.o: ../src/search/utils/strings.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_194) "Building CXX object CMakeFiles/downward.dir/src/search/utils/strings.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_195) "Building CXX object CMakeFiles/downward.dir/src/search/utils/strings.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/utils/strings.cc.o -c /home/salome/Documents/downward/src/search/utils/strings.cc
 
 CMakeFiles/downward.dir/src/search/utils/strings.cc.i: cmake_force
@@ -2581,7 +2594,7 @@ CMakeFiles/downward.dir/src/search/utils/strings.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/utils/system.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/utils/system.cc.o: ../src/search/utils/system.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_195) "Building CXX object CMakeFiles/downward.dir/src/search/utils/system.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_196) "Building CXX object CMakeFiles/downward.dir/src/search/utils/system.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/utils/system.cc.o -c /home/salome/Documents/downward/src/search/utils/system.cc
 
 CMakeFiles/downward.dir/src/search/utils/system.cc.i: cmake_force
@@ -2594,7 +2607,7 @@ CMakeFiles/downward.dir/src/search/utils/system.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/utils/system_unix.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/utils/system_unix.cc.o: ../src/search/utils/system_unix.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_196) "Building CXX object CMakeFiles/downward.dir/src/search/utils/system_unix.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_197) "Building CXX object CMakeFiles/downward.dir/src/search/utils/system_unix.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/utils/system_unix.cc.o -c /home/salome/Documents/downward/src/search/utils/system_unix.cc
 
 CMakeFiles/downward.dir/src/search/utils/system_unix.cc.i: cmake_force
@@ -2607,7 +2620,7 @@ CMakeFiles/downward.dir/src/search/utils/system_unix.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/utils/system_windows.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/utils/system_windows.cc.o: ../src/search/utils/system_windows.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_197) "Building CXX object CMakeFiles/downward.dir/src/search/utils/system_windows.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_198) "Building CXX object CMakeFiles/downward.dir/src/search/utils/system_windows.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/utils/system_windows.cc.o -c /home/salome/Documents/downward/src/search/utils/system_windows.cc
 
 CMakeFiles/downward.dir/src/search/utils/system_windows.cc.i: cmake_force
@@ -2620,7 +2633,7 @@ CMakeFiles/downward.dir/src/search/utils/system_windows.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/utils/timer.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/utils/timer.cc.o: ../src/search/utils/timer.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_198) "Building CXX object CMakeFiles/downward.dir/src/search/utils/timer.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_199) "Building CXX object CMakeFiles/downward.dir/src/search/utils/timer.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/utils/timer.cc.o -c /home/salome/Documents/downward/src/search/utils/timer.cc
 
 CMakeFiles/downward.dir/src/search/utils/timer.cc.i: cmake_force
@@ -2633,7 +2646,7 @@ CMakeFiles/downward.dir/src/search/utils/timer.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/abstract_task.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/abstract_task.cc.o: ../src/search/abstract_task.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_199) "Building CXX object CMakeFiles/downward.dir/src/search/abstract_task.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_200) "Building CXX object CMakeFiles/downward.dir/src/search/abstract_task.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/abstract_task.cc.o -c /home/salome/Documents/downward/src/search/abstract_task.cc
 
 CMakeFiles/downward.dir/src/search/abstract_task.cc.i: cmake_force
@@ -2646,7 +2659,7 @@ CMakeFiles/downward.dir/src/search/abstract_task.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/axioms.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/axioms.cc.o: ../src/search/axioms.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_200) "Building CXX object CMakeFiles/downward.dir/src/search/axioms.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_201) "Building CXX object CMakeFiles/downward.dir/src/search/axioms.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/axioms.cc.o -c /home/salome/Documents/downward/src/search/axioms.cc
 
 CMakeFiles/downward.dir/src/search/axioms.cc.i: cmake_force
@@ -2659,7 +2672,7 @@ CMakeFiles/downward.dir/src/search/axioms.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/command_line.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/command_line.cc.o: ../src/search/command_line.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_201) "Building CXX object CMakeFiles/downward.dir/src/search/command_line.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_202) "Building CXX object CMakeFiles/downward.dir/src/search/command_line.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/command_line.cc.o -c /home/salome/Documents/downward/src/search/command_line.cc
 
 CMakeFiles/downward.dir/src/search/command_line.cc.i: cmake_force
@@ -2672,7 +2685,7 @@ CMakeFiles/downward.dir/src/search/command_line.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/evaluation_context.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/evaluation_context.cc.o: ../src/search/evaluation_context.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_202) "Building CXX object CMakeFiles/downward.dir/src/search/evaluation_context.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_203) "Building CXX object CMakeFiles/downward.dir/src/search/evaluation_context.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/evaluation_context.cc.o -c /home/salome/Documents/downward/src/search/evaluation_context.cc
 
 CMakeFiles/downward.dir/src/search/evaluation_context.cc.i: cmake_force
@@ -2685,7 +2698,7 @@ CMakeFiles/downward.dir/src/search/evaluation_context.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/evaluation_result.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/evaluation_result.cc.o: ../src/search/evaluation_result.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_203) "Building CXX object CMakeFiles/downward.dir/src/search/evaluation_result.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_204) "Building CXX object CMakeFiles/downward.dir/src/search/evaluation_result.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/evaluation_result.cc.o -c /home/salome/Documents/downward/src/search/evaluation_result.cc
 
 CMakeFiles/downward.dir/src/search/evaluation_result.cc.i: cmake_force
@@ -2698,7 +2711,7 @@ CMakeFiles/downward.dir/src/search/evaluation_result.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/evaluator.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/evaluator.cc.o: ../src/search/evaluator.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_204) "Building CXX object CMakeFiles/downward.dir/src/search/evaluator.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_205) "Building CXX object CMakeFiles/downward.dir/src/search/evaluator.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/evaluator.cc.o -c /home/salome/Documents/downward/src/search/evaluator.cc
 
 CMakeFiles/downward.dir/src/search/evaluator.cc.i: cmake_force
@@ -2711,7 +2724,7 @@ CMakeFiles/downward.dir/src/search/evaluator.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/evaluator_cache.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/evaluator_cache.cc.o: ../src/search/evaluator_cache.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_205) "Building CXX object CMakeFiles/downward.dir/src/search/evaluator_cache.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_206) "Building CXX object CMakeFiles/downward.dir/src/search/evaluator_cache.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/evaluator_cache.cc.o -c /home/salome/Documents/downward/src/search/evaluator_cache.cc
 
 CMakeFiles/downward.dir/src/search/evaluator_cache.cc.i: cmake_force
@@ -2724,7 +2737,7 @@ CMakeFiles/downward.dir/src/search/evaluator_cache.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/global_state.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/global_state.cc.o: ../src/search/global_state.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_206) "Building CXX object CMakeFiles/downward.dir/src/search/global_state.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_207) "Building CXX object CMakeFiles/downward.dir/src/search/global_state.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/global_state.cc.o -c /home/salome/Documents/downward/src/search/global_state.cc
 
 CMakeFiles/downward.dir/src/search/global_state.cc.i: cmake_force
@@ -2737,7 +2750,7 @@ CMakeFiles/downward.dir/src/search/global_state.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/heuristic.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/heuristic.cc.o: ../src/search/heuristic.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_207) "Building CXX object CMakeFiles/downward.dir/src/search/heuristic.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_208) "Building CXX object CMakeFiles/downward.dir/src/search/heuristic.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/heuristic.cc.o -c /home/salome/Documents/downward/src/search/heuristic.cc
 
 CMakeFiles/downward.dir/src/search/heuristic.cc.i: cmake_force
@@ -2750,7 +2763,7 @@ CMakeFiles/downward.dir/src/search/heuristic.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/open_list_factory.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/open_list_factory.cc.o: ../src/search/open_list_factory.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_208) "Building CXX object CMakeFiles/downward.dir/src/search/open_list_factory.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_209) "Building CXX object CMakeFiles/downward.dir/src/search/open_list_factory.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/open_list_factory.cc.o -c /home/salome/Documents/downward/src/search/open_list_factory.cc
 
 CMakeFiles/downward.dir/src/search/open_list_factory.cc.i: cmake_force
@@ -2763,7 +2776,7 @@ CMakeFiles/downward.dir/src/search/open_list_factory.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/operator_cost.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/operator_cost.cc.o: ../src/search/operator_cost.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_209) "Building CXX object CMakeFiles/downward.dir/src/search/operator_cost.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_210) "Building CXX object CMakeFiles/downward.dir/src/search/operator_cost.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/operator_cost.cc.o -c /home/salome/Documents/downward/src/search/operator_cost.cc
 
 CMakeFiles/downward.dir/src/search/operator_cost.cc.i: cmake_force
@@ -2776,7 +2789,7 @@ CMakeFiles/downward.dir/src/search/operator_cost.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/operator_id.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/operator_id.cc.o: ../src/search/operator_id.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_210) "Building CXX object CMakeFiles/downward.dir/src/search/operator_id.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_211) "Building CXX object CMakeFiles/downward.dir/src/search/operator_id.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/operator_id.cc.o -c /home/salome/Documents/downward/src/search/operator_id.cc
 
 CMakeFiles/downward.dir/src/search/operator_id.cc.i: cmake_force
@@ -2789,7 +2802,7 @@ CMakeFiles/downward.dir/src/search/operator_id.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/per_state_bitset.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/per_state_bitset.cc.o: ../src/search/per_state_bitset.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_211) "Building CXX object CMakeFiles/downward.dir/src/search/per_state_bitset.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_212) "Building CXX object CMakeFiles/downward.dir/src/search/per_state_bitset.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/per_state_bitset.cc.o -c /home/salome/Documents/downward/src/search/per_state_bitset.cc
 
 CMakeFiles/downward.dir/src/search/per_state_bitset.cc.i: cmake_force
@@ -2802,7 +2815,7 @@ CMakeFiles/downward.dir/src/search/per_state_bitset.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/plan_manager.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/plan_manager.cc.o: ../src/search/plan_manager.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_212) "Building CXX object CMakeFiles/downward.dir/src/search/plan_manager.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_213) "Building CXX object CMakeFiles/downward.dir/src/search/plan_manager.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/plan_manager.cc.o -c /home/salome/Documents/downward/src/search/plan_manager.cc
 
 CMakeFiles/downward.dir/src/search/plan_manager.cc.i: cmake_force
@@ -2815,7 +2828,7 @@ CMakeFiles/downward.dir/src/search/plan_manager.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/planner.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/planner.cc.o: ../src/search/planner.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_213) "Building CXX object CMakeFiles/downward.dir/src/search/planner.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_214) "Building CXX object CMakeFiles/downward.dir/src/search/planner.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/planner.cc.o -c /home/salome/Documents/downward/src/search/planner.cc
 
 CMakeFiles/downward.dir/src/search/planner.cc.i: cmake_force
@@ -2828,7 +2841,7 @@ CMakeFiles/downward.dir/src/search/planner.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/pruning_method.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/pruning_method.cc.o: ../src/search/pruning_method.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_214) "Building CXX object CMakeFiles/downward.dir/src/search/pruning_method.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_215) "Building CXX object CMakeFiles/downward.dir/src/search/pruning_method.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/pruning_method.cc.o -c /home/salome/Documents/downward/src/search/pruning_method.cc
 
 CMakeFiles/downward.dir/src/search/pruning_method.cc.i: cmake_force
@@ -2841,7 +2854,7 @@ CMakeFiles/downward.dir/src/search/pruning_method.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/search_engine.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/search_engine.cc.o: ../src/search/search_engine.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_215) "Building CXX object CMakeFiles/downward.dir/src/search/search_engine.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_216) "Building CXX object CMakeFiles/downward.dir/src/search/search_engine.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/search_engine.cc.o -c /home/salome/Documents/downward/src/search/search_engine.cc
 
 CMakeFiles/downward.dir/src/search/search_engine.cc.i: cmake_force
@@ -2854,7 +2867,7 @@ CMakeFiles/downward.dir/src/search/search_engine.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/search_node_info.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/search_node_info.cc.o: ../src/search/search_node_info.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_216) "Building CXX object CMakeFiles/downward.dir/src/search/search_node_info.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_217) "Building CXX object CMakeFiles/downward.dir/src/search/search_node_info.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/search_node_info.cc.o -c /home/salome/Documents/downward/src/search/search_node_info.cc
 
 CMakeFiles/downward.dir/src/search/search_node_info.cc.i: cmake_force
@@ -2867,7 +2880,7 @@ CMakeFiles/downward.dir/src/search/search_node_info.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/search_progress.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/search_progress.cc.o: ../src/search/search_progress.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_217) "Building CXX object CMakeFiles/downward.dir/src/search/search_progress.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_218) "Building CXX object CMakeFiles/downward.dir/src/search/search_progress.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/search_progress.cc.o -c /home/salome/Documents/downward/src/search/search_progress.cc
 
 CMakeFiles/downward.dir/src/search/search_progress.cc.i: cmake_force
@@ -2880,7 +2893,7 @@ CMakeFiles/downward.dir/src/search/search_progress.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/search_space.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/search_space.cc.o: ../src/search/search_space.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_218) "Building CXX object CMakeFiles/downward.dir/src/search/search_space.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_219) "Building CXX object CMakeFiles/downward.dir/src/search/search_space.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/search_space.cc.o -c /home/salome/Documents/downward/src/search/search_space.cc
 
 CMakeFiles/downward.dir/src/search/search_space.cc.i: cmake_force
@@ -2893,7 +2906,7 @@ CMakeFiles/downward.dir/src/search/search_space.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/search_statistics.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/search_statistics.cc.o: ../src/search/search_statistics.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_219) "Building CXX object CMakeFiles/downward.dir/src/search/search_statistics.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_220) "Building CXX object CMakeFiles/downward.dir/src/search/search_statistics.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/search_statistics.cc.o -c /home/salome/Documents/downward/src/search/search_statistics.cc
 
 CMakeFiles/downward.dir/src/search/search_statistics.cc.i: cmake_force
@@ -2906,7 +2919,7 @@ CMakeFiles/downward.dir/src/search/search_statistics.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/state_id.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/state_id.cc.o: ../src/search/state_id.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_220) "Building CXX object CMakeFiles/downward.dir/src/search/state_id.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_221) "Building CXX object CMakeFiles/downward.dir/src/search/state_id.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/state_id.cc.o -c /home/salome/Documents/downward/src/search/state_id.cc
 
 CMakeFiles/downward.dir/src/search/state_id.cc.i: cmake_force
@@ -2919,7 +2932,7 @@ CMakeFiles/downward.dir/src/search/state_id.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/state_registry.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/state_registry.cc.o: ../src/search/state_registry.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_221) "Building CXX object CMakeFiles/downward.dir/src/search/state_registry.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_222) "Building CXX object CMakeFiles/downward.dir/src/search/state_registry.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/state_registry.cc.o -c /home/salome/Documents/downward/src/search/state_registry.cc
 
 CMakeFiles/downward.dir/src/search/state_registry.cc.i: cmake_force
@@ -2932,7 +2945,7 @@ CMakeFiles/downward.dir/src/search/state_registry.cc.s: cmake_force
 
 CMakeFiles/downward.dir/src/search/task_proxy.cc.o: CMakeFiles/downward.dir/flags.make
 CMakeFiles/downward.dir/src/search/task_proxy.cc.o: ../src/search/task_proxy.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_222) "Building CXX object CMakeFiles/downward.dir/src/search/task_proxy.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_223) "Building CXX object CMakeFiles/downward.dir/src/search/task_proxy.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/downward.dir/src/search/task_proxy.cc.o -c /home/salome/Documents/downward/src/search/task_proxy.cc
 
 CMakeFiles/downward.dir/src/search/task_proxy.cc.i: cmake_force
@@ -3092,6 +3105,7 @@ downward_OBJECTS = \
 "CMakeFiles/downward.dir/src/search/pdbs/zero_one_pdbs_heuristic.cc.o" \
 "CMakeFiles/downward.dir/src/search/potentials/diverse_potential_heuristics.cc.o" \
 "CMakeFiles/downward.dir/src/search/potentials/mutex_based_potential_heuristics.cc.o" \
+"CMakeFiles/downward.dir/src/search/potentials/mutexes.cc.o" \
 "CMakeFiles/downward.dir/src/search/potentials/plugin_group.cc.o" \
 "CMakeFiles/downward.dir/src/search/potentials/potential_function.cc.o" \
 "CMakeFiles/downward.dir/src/search/potentials/potential_heuristic.cc.o" \
@@ -3318,6 +3332,7 @@ downward: CMakeFiles/downward.dir/src/search/pdbs/zero_one_pdbs.cc.o
 downward: CMakeFiles/downward.dir/src/search/pdbs/zero_one_pdbs_heuristic.cc.o
 downward: CMakeFiles/downward.dir/src/search/potentials/diverse_potential_heuristics.cc.o
 downward: CMakeFiles/downward.dir/src/search/potentials/mutex_based_potential_heuristics.cc.o
+downward: CMakeFiles/downward.dir/src/search/potentials/mutexes.cc.o
 downward: CMakeFiles/downward.dir/src/search/potentials/plugin_group.cc.o
 downward: CMakeFiles/downward.dir/src/search/potentials/potential_function.cc.o
 downward: CMakeFiles/downward.dir/src/search/potentials/potential_heuristic.cc.o
@@ -3395,7 +3410,7 @@ downward: CMakeFiles/downward.dir/src/search/state_registry.cc.o
 downward: CMakeFiles/downward.dir/src/search/task_proxy.cc.o
 downward: CMakeFiles/downward.dir/build.make
 downward: CMakeFiles/downward.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_223) "Linking CXX executable downward"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/salome/Documents/downward/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_224) "Linking CXX executable downward"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/downward.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

@@ -90,14 +90,15 @@ void PotentialOptimizer::optimize_for_samples(const vector<State> &samples) {
     solve_and_extract();
 }
 
-// this mehod is used for mutex based potential heuristics.
-// as partial states are used, no states are delivered, but tuples of variable id and value adn their weight.
+// this method is used for mutex based potential heuristics.
+// as partial states are used, no states are delivered, but tuples of variable id and value and their weight.
 void PotentialOptimizer::   optimize_for_weighted_samples(
     const std::vector<tuple<int, int, long double>> &weights) {
     vector<double> coefficients(num_lp_vars, 0.0);
-        for (const tuple<int, int, float> fact : weights) {
-            coefficients[lp_var_ids[get<0>(fact)][get<1>(fact)]] += get<2>(fact);
-        }
+    // TODO assert that id and value are in range (like in line 61 and 62)
+    for (const tuple<int, int, float> fact : weights) {
+        coefficients[lp_var_ids[get<0>(fact)][get<1>(fact)]] += get<2>(fact);
+    }
     lp_solver.set_objective_coefficients(coefficients);
     solve_and_extract();
 }
@@ -110,6 +111,9 @@ bool PotentialOptimizer::potentials_are_bounded() const {
     return max_potential != numeric_limits<double>::infinity();
 }
 
+// TODO: Remove, is useful for Clion only
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "UnreachableCode"
 void PotentialOptimizer::construct_lp() {
     double upper_bound = (potentials_are_bounded() ? max_potential :
                           lp_solver.get_infinity());
@@ -197,6 +201,7 @@ void PotentialOptimizer::construct_lp() {
     }
     lp_solver.load_problem(lp::LPObjectiveSense::MAXIMIZE, lp_variables, lp_constraints);
 }
+#pragma clang diagnostic pop
 
 void PotentialOptimizer::solve_and_extract() {
     lp_solver.solve();

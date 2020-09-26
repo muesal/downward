@@ -4497,6 +4497,33 @@ src/search/potentials/mutex_based_potential_heuristics.cc.s:
 	$(MAKE) -f CMakeFiles/downward.dir/build.make CMakeFiles/downward.dir/src/search/potentials/mutex_based_potential_heuristics.cc.s
 .PHONY : src/search/potentials/mutex_based_potential_heuristics.cc.s
 
+src/search/potentials/mutexes.o: src/search/potentials/mutexes.cc.o
+
+.PHONY : src/search/potentials/mutexes.o
+
+# target to build an object file
+src/search/potentials/mutexes.cc.o:
+	$(MAKE) -f CMakeFiles/downward.dir/build.make CMakeFiles/downward.dir/src/search/potentials/mutexes.cc.o
+.PHONY : src/search/potentials/mutexes.cc.o
+
+src/search/potentials/mutexes.i: src/search/potentials/mutexes.cc.i
+
+.PHONY : src/search/potentials/mutexes.i
+
+# target to preprocess a source file
+src/search/potentials/mutexes.cc.i:
+	$(MAKE) -f CMakeFiles/downward.dir/build.make CMakeFiles/downward.dir/src/search/potentials/mutexes.cc.i
+.PHONY : src/search/potentials/mutexes.cc.i
+
+src/search/potentials/mutexes.s: src/search/potentials/mutexes.cc.s
+
+.PHONY : src/search/potentials/mutexes.s
+
+# target to generate assembly for a file
+src/search/potentials/mutexes.cc.s:
+	$(MAKE) -f CMakeFiles/downward.dir/build.make CMakeFiles/downward.dir/src/search/potentials/mutexes.cc.s
+.PHONY : src/search/potentials/mutexes.cc.s
+
 src/search/potentials/plugin_group.o: src/search/potentials/plugin_group.cc.o
 
 .PHONY : src/search/potentials/plugin_group.o
@@ -6612,6 +6639,9 @@ help:
 	@echo "... src/search/potentials/mutex_based_potential_heuristics.o"
 	@echo "... src/search/potentials/mutex_based_potential_heuristics.i"
 	@echo "... src/search/potentials/mutex_based_potential_heuristics.s"
+	@echo "... src/search/potentials/mutexes.o"
+	@echo "... src/search/potentials/mutexes.i"
+	@echo "... src/search/potentials/mutexes.s"
 	@echo "... src/search/potentials/plugin_group.o"
 	@echo "... src/search/potentials/plugin_group.i"
 	@echo "... src/search/potentials/plugin_group.s"
