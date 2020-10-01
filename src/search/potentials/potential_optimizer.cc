@@ -20,30 +20,52 @@ static int get_undefined_value(VariableProxy var) {
     return var.get_domain_size();
 }
 
+static int get_undefined_value_for_operator(VariableProxy var, OperatorProxy o) {
+    return var.get_domain_size() + o.get_id();
+}
+
 PotentialOptimizer::PotentialOptimizer(const Options &opts)
     : task(opts.get<shared_ptr<AbstractTask>>("transform")),
       task_proxy(*task),
       lp_solver(opts.get<lp::LPSolverType>("lpsolver")),
       max_potential(opts.get<double>("max_potential")),
-      num_lp_vars(0) {
+      num_lp_vars(0),
+      use_mutexes(opts.contains("use_mutexes")) {
     task_properties::verify_no_axioms(task_proxy);
     task_properties::verify_no_conditional_effects(task_proxy);
+    if (use_mutexes) { // New: initialize MutexTable
+        State initial = task_proxy.get_initial_state();
+        VariablesProxy vars = task_proxy.get_variables();
+        table = new MutexTable(opts, vars, initial);
+    }
     initialize();
 }
 
 void PotentialOptimizer::initialize() {
     VariablesProxy vars = task_proxy.get_variables();
-    lp_var_ids.resize(vars.size());
+    int num_operators = task_proxy.get_operators().size();
+    lp_var_ids.resize(vars.size() * ( 1 + num_operators)); // NEW: size + op * var (one addition per op and var)
     fact_potentials.resize(vars.size());
     for (VariableProxy var : vars) {
         // Add LP variable for "undefined" value.
-        lp_var_ids[var.get_id()].resize(var.get_domain_size() + 1);
+        lp_var_ids[var.get_id()].resize(var.get_domain_size() + num_operators + 1);
         for (int val = 0; val < var.get_domain_size() + 1; ++val) {
             lp_var_ids[var.get_id()][val] = num_lp_vars++;
         }
+        // NEU: fügt pro operator noch eine variable ein
+        if (use_mutexes) {
+            for (std::size_t val = 1; val < task_proxy.get_operators().size() + 1; val++) {
+                lp_var_ids[var.get_id()][val + var.get_domain_size()] = num_lp_vars++;
+            }
+        }
+        // bis hier
         fact_potentials[var.get_id()].resize(var.get_domain_size());
     }
-    construct_lp();
+    if (use_mutexes) {
+        construct_mutex_lp();
+    } else {
+        construct_lp();
+    }
 }
 
 bool PotentialOptimizer::has_optimal_solution() const {
@@ -105,6 +127,10 @@ void PotentialOptimizer::   optimize_for_weighted_samples(
 
 const shared_ptr<AbstractTask> PotentialOptimizer::get_task() const {
     return task;
+}
+
+MutexTable * PotentialOptimizer::get_mutex_table() {
+    return table;
 }
 
 bool PotentialOptimizer::potentials_are_bounded() const {
@@ -197,6 +223,125 @@ void PotentialOptimizer::construct_lp() {
             constraint.insert(val_lp, 1);
             constraint.insert(undef_val_lp, -1);
             lp_constraints.push_back(constraint);
+        }
+    }
+    lp_solver.load_problem(lp::LPObjectiveSense::MAXIMIZE, lp_variables, lp_constraints);
+}
+
+void PotentialOptimizer::construct_mutex_lp() {
+    double upper_bound = (potentials_are_bounded() ? max_potential :
+                          lp_solver.get_infinity());
+
+    vector<lp::LPVariable> lp_variables;
+    lp_variables.reserve(num_lp_vars);
+    for (int lp_var_id = 0; lp_var_id < num_lp_vars; ++lp_var_id) {
+        // Use dummy coefficient for now. Adapt coefficient later.
+        lp_variables.emplace_back(-lp_solver.get_infinity(), upper_bound, 1.0);
+    }
+
+    vector<lp::LPConstraint> lp_constraints;
+    for (OperatorProxy op : task_proxy.get_operators()) {
+        // Create constraint:
+        // Sum_{V in vars(eff(o))} (P_{V=pre(o)[V]} - P_{V=eff(o)[V]}) <= cost(o)
+        unordered_map<int, int> var_to_precondition;
+        for (FactProxy pre : op.get_preconditions()) {
+            var_to_precondition[pre.get_variable().get_id()] = pre.get_value();
+        }
+        lp::LPConstraint constraint(-lp_solver.get_infinity(), op.get_cost());
+        vector<pair<int, int>> coefficients;
+        for (EffectProxy effect : op.get_effects()) {
+            VariableProxy var = effect.get_fact().get_variable();
+            int var_id = var.get_id();
+
+            // Set pre to pre(op) if defined, otherwise to u = |dom(var)|.
+            int pre = -1;
+            auto it = var_to_precondition.find(var_id);
+            if (it == var_to_precondition.end()) {
+                pre = get_undefined_value_for_operator(var, op); // NEU
+            } else {
+                pre = it->second;
+            }
+
+            int post = effect.get_fact().get_value();
+            int pre_lp = lp_var_ids[var_id][pre];
+            int post_lp = lp_var_ids[var_id][post];
+            assert(pre_lp != post_lp);
+            coefficients.emplace_back(pre_lp, 1);
+            coefficients.emplace_back(post_lp, -1);
+        }
+        sort(coefficients.begin(), coefficients.end());
+        for (const auto &coeff : coefficients)
+            constraint.insert(coeff.first, coeff.second);
+        lp_constraints.push_back(constraint);
+    }
+
+    /* Create full goal state. Use value |dom(V)| as "undefined" value
+       for variables V undefined in the goal. */
+    vector<int> goal(task_proxy.get_variables().size(), -1);
+    map<int, int> goal_map;
+    for (FactProxy fact : task_proxy.get_goals()) {
+        goal[fact.get_variable().get_id()] = fact.get_value();
+        goal_map[fact.get_variable().get_id()] = fact.get_value(); // NEW: create map for multi_fact_dis
+    }
+    vector<vector<int>> domains = table->multi_fact_disambiguation(goal_map); // NEW: Create disambiguations
+    for (VariableProxy var : task_proxy.get_variables()) {
+        if (goal[var.get_id()] == -1) {
+                goal[var.get_id()] = get_undefined_value(var);
+        }
+    }
+
+    // NEW: handle U_G
+    for (VariableProxy var : task_proxy.get_variables()) {
+        int var_id = var.get_id();
+        goal[var_id] = get_undefined_value(var);
+        lp::LPVariable &lp_var = lp_variables[lp_var_ids[var_id][goal[var_id]]];
+        lp_var.lower_bound = 0;
+        lp_var.upper_bound = 0;
+
+        int undef_val_lp = lp_var_ids[var_id][get_undefined_value(var)];
+        for (int val : domains[var_id]) {
+            int val_lp = lp_var_ids[var_id][val];
+            // Create constraint: P_{V=v} <= P_{V=u_G}
+            lp::LPConstraint constraint(-lp_solver.get_infinity(), 0);
+            constraint.insert(val_lp, 1);
+            constraint.insert(undef_val_lp, -1);
+            lp_constraints.push_back(constraint);
+        }
+    }
+
+
+    for (OperatorProxy o : task_proxy.get_operators()) {
+        map<int, int> pre;
+        for(FactProxy fact : o.get_preconditions()) {
+            pre[fact.get_variable().get_id()] = fact.get_value();
+        }
+        domains = table->multi_fact_disambiguation(pre);
+        for (VariableProxy var : task_proxy.get_variables()) {
+            /*
+              Create constraint (using variable bounds): P_{V=goal[V]} = 0
+              When each variable has a goal value (including the
+              "undefined" value), this is equivalent to the goal-awareness
+              constraint \sum_{fact in goal} P_fact <= 0. We can't set the
+              potential of one goal fact to +2 and another to -2, but if
+              all variables have goal values, this is not beneficial
+              anyway.
+            */
+            int var_id = var.get_id();
+            lp::LPVariable &lp_var = lp_variables[lp_var_ids[var_id][goal[var_id]]];
+            lp_var.lower_bound = 0;
+            lp_var.upper_bound = 0;
+
+            int undef_val_lp = lp_var_ids[var_id][get_undefined_value(var)];
+            for (int val : domains[var_id]) {       // NEW : iterate over dis. instead of all values
+                int val_lp = lp_var_ids[var_id][val];
+                // Create constraint: P_{V=v} <= P_{V=u}
+                // Note that we could eliminate variables P_{V=u} if V is
+                // undefined in the goal.
+                lp::LPConstraint constraint(-lp_solver.get_infinity(), 0);
+                constraint.insert(val_lp, 1);
+                constraint.insert(undef_val_lp, -1);
+                lp_constraints.push_back(constraint);
+            }
         }
     }
     lp_solver.load_problem(lp::LPObjectiveSense::MAXIMIZE, lp_variables, lp_constraints);

@@ -117,18 +117,18 @@ namespace potentials {
       */
     static vector<Weight>
     opt_k_m(int k, map<int, int> &assigned_variables, MutexTable &table) {
-        VariablesProxy variables = table.getVariableProxy();
+        const VariablesProxy* variables = table.getVariablesProxy();
         vector<Weight> facts;               // vector containing facts and their corresponding weight.
         vector<Weight> weights_f;           // to temporarily store the c_k_f values of one variable
         vector<map<int, int >> states;      // to temporarily store the extended states of a fact
         vector<vector<int>> domains;        // temporarily contain the multi_fact_disambiguated domain with one fact
         long double w, sum;
 
-        for (size_t i = 0; i < variables.size(); i++) {         // for all all unassigned variables V and each fact_V
+        for (size_t i = 0; i < variables->size(); i++) {         // for all all unassigned variables V and each fact_V
             if (unassigned(assigned_variables, (int) i)) {
                 sum = 0;
                 weights_f.clear();
-                for (int d = 0; d < variables[i].get_domain_size(); d++) {
+                for (int d = 0; d < variables->operator[](i).get_domain_size(); d++) {
                     assigned_variables[i] = d;                          // add this fact
                     domains = table.multi_fact_disambiguation(assigned_variables);    // get all non-mutex domains
                     states = get_all_extensions(assigned_variables, k - 1,
@@ -141,7 +141,7 @@ namespace potentials {
                 }
 
                 // normalize all weights
-                for (int d = 0; d < variables[i].get_domain_size(); d++) {
+                for (int d = 0; d < variables->operator[](i).get_domain_size(); d++) {
                     get<2>(weights_f[d]) = get<2>(weights_f[d]) / sum;
                     facts.push_back(weights_f[d]);
                 }
@@ -178,10 +178,10 @@ namespace potentials {
      */
     static vector<unique_ptr<PotentialFunction>>
     opt_t_k_m(int t, int k, int n, MutexTable table, PotentialOptimizer &optimizer) {
-        VariablesProxy variables = table.getVariableProxy();
+        const VariablesProxy * variables = table.getVariablesProxy();
         random_device rd;
         mt19937 gen(rd()); // apparently this is necessary for uniform int distribution...
-        uniform_int_distribution<> dist_v(0, variables.size() - 1);
+        uniform_int_distribution<> dist_v(0, variables->size() - 1);
 
         // generate n optimization functions for one randomly sampled state
         vector<unique_ptr<PotentialFunction>> functions;
@@ -192,7 +192,7 @@ namespace potentials {
             for (int t_i = 0; t_i < t; t_i++) {
                 int v = dist_v(gen);
                 if (unassigned(state, v)) {
-                    uniform_int_distribution<> dist_f(0, variables[v].get_domain_size() - 1);
+                    uniform_int_distribution<> dist_f(0, variables->operator[](v).get_domain_size() - 1);
                     state[v] = dist_f(gen);
                 } else t_i--;
             }
@@ -210,12 +210,14 @@ namespace potentials {
         TaskProxy task_proxy(task);
         VariablesProxy variables = task_proxy.get_variables();
 
-        State initial = task_proxy.get_initial_state();
-        MutexTable table(opts, variables, initial);
+        MutexTable *table = optimizer.get_mutex_table();
+        assert(table != nullptr);
+        //State initial = task_proxy.get_initial_state();
+        //MutexTable table(opts, variables, initial);
 
         int k = opts.get<int>("k");
         assert(k < (int) variables.size()); // k may not be bigger than the size of one state TODO richtig so?
-        vector<Weight> weights = opt_k_m(k, table);
+        vector<Weight> weights = opt_k_m(k, *table);
         optimizer.optimize_for_weighted_samples(weights);
         return optimizer.get_potential_function();
     }
@@ -228,8 +230,8 @@ namespace potentials {
         TaskProxy task_proxy(task);
         VariablesProxy variables = task_proxy.get_variables();
 
-        State initial = task_proxy.get_initial_state();
-        MutexTable table(opts, variables, initial);
+        MutexTable *table = optimizer.get_mutex_table();
+        assert(table != nullptr);
 
         int k = opts.get<int>("k");
         assert(k < (int) variables.size()); // k may not be bigger than the size of one state TODO richtig so?
@@ -237,13 +239,18 @@ namespace potentials {
         assert(t <= k);                     // t may not be bigger than k TODO richtig so?
         int n = opts.get<int>("n");
 
-        return opt_t_k_m(t, k, n, table, optimizer);
+        return opt_t_k_m(t, k, n, *table, optimizer);
     }
 
     static shared_ptr<Heuristic> _parse_single(OptionParser &parser) {
         parser.document_synopsis(
                 "Mutex-based potential heuristics",
                 get_admissible_potentials_reference());
+        parser.add_option<int>(
+                "use_mutexes",
+                "Use mutexes in potential optimizer",
+                "1",
+                Bounds("0", "infinity"));
         parser.add_option<int>(
                 "m",
                 "use h2 heuristic",
@@ -253,7 +260,7 @@ namespace potentials {
                 "k",
                 "size of extended state",
                 "1",
-                Bounds("0", "infinity"));
+                Bounds("0", "1"));
         prepare_parser_for_admissible_potentials(parser);
         Options opts = parser.parse();
         if (parser.dry_run())
@@ -268,15 +275,15 @@ namespace potentials {
                 "Mutex-based ensemble potential heuristics",
                 get_admissible_potentials_reference());
         parser.add_option<int>(
-                "m",
-                "use h2 heuristic",
-                "2",
-                Bounds("0", "infinity"));
+                "use_mutexes",
+                "Use mutexes in potential optimizer",
+                "1",
+                Bounds("0", "0"));
         parser.add_option<int>(
                 "k",
                 "size of extended state",
                 "2",
-                Bounds("0", "infinity"));
+                Bounds("0", "1"));
         parser.add_option<int>(
                 "t",
                 "amount of uniformly randomly chosen facts (t <= k)",

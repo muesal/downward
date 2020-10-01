@@ -4,7 +4,7 @@
 
 #include "mutexes.h"
 
-MutexTable::MutexTable(Options &opts, VariablesProxy &variables, State &state)
+MutexTable::MutexTable(const Options &opts, VariablesProxy variables, State &state)
         : variables(variables) {
     /*
     auto hm = make_shared<HMHeuristic>(opts);
@@ -192,6 +192,7 @@ MutexTable::multi_fact_disambiguation(map<int, int> &state) {
     return domains;
 }
 
-VariablesProxy MutexTable::getVariableProxy() const {
-    return variables;
+const VariablesProxy *MutexTable::getVariablesProxy() const {
+    auto var = &variables;
+    return var;
 }

@@ -31,9 +31,9 @@ class MutexTable {
 
 public:
     vector<vector<FactPair>> mutexes;
-    VariablesProxy &variables;
+    VariablesProxy variables;
 
-    explicit MutexTable(Options &opts, VariablesProxy &variables, State &state);
+    explicit MutexTable(const Options &opts, VariablesProxy variables, State &state);
 
     static bool unassigned(map<int, int> &state, int variable_id);
 
@@ -50,7 +50,7 @@ public:
 
     ~MutexTable() = default;
 
-    VariablesProxy getVariableProxy() const;
+    const VariablesProxy *getVariablesProxy() const;
 };
 
 

@@ -51,10 +51,13 @@ class PotentialOptimizer {
     int num_lp_vars;
     std::vector<std::vector<int>> lp_var_ids;
     std::vector<std::vector<double>> fact_potentials;
+    MutexTable *table = nullptr;
+    bool use_mutexes;
 
     int get_lp_var_id(const FactProxy &fact) const;
     void initialize();
     void construct_lp();
+    void construct_mutex_lp();
     void solve_and_extract();
     void extract_lp_solution();
 
@@ -70,6 +73,7 @@ public:
     void optimize_for_samples(const std::vector<State> &samples);
     void optimize_for_weighted_samples(const std::vector<std::tuple<int, int, long double>> &weights);
 
+    MutexTable * get_mutex_table();
     bool has_optimal_solution() const;
 
     std::unique_ptr<PotentialFunction> get_potential_function() const;
