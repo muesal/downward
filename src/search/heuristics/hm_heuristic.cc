@@ -86,6 +86,19 @@ void HMHeuristic::update_hm_table() {
     } while (was_updated);
 }
 
+vector<HMHeuristic::Tuple> HMHeuristic::get_unreachable_tuples(const State &state){
+    Tuple s_tup = task_properties::get_fact_pairs(state);
+    init_hm_table(s_tup);
+    update_hm_table();
+
+    std::vector<Tuple> unreachable;
+    for (pair<Tuple, int> pair: this->hm_table) {
+        if (pair.second == numeric_limits<int>::max()){
+                unreachable.push_back(pair.first);
+        } 
+    }
+    return unreachable;
+}
 
 void HMHeuristic::extend_tuple(const Tuple &t, const OperatorProxy &op) {
     for (auto &hm_ent : hm_table) {

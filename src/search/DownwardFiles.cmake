@@ -749,6 +749,8 @@ fast_downward_plugin(
         potentials/potential_optimizer
         potentials/sample_based_potential_heuristics
         potentials/single_potential_heuristics
+        potentials/mutex_based_potential_heuristics
+        potentials/mutexes
         potentials/util
     DEPENDS LP_SOLVER SAMPLING SUCCESSOR_GENERATOR TASK_PROPERTIES
 )

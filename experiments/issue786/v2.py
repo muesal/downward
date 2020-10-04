@@ -23,6 +23,14 @@ CONFIGS = [
         ["--search", "astar(sample_based_potentials())"],
         driver_options=DRIVER_OPTIONS),
     IssueConfig(
+        "mutex_based_potential",
+        ["--search", "astar(mutex_based_potential())"],
+        driver_options=DRIVER_OPTIONS),
+    IssueConfig(
+        "mutex_based_ensemble_potential",
+        ["--search", "astar(mutex_based_ensemble_potential())"],
+        driver_options=DRIVER_OPTIONS),
+    IssueConfig(
         "ipdb",
         ["--search", "astar(ipdb())"],
         driver_options=DRIVER_OPTIONS)
