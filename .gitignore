@@ -9,4 +9,4 @@ __pycache__/
 /misc/autodoc/downward-xmlrpc.secret
 
 .idea/
-cmake-nuild-debug/
+cmake-build-debug/

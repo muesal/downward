@@ -1,3 +1,0 @@
-/home/salome/Documents/downward/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/salome/Documents/downward/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/salome/Documents/downward/cmake-build-debug/CMakeFiles/downward.dir
