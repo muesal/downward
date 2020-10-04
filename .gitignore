@@ -9,5 +9,4 @@ __pycache__/
 /misc/autodoc/downward-xmlrpc.secret
 
 .idea/
-venv/
-.vscode/
+cmake-nuild-debug/
