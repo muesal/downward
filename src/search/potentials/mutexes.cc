@@ -1,7 +1,3 @@
-//
-// Created by salome on 26/09/2020.
-//
-
 #include "mutexes.h"
 
 MutexTable::MutexTable(const Options &opts, VariablesProxy variables, State &state)

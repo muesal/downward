@@ -1,7 +1,3 @@
-//
-// Created by salome on 26/09/2020.
-//
-
 #ifndef DOWNWARD_MUTEXES_H
 #define DOWNWARD_MUTEXES_H
 

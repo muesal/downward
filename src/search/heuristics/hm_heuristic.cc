@@ -100,7 +100,6 @@ vector<HMHeuristic::Tuple> HMHeuristic::get_unreachable_tuples(const State &stat
     return unreachable;
 }
 
-
 void HMHeuristic::extend_tuple(const Tuple &t, const OperatorProxy &op) {
     for (auto &hm_ent : hm_table) {
         const Tuple &tuple = hm_ent.first;

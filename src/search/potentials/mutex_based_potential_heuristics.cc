@@ -1,6 +1,3 @@
-//
-// Created by salome on 02.08.20.
-//
 #include "potential_function.h"
 #include "potential_heuristic.h"
 #include "potential_max_heuristic.h"

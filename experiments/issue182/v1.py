@@ -4,6 +4,7 @@
 from common_setup import IssueConfig, IssueExperiment
 import suites
 
+
 configs = [
     IssueConfig(
         func,

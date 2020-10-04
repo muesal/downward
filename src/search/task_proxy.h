@@ -630,7 +630,6 @@ public:
         }
         return State(*task, std::move(new_values));
     }
-
 };
 
 

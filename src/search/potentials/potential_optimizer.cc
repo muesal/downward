@@ -33,7 +33,7 @@ PotentialOptimizer::PotentialOptimizer(const Options &opts)
       use_mutexes(opts.contains("use_mutexes")) {
     task_properties::verify_no_axioms(task_proxy);
     task_properties::verify_no_conditional_effects(task_proxy);
-    if (use_mutexes) { // New: initialize MutexTable
+    if (use_mutexes) {
         State initial = task_proxy.get_initial_state();
         VariablesProxy vars = task_proxy.get_variables();
         table = new MutexTable(opts, vars, initial);
@@ -43,22 +43,19 @@ PotentialOptimizer::PotentialOptimizer(const Options &opts)
 
 void PotentialOptimizer::initialize() {
     VariablesProxy vars = task_proxy.get_variables();
-    int num_operators = task_proxy.get_operators().size();
-    lp_var_ids.resize(vars.size() * ( 1 + num_operators)); // NEW: size + op * var (one addition per op and var)
+    std::size_t num_operators = use_mutexes ? task_proxy.get_operators().size() : 0;
+    lp_var_ids.resize(vars.size() * ( 1 + num_operators));
     fact_potentials.resize(vars.size());
     for (VariableProxy var : vars) {
-        // Add LP variable for "undefined" value.
-        lp_var_ids[var.get_id()].resize(var.get_domain_size() + num_operators + 1);
+        lp_var_ids[var.get_id()].resize(var.get_domain_size() + 1 + num_operators);
         for (int val = 0; val < var.get_domain_size() + 1; ++val) {
             lp_var_ids[var.get_id()][val] = num_lp_vars++;
         }
-        // NEU: fügt pro operator noch eine variable ein
         if (use_mutexes) {
             for (std::size_t val = 1; val < task_proxy.get_operators().size() + 1; val++) {
                 lp_var_ids[var.get_id()][val + var.get_domain_size()] = num_lp_vars++;
             }
         }
-        // bis hier
         fact_potentials[var.get_id()].resize(var.get_domain_size());
     }
     if (use_mutexes) {
@@ -278,16 +275,15 @@ void PotentialOptimizer::construct_mutex_lp() {
     map<int, int> goal_map;
     for (FactProxy fact : task_proxy.get_goals()) {
         goal[fact.get_variable().get_id()] = fact.get_value();
-        goal_map[fact.get_variable().get_id()] = fact.get_value(); // NEW: create map for multi_fact_dis
+        goal_map[fact.get_variable().get_id()] = fact.get_value();
     }
-    vector<vector<int>> domains = table->multi_fact_disambiguation(goal_map); // NEW: Create disambiguations
+    vector<vector<int>> domains = table->multi_fact_disambiguation(goal_map);
     for (VariableProxy var : task_proxy.get_variables()) {
         if (goal[var.get_id()] == -1) {
                 goal[var.get_id()] = get_undefined_value(var);
         }
     }
 
-    // NEW: handle U_G
     for (VariableProxy var : task_proxy.get_variables()) {
         int var_id = var.get_id();
         lp::LPVariable &lp_var = lp_variables[lp_var_ids[var_id][goal[var_id]]];
@@ -325,7 +321,7 @@ void PotentialOptimizer::construct_mutex_lp() {
             int var_id = var.get_id();
 
             int undef_val_lp = lp_var_ids[var_id][get_undefined_value_for_operator(var, o)];
-            for (int val : domains[var_id]) {       // NEW : iterate over dis. instead of all values
+            for (int val : domains[var_id]) {
                 int val_lp = lp_var_ids[var_id][val];
                 // Create constraint: P_{V=v} <= P_{V=u}
                 // Note that we could eliminate variables P_{V=u} if V is
