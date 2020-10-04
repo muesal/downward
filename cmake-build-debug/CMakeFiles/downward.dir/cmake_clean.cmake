@@ -161,6 +161,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/downward.dir/src/search/planner.cc.o"
   "CMakeFiles/downward.dir/src/search/potentials/diverse_potential_heuristics.cc.o"
   "CMakeFiles/downward.dir/src/search/potentials/mutex_based_potential_heuristics.cc.o"
+  "CMakeFiles/downward.dir/src/search/potentials/mutexes.cc.o"
   "CMakeFiles/downward.dir/src/search/potentials/plugin_group.cc.o"
   "CMakeFiles/downward.dir/src/search/potentials/potential_function.cc.o"
   "CMakeFiles/downward.dir/src/search/potentials/potential_heuristic.cc.o"

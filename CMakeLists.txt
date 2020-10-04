@@ -335,6 +335,8 @@ add_executable(downward
         src/search/potentials/diverse_potential_heuristics.cc
         src/search/potentials/diverse_potential_heuristics.h
         src/search/potentials/mutex_based_potential_heuristics.cc
+        src/search/potentials/mutexes.cc
+        src/search/potentials/mutexes.h
         src/search/potentials/plugin_group.cc
         src/search/potentials/potential_function.cc
         src/search/potentials/potential_function.h

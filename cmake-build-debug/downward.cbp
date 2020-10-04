@@ -1159,6 +1159,12 @@
 		<Unit filename="/home/salome/Documents/downward/src/search/potentials/mutex_based_potential_heuristics.cc">
 			<Option target="downward"/>
 		</Unit>
+		<Unit filename="/home/salome/Documents/downward/src/search/potentials/mutexes.cc">
+			<Option target="downward"/>
+		</Unit>
+		<Unit filename="/home/salome/Documents/downward/src/search/potentials/mutexes.h">
+			<Option target="downward"/>
+		</Unit>
 		<Unit filename="/home/salome/Documents/downward/src/search/potentials/plugin_group.cc">
 			<Option target="downward"/>
 		</Unit>
