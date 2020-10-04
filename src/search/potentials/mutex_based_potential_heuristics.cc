@@ -212,9 +212,7 @@ namespace potentials {
 
         MutexTable *table = optimizer.get_mutex_table();
         assert(table != nullptr);
-        //State initial = task_proxy.get_initial_state();
-        //MutexTable table(opts, variables, initial);
-
+        
         int k = opts.get<int>("k");
         assert(k < (int) variables.size()); // k may not be bigger than the size of one state TODO richtig so?
         vector<Weight> weights = opt_k_m(k, *table);

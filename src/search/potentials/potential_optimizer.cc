@@ -137,9 +137,6 @@ bool PotentialOptimizer::potentials_are_bounded() const {
     return max_potential != numeric_limits<double>::infinity();
 }
 
-// TODO: Remove, is useful for Clion only
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "UnreachableCode"
 void PotentialOptimizer::construct_lp() {
     double upper_bound = (potentials_are_bounded() ? max_potential :
                           lp_solver.get_infinity());
@@ -342,7 +339,6 @@ void PotentialOptimizer::construct_mutex_lp() {
     }
     lp_solver.load_problem(lp::LPObjectiveSense::MAXIMIZE, lp_variables, lp_constraints);
 }
-#pragma clang diagnostic pop
 
 void PotentialOptimizer::solve_and_extract() {
     lp_solver.solve();

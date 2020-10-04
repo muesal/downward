@@ -6,55 +6,9 @@
 
 MutexTable::MutexTable(const Options &opts, VariablesProxy variables, State &state)
         : variables(variables) {
-    /*
     auto hm = make_shared<HMHeuristic>(opts);
     mutexes = hm->get_unreachable_tuples(state);
     hm.reset();
-    // TODO: Variables etc speichern?
-    */
-    // TODO: remove following
-    string filename = "mutex_table.txt";
-    ifstream table;
-    table.open(filename);
-    if (!table) {
-        cout << "Perform hm-heuristic and store mutexes to " << filename << endl;
-        auto hm = make_shared<HMHeuristic>(opts);
-        mutexes = hm->get_unreachable_tuples(state);
-        hm.reset();
-        //write to file
-        ofstream create(filename);
-        if (create.is_open()) {
-            for (vector<FactPair> mutex : mutexes) {
-                create << mutex[0].var << " " << mutex[0].value << " ";
-                create << mutex[1].var << " " << mutex[1].value << "\n";
-            }
-            create.close();
-        } else {
-            cout << "Unable to store mutex table";
-        }
-    } else {
-        //read from file
-        mutexes.clear();
-        string line;
-        string number;
-        int var, value;
-        while (getline(table, line)) {
-            istringstream ss(line);
-            ss >> number;
-            var = stoi(number);
-            ss >> number;
-            value = stoi(number);
-            FactPair fact1(var, value);
-            ss >> number;
-            var = stoi(number);
-            ss >> number;
-            value = stoi(number);
-            FactPair fact2(var, value);
-
-            mutexes.push_back({fact1, fact2});
-        }
-        table.close();
-    }
 }
 
 bool MutexTable::unassigned(map<int, int> &state, int variable_id) {
