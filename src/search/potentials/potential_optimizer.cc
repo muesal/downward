@@ -21,7 +21,7 @@ static int get_undefined_value(VariableProxy var) {
 }
 
 static int get_undefined_value_for_operator(VariableProxy var, OperatorProxy o) {
-    return var.get_domain_size() + o.get_id();
+    return var.get_domain_size() + o.get_id() + 1;
 }
 
 PotentialOptimizer::PotentialOptimizer(const Options &opts)
@@ -293,7 +293,6 @@ void PotentialOptimizer::construct_mutex_lp() {
     // NEW: handle U_G
     for (VariableProxy var : task_proxy.get_variables()) {
         int var_id = var.get_id();
-        goal[var_id] = get_undefined_value(var);
         lp::LPVariable &lp_var = lp_variables[lp_var_ids[var_id][goal[var_id]]];
         lp_var.lower_bound = 0;
         lp_var.upper_bound = 0;
@@ -327,11 +326,8 @@ void PotentialOptimizer::construct_mutex_lp() {
               anyway.
             */
             int var_id = var.get_id();
-            lp::LPVariable &lp_var = lp_variables[lp_var_ids[var_id][goal[var_id]]];
-            lp_var.lower_bound = 0;
-            lp_var.upper_bound = 0;
 
-            int undef_val_lp = lp_var_ids[var_id][get_undefined_value(var)];
+            int undef_val_lp = lp_var_ids[var_id][get_undefined_value_for_operator(var, o)];
             for (int val : domains[var_id]) {       // NEW : iterate over dis. instead of all values
                 int val_lp = lp_var_ids[var_id][val];
                 // Create constraint: P_{V=v} <= P_{V=u}
