@@ -10,7 +10,7 @@
 \newtheorem{theorem}{Theorem}
 \newtheorem{definition}[theorem]{Definition}
 \newcommand\mytodo[1]{\textbf{\textcolor{magenta}{#1}}}
-%\renewcommand\mytodo[1]{} % TODO: this hides all todos
+%%\renewcommand\mytodo[1]{} % This hides all todos
 
 %% ----------------------------------------------------------------
 
@@ -30,14 +30,11 @@
 
 \date				{06. 11. 2020}
 
-% switch here for the german logo to logo-de
-\ulogo				{Template/logo-en} 
+\ulogo				{Template/logo-en}
 
 
 %% ----------------------------------------------------------------
 \begin{document}
-
-% for english use \selectlanguage{english}, for german use \selectlanguage{ngerman}
 \selectlanguage{english}
 
 \thesisfront
@@ -53,21 +50,23 @@
 %\thesisnomencl
 %% ----------------------------------------------------------------
 \thesismain
-\input{./Chapters/Introduction}
+%\input{./Chapters/Introduction}
 \input{./Chapters/Background}
 \input{./Chapters/Strengthening.tex}
 \input{./Chapters/Implementation}
-\input{./Chapters/Evaluation}
-\input{./Chapters/Conclusion}
+%\input{./Chapters/Evaluation}
+%\input{./Chapters/Conclusion}
 %\input{./Chapters/Chapter1}
 %\input{./Chapters/Chapter2}
 %% ----------------------------------------------------------------
 \thesisappendix
 \thesisbib
+\begin{comment}
 \begin{appendices}
-	\input{./Back/AppendixA} 
+\input{./Back/AppendixA}
 \end{appendices}
-%% ----------------------------------------------------------------
+\end{comment}
+%--------------------------------------------------
 \thesisback
 \input{./Back/DeclarationOfAuthorship}
 %% ----------------------------------------------------------------

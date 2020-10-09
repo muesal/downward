@@ -3,9 +3,9 @@
 
 \chapter{Strengthening Potential Heuristics}\label{ch:strengthening-potential-heuristics}
 
-\citeauthor{fivser2020strengthening} proposed to improve potential heuristics with mutexes and disambiguations
-This chapter contains the changes of the transformation of the planning task into TNF and the adaption of the optimization functions.
-It shows how the equations which were implemented were derived.
+\citeauthor{fivser2020strengthening} proposed to improve potential heuristics with mutexes and disambiguations.
+This chapter contains the changes which need to made to do so, regarding the transformation of the planning task into TNF and the adaption of the optimization functions.
+It shows how the equations which were implemented~\ref{ch:implementation} were derived.
 
 \section{Potential Heuristics}\label{sec:potential-heuristics}
 
@@ -32,8 +32,8 @@ Meanwhile we assume the worst case for the other variables, by using the maximal
 Eq.\eqref{eq:2} assures consistency.
 Recall the general consistency equation $h(s)\leq h(o\llbracket s\rrbracket)+\text{c}(o)$.
 It can be rewritten as $h(s)-h(o\llbracket s\rrbracket)\leq\text{c}(o)$.
-As the facts which do not occur in the effect are the same in both $s$ and $o\llbracket s\rrbracket$ we cam leave them aside. % da substraktion
-For $s$ we know what facts of the variables of the preconditions are assigned and sum the potentials of those which are also in effect.
+As the facts which do not occur in the effect are the same in both $s$ and $o\llbracket s\rrbracket$ we can leave them aside. % da substraktion
+For $s$ we know what facts of the variables of the preconditions are assigned and sum the potentials of those which are also in the effect.
 For the variables which are in effect but not in the precondition we proceed similar to ~\eqref{eq:1}, as we do not know their values.
 The potentials of the facts in the effect can be used without modification for  $o\llbracket s\rrbracket$.
 
@@ -55,9 +55,9 @@ Using this [above],~\ref{theorem:theorem 5} can be generalized by the following 
     \end{enumerate}
 
     If
-    \[\sum_{V\in\mathcal{V}}\max_{f\in G_V}\mathtt{P}(f)\leq0\label{eq:3}\]
+    \[\sum_{V\in\mathcal{V}}\max_{f\in G_V}\mathtt{P}(f)\leq0\label{eq:3}\tag{3}\]
     and for every operator $o\in\mathcal{O}$ it holds that
-    \[\sum_{V\in\mathrm{vars(eff}(o))}\max_{f\in E^o_V}\mathtt{P}(f) - \sum_{f\in\mathrm{eff}(o)}\mathtt{P}(f)\leq\mathrm{c}(o)\label{eq:4}\]
+    \[\sum_{V\in\mathrm{vars(eff}(o))}\max_{f\in E^o_V}\mathtt{P}(f) - \sum_{f\in\mathrm{eff}(o)}\mathtt{P}(f)\leq\mathrm{c}(o)\label{eq:4}\tag{4}\]
     then the potential heuristic $\mathtt{P}$ is admissible.
 \end{theorem}
 
@@ -73,9 +73,76 @@ $o$ is not applicable in any (partial) state, if $E^o_V$ is empty for any  $V\in
 
 
 \subsection{Transition Normal Form}\label{subsec:transition-normal-form}
-\mytodo{What is TNF?}
+Planning Tasks can be in Transition Normal Form (\textbf{TNF}). \mytodo{why do we want this?}
+A planning task in TNF has a fully defined Goal ($\text{vars}(G)=\mathcal{V}$) and all variables of the effect are also in the precondition for each operator $o\in\mathcal{O}$ ($\text{vars(pre}(o)) = \text{vars(eff}(o))$).
+Any planing task  $\Pi = \langle \mathcal{V}, \mathcal{O}, I, G \rangle$ can be transformed into TNF with the following rules cited from \cite{fivser2020strengthening}:
+\begin{itemize}
+    \item Add a fresh value $U$ to the domain of every variable.
+    \item For every variable $V\in\mathcal{V}$ and every fact $f\in\mathcal{F}_V$, $f\neq\langle V,U\rangle$, add a new \textit{forgetting} operator $o_f$ with $\text{pre}(o_f)=\{f\}$ and $\text{eff}(o_f)=\{\langle V,U\rangle\}$ and the cost $\text{c}(o_f)=0$.
+    \item For every operator $o\in\mathcal{O}$ and every variable $V\in\mathcal{V}$:
+    \begin{itemize}
+        \item If $V\in\text{vars(pre}(o))$ and $V\notin\text{vars(eff}(o))$, then add $\langle V,\text{pre}(o)[V]\rangle$ to $\text{eff}(o)$.
+        \item If $V\in\text{vars(eff}(o))$ and $V\notin\text{vars(pre}(o))$, then add $\langle V,U\rangle$ to $\text{pre}(o)$.
+    \end{itemize}
+    \item For every $V\in\mathcal{V}\setminus\text{vars}(G)$ add $\langle V,U\rangle$ to $G$.
+\end{itemize}
 
-\mytodo{does some of this belong to the background?}
+Each Variable $V\in\mathcal{V}$ gets a new value in its domain, which can be seen as a sort of placeholder.
+It can be assigned 'for free', as the forgetting operator $o_f$ which assigns it has no cost, regardless of the current state and especially the current assignment of $V$.
+The next point is to assure, that for each operator the variables which are in the precondition are also in the effect.
+
+If $V$ is in the preconditions of an operation $o\in\mathcal{O}$ but not in the effect, then we can simply add the variable and the value it is already assigned to the effect.
+This is a formal change, but does not change the effect of the operator at all, as it would not have changed this fact anyway.
+
+The case of an operation $o\in\mathcal{O}$ where $V$ is in the effect, but not in the precondition, is a little more complicated to explain.
+Here, the precondition is changed, such that it contains also the fact $\langle V, U\rangle$.
+If $o$ was applicable in $s$ before, then after transforming it to TNF the corresponding $o_f$ needs to be applied beforehand in order to 'forget' the value of $V$.
+This change of the variable is insignificant, as the value then gets changed at applying the operation.
+
+Last, all variables which were not included in the partial state $G$ need to be added into it.
+if they are assigned the fresh value $U$, then the goal state can be reached from every state which expanded it before.
+Without creating more cost, the values of all 'non mattering' variables are changed to the fresh value.
+
+\mytodo{does the above belong to the background? and is it ok to mention all rules twice?}
+
+the following is correct regarding the content, but needs to be changed a lot:
+
+Introduce LP variables $X_f=\mathtt{P}(f)$ for every fact $f\in\mathcal{F}$ and $M_V$ corresponding to $\max_{f\in\mathcal{F}_V}\mathtt{P}(f)$ with the constraint that $x_f\leq M_V$ for every $f\in\mathcal{F}$.
+
+Then write the new constraints (5 and 6)
+
+Explain why $M_V=\mathtt{P}(U)$ (pot von U richtig?):
+
+In TNF $V\in\mathcal{V}\setminus\text{vars}(G)$ as well as $\text{vars)}^*(o)$ for each $o\in\mathcal{O}$ are empty.
+The facts $f_U$in $G$ and $\text{pre}^*(o)$ respectively are $\langle V,U\rangle$ for the corresponding variable $V\in\mathcal{V}$, therefore $\mathtt{P}(f_U)$ must hold $M_V$.
+
+
+For Theorem 7 (in paper\dots):
+instead of adding $U$ we add $U_{G_V}$ and $U_{E_V^o}$ for each value and the goal or each operator respectively.
+This changes the above rules to:
+\begin{itemize}
+    \item Add fresh values $U_{G_V}$ for the goal and $U_{E_V^o}$ for all $o\in\mathcal{O}$ to the domain of every variable.
+    \item For every variable $V\in\mathcal{V}$ and every fact $f\in\mathcal{F}_V$, $f\neq\langle V,U\rangle$, add new \textit{forgetting} operators $o_f$ with $\text{pre}(o_f)=\{f\}$ and $\text{eff}(o_f)=\{\langle V,U\rangle\}$ and the cost $\text{c}(o_f)=0$. \mytodo{for each UV and UEOV}
+    \item For every operator $o\in\mathcal{O}$ and every variable $V\in\mathcal{V}$:
+    \begin{itemize}
+        \item If $V\in\text{vars(pre}(o))$ and $V\notin\text{vars(eff}(o))$, then add $\langle V,\text{pre}(o)[V]\rangle$ to $\text{eff}(o)$.
+        \item If $V\in\text{vars(eff}(o))$ and $V\notin\text{vars(pre}(o))$, then add $\langle V,U_{E^o_V}\rangle$ to $\text{pre}(o)$.
+    \end{itemize}
+    \item For every $V\in\mathcal{V}\setminus\text{vars}(G)$ add $\langle V,U_V\rangle$ to $G$.
+\end{itemize}
+
+This changes the new constraints to:
+
+\[\sum_{f\in G}X_f+\sum_{V\in\mathcal{V}\setminus\text{vars}(G)}M_{G_V}\leq0\tag{i}\]
+and
+\[\sum_{f\in\text{pre}^*(o)}X_f+\sum_{V\in\text{vars}^*(o)}M_{E^o_V}-\sum_{f\in\text{eff}(o)}X_f\leq c(o)\tag{ii}\]
+
+
+\mytodo{
+New Subsection?
+what is different for mutexes?
+How does the lp thingy look herefor?
+}
 
 
 \begin{comment}
