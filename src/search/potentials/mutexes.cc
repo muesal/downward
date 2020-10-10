@@ -5,6 +5,7 @@ MutexTable::MutexTable(const Options &opts, VariablesProxy variables, State &sta
     auto hm = make_shared<HMHeuristic>(opts);
     mutexes = hm->get_unreachable_tuples(state);
     hm.reset();
+    utils::g_log << "Built mutex table." << endl;
 }
 
 bool MutexTable::unassigned(map<int, int> &state, int variable_id) {
@@ -94,6 +95,7 @@ vector<vector<int>>
 MutexTable::multi_fact_disambiguation(map<int, int> &state) {
     // get all domains and id's of the variables (D_V<- F_V for every V in Variables)
     vector<vector<int>> domains;
+    domains.reserve(variables.size());
     for (VariableProxy v : variables) {
         vector<int> dom;
         // For already assigned values add only this fact, for the rest the whole domain
@@ -109,6 +111,7 @@ MutexTable::multi_fact_disambiguation(map<int, int> &state) {
 
     // A <- M_p
     vector<FactPair> a = get_mutex_with_state(state);
+    a.reserve(mutexes.size());
 
     //while state changes check for single fact disambiguations and assign them
     bool changed = true;
@@ -123,6 +126,12 @@ MutexTable::multi_fact_disambiguation(map<int, int> &state) {
 
                 //algorithm 2 l. 8 (A <- A U [intersection over all facts in D_V of M_(p U {f})] )
                 if (domains[id].size() < size) {
+                    if (domains[id].empty()) {  // The state is a dead end.
+                        for (auto & domain : domains){
+                            domain.clear();
+                        }
+                        return domains; // return empty domains, as none are leading
+                    }
                     vector<FactPair> mf, mf2;
                     get_mutex_with_fact(id, domains[id][0], mf);
                     for (size_t f = 1; f < domains[id].size(); f++) {

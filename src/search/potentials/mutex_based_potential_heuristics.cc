@@ -73,6 +73,7 @@ namespace potentials {
     static vector<map<int, int>>
     get_all_extensions(map<int, int> &state, int k, vector<vector<int>> &domains) {
         vector<map<int, int>> states;
+        states.reserve(domains.size() * domains[0].size() * k);
         vector<int> variables;
         variables.reserve(state.size());
         for (auto s : state) {
@@ -114,8 +115,9 @@ namespace potentials {
       */
     static vector<Weight>
     opt_k_m(int k, map<int, int> &assigned_variables, MutexTable &table) {
-        const VariablesProxy* variables = table.getVariablesProxy();
+        const VariablesProxy *variables = table.getVariablesProxy();
         vector<Weight> facts;               // vector containing facts and their corresponding weight.
+        facts.reserve(variables->size() * variables->operator[](0).get_domain_size());
         vector<Weight> weights_f;           // to temporarily store the c_k_f values of one variable
         vector<map<int, int >> states;      // to temporarily store the extended states of a fact
         vector<vector<int>> domains;        // temporarily contain the multi_fact_disambiguated domain with one fact
@@ -128,8 +130,9 @@ namespace potentials {
                 for (int d = 0; d < variables->operator[](i).get_domain_size(); d++) {
                     assigned_variables[i] = d;                          // add this fact
                     domains = table.multi_fact_disambiguation(assigned_variables);    // get all non-mutex domains
+                    if (domains[0].empty()) continue;                   // partial state is a dead end
                     states = get_all_extensions(assigned_variables, k - 1,
-                                                domains);            // get all extended states for this fact
+                                                domains);           // get all extended states for this fact
                     // (k - 1, as one additional variables is already assigned)
                     w = c_k_f(states, table);                    // Get the non-normalized weight of this fact ...
                     states.clear();
@@ -159,6 +162,7 @@ namespace potentials {
       * @return a vector containing for each state (outer vector) the weights of each fact (inner vectors)
       */
     static vector<Weight> opt_k_m(int k, MutexTable &table) {
+        utils::g_log << "Using Mutex Based Potential Heuristics." << endl;
         map<int, int> assigned_variables;   // to temporarily store one 'state'
         return opt_k_m(k, assigned_variables, table);
     }
@@ -175,13 +179,15 @@ namespace potentials {
      */
     static vector<unique_ptr<PotentialFunction>>
     opt_t_k_m(int t, int k, int n, MutexTable table, PotentialOptimizer &optimizer) {
-        const VariablesProxy * variables = table.getVariablesProxy();
+        utils::g_log << "Using Mutex Based Potential Ensemble Heuristics." << endl;
+        const VariablesProxy *variables = table.getVariablesProxy();
         random_device rd;
         mt19937 gen(rd()); // apparently this is necessary for uniform int distribution...
         uniform_int_distribution<> dist_v(0, variables->size() - 1);
 
         // generate n optimization functions for one randomly sampled state
         vector<unique_ptr<PotentialFunction>> functions;
+        functions.resize(n);
         vector<Weight> weights;
         map<int, int> state;
         for (int i = 0; i < n; i++) {
@@ -194,8 +200,13 @@ namespace potentials {
                 } else t_i--;
             }
             weights = opt_k_m(k - t, state, table);
-            optimizer.optimize_for_weighted_samples(weights);
-            functions.push_back(optimizer.get_potential_function());
+            if (weights.empty()) {
+                n--; // State was a dead end;
+            } else {
+                optimizer.optimize_for_weighted_samples(weights);
+                functions[i] = optimizer.get_potential_function();
+                utils::g_log << "Calculated " << i << "potential functions." << endl;
+            }
         }
         return functions;
     }
@@ -209,9 +220,9 @@ namespace potentials {
 
         MutexTable *table = optimizer.get_mutex_table();
         assert(table != nullptr);
-        
+
         int k = opts.get<int>("k");
-        assert(k < (int) variables.size()); // k may not be bigger than the size of one state TODO richtig so?
+        assert(k < (int) variables.size()); // k may not be bigger than the size of one state
         vector<Weight> weights = opt_k_m(k, *table);
         optimizer.optimize_for_weighted_samples(weights);
         return optimizer.get_potential_function();
@@ -229,9 +240,9 @@ namespace potentials {
         assert(table != nullptr);
 
         int k = opts.get<int>("k");
-        assert(k < (int) variables.size()); // k may not be bigger than the size of one state TODO richtig so?
+        assert(k < (int) variables.size()); // k may not be bigger than the size of one state
         int t = opts.get<int>("t");
-        assert(t <= k);                     // t may not be bigger than k TODO richtig so?
+        assert(t <= k);                     // t may not be bigger than k
         int n = opts.get<int>("n");
 
         return opt_t_k_m(t, k, n, *table, optimizer);

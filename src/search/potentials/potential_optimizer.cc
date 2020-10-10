@@ -278,6 +278,10 @@ void PotentialOptimizer::construct_mutex_lp() {
         goal_map[fact.get_variable().get_id()] = fact.get_value();
     }
     vector<vector<int>> domains = table->multi_fact_disambiguation(goal_map);
+    if (domains[0].empty()) {
+        // problem unsolvable, if goal-state it contains a mutex.
+        utils::exit_with(ExitCode::SEARCH_CRITICAL_ERROR);
+    }
     for (VariableProxy var : task_proxy.get_variables()) {
         if (goal[var.get_id()] == -1) {
                 goal[var.get_id()] = get_undefined_value(var);
@@ -308,6 +312,10 @@ void PotentialOptimizer::construct_mutex_lp() {
             pre[fact.get_variable().get_id()] = fact.get_value();
         }
         domains = table->multi_fact_disambiguation(pre);
+        if (domains[0].empty()) {
+            // if a precondition contains a mutex, this operation will never be on any reachable path.
+            continue;
+        }
         for (VariableProxy var : task_proxy.get_variables()) {
             /*
               Create constraint (using variable bounds): P_{V=goal[V]} = 0
