@@ -289,7 +289,7 @@ namespace potentials {
                 "k",
                 "size of extended state",
                 "2",
-                Bounds("0", "1"));
+                Bounds("0", "infinity"));
         parser.add_option<int>(
                 "t",
                 "amount of uniformly randomly chosen facts (t <= k)",
