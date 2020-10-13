@@ -284,7 +284,7 @@ namespace potentials {
                 "use_mutexes",
                 "Use mutexes in potential optimizer",
                 "1",
-                Bounds("0", "0"));
+                Bounds("0", "infinity"));
         parser.add_option<int>(
                 "k",
                 "size of extended state",
