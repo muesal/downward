@@ -141,9 +141,9 @@ namespace potentials {
                 }
 
                 // normalize all weights
-                for (int d = 0; d < variables->operator[](i).get_domain_size(); d++) {
-                    get<2>(weights_f[d]) = get<2>(weights_f[d]) / sum;
-                    facts.push_back(weights_f[d]);
+                for (auto & d : weights_f) {
+                    get<2>(d) = get<2>(d) / sum;
+                    facts.push_back(d);
                 }
 
                 // remove state[i]
@@ -229,8 +229,7 @@ namespace potentials {
     }
 
     static vector<unique_ptr<PotentialFunction>> create_mutex_based_ensemble_potential_function(
-            Options &opts) {
-
+            const Options &opts) {
         PotentialOptimizer optimizer(opts);
         const AbstractTask &task = *opts.get<shared_ptr<AbstractTask>>("transform");
         TaskProxy task_proxy(task);
@@ -243,7 +242,7 @@ namespace potentials {
         assert(k < (int) variables.size()); // k may not be bigger than the size of one state
         int t = opts.get<int>("t");
         assert(t <= k);                     // t may not be bigger than k
-        int n = opts.get<int>("n");
+        int n = opts.get<int>("num_samples");
 
         return opt_t_k_m(t, k, n, *table, optimizer);
     }
@@ -286,6 +285,11 @@ namespace potentials {
                 "1",
                 Bounds("0", "infinity"));
         parser.add_option<int>(
+                "m",
+                "use h2 heuristic",
+                "2",
+                Bounds("0", "infinity"));
+        parser.add_option<int>(
                 "k",
                 "size of extended state",
                 "2",
@@ -296,12 +300,13 @@ namespace potentials {
                 "1",
                 Bounds("0", "infinity"));
         parser.add_option<int>(
-                "n",
+                "num_samples",
                 "Number of states to sample",
                 "50",
                 Bounds("0", "infinity"));
         prepare_parser_for_admissible_potentials(parser);
         Options opts = parser.parse();
+        utils::add_rng_options(parser);
         if (parser.dry_run())
             return nullptr;
 
