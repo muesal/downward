@@ -30,7 +30,7 @@ PotentialOptimizer::PotentialOptimizer(const Options &opts)
       lp_solver(opts.get<lp::LPSolverType>("lpsolver")),
       max_potential(opts.get<double>("max_potential")),
       num_lp_vars(0),
-      use_mutexes(opts.contains("use_mutexes")) {
+      use_mutexes(opts.get<int>("mutex") == 1) {
     task_properties::verify_no_axioms(task_proxy);
     task_properties::verify_no_conditional_effects(task_proxy);
     if (use_mutexes) {

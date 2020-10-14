@@ -35,6 +35,17 @@ static unique_ptr<PotentialFunction> create_potential_function(
 }
 
 static shared_ptr<Heuristic> _parse(OptionParser &parser, OptimizeFor opt_func) {
+    parser.add_option<int>(
+        "mutex",
+        "Use mutexes in potential optimizer",
+        "0",
+        Bounds("0", "1"));
+    parser.add_option<int>(
+        "m",
+        "use h2 heuristic",
+        "2",
+        Bounds("0", "infinity"));
+
     prepare_parser_for_admissible_potentials(parser);
     Options opts = parser.parse();
     if (parser.dry_run())

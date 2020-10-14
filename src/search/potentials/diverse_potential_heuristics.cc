@@ -147,6 +147,17 @@ static shared_ptr<Heuristic> _parse(OptionParser &parser) {
         "maximum number of potential heuristics",
         "infinity",
         Bounds("0", "infinity"));
+    parser.add_option<int>(
+        "mutex",
+        "Use mutexes in potential optimizer",
+        "1",
+        Bounds("0", "1"));
+    parser.add_option<int>(
+        "m",
+        "use h2 heuristic",
+        "2",
+        Bounds("0", "infinity"));
+
     prepare_parser_for_admissible_potentials(parser);
     utils::add_rng_options(parser);
     Options opts = parser.parse();

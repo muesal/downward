@@ -73,7 +73,7 @@ namespace potentials {
     static vector<map<int, int>>
     get_all_extensions(map<int, int> &state, int k, vector<vector<int>> &domains) {
         vector<map<int, int>> states;
-        states.reserve(domains.size() * domains[0].size() * k);
+        //states.reserve(min(domains.size() * domains[0].size() * k, states.max_size()));
         vector<int> variables;
         variables.reserve(state.size());
         for (auto s : state) {
@@ -117,7 +117,7 @@ namespace potentials {
     opt_k_m(int k, map<int, int> &assigned_variables, MutexTable &table) {
         const VariablesProxy *variables = table.getVariablesProxy();
         vector<Weight> facts;               // vector containing facts and their corresponding weight.
-        facts.reserve(variables->size() * variables->operator[](0).get_domain_size());
+        //facts.reserve(min(variables->size() * variables->operator[](0).get_domain_size(), facts.max_size()));
         vector<Weight> weights_f;           // to temporarily store the c_k_f values of one variable
         vector<map<int, int >> states;      // to temporarily store the extended states of a fact
         vector<vector<int>> domains;        // temporarily contain the multi_fact_disambiguated domain with one fact
@@ -219,7 +219,10 @@ namespace potentials {
         VariablesProxy variables = task_proxy.get_variables();
 
         MutexTable *table = optimizer.get_mutex_table();
-        assert(table != nullptr);
+        if (table == nullptr) {
+            State initial = task_proxy.get_initial_state();
+            table = new MutexTable(opts, variables, initial);
+        }
 
         int k = opts.get<int>("k");
         assert(k < (int) variables.size()); // k may not be bigger than the size of one state
@@ -236,13 +239,16 @@ namespace potentials {
         VariablesProxy variables = task_proxy.get_variables();
 
         MutexTable *table = optimizer.get_mutex_table();
-        assert(table != nullptr);
+        if (table == nullptr) {
+            State initial = task_proxy.get_initial_state();
+            table = new MutexTable(opts, variables, initial);
+        }
 
         int k = opts.get<int>("k");
         assert(k < (int) variables.size()); // k may not be bigger than the size of one state
         int t = opts.get<int>("t");
         assert(t <= k);                     // t may not be bigger than k
-        int n = opts.get<int>("num_samples");
+        int n = opts.get<int>("n");
 
         return opt_t_k_m(t, k, n, *table, optimizer);
     }
@@ -252,10 +258,10 @@ namespace potentials {
                 "Mutex-based potential heuristics",
                 get_admissible_potentials_reference());
         parser.add_option<int>(
-                "use_mutexes",
+                "mutex",
                 "Use mutexes in potential optimizer",
                 "1",
-                Bounds("0", "infinity"));
+                Bounds("0", "1"));
         parser.add_option<int>(
                 "m",
                 "use h2 heuristic",
@@ -280,10 +286,10 @@ namespace potentials {
                 "Mutex-based ensemble potential heuristics",
                 get_admissible_potentials_reference());
         parser.add_option<int>(
-                "use_mutexes",
+                "mutex",
                 "Use mutexes in potential optimizer",
                 "1",
-                Bounds("0", "infinity"));
+                Bounds("0", "1"));
         parser.add_option<int>(
                 "m",
                 "use h2 heuristic",
@@ -300,7 +306,7 @@ namespace potentials {
                 "1",
                 Bounds("0", "infinity"));
         parser.add_option<int>(
-                "num_samples",
+                "n",
                 "Number of states to sample",
                 "50",
                 Bounds("0", "infinity"));
