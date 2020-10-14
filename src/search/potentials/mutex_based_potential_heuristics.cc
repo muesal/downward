@@ -73,7 +73,7 @@ namespace potentials {
     static vector<map<int, int>>
     get_all_extensions(map<int, int> &state, int k, vector<vector<int>> &domains) {
         vector<map<int, int>> states;
-        //states.reserve(min(domains.size() * domains[0].size() * k, states.max_size()));
+        states.reserve(min(domains.size() * domains[0].size() * k, states.max_size()));
         vector<int> variables;
         variables.reserve(state.size());
         for (auto s : state) {
@@ -117,7 +117,7 @@ namespace potentials {
     opt_k_m(int k, map<int, int> &assigned_variables, MutexTable &table) {
         const VariablesProxy *variables = table.getVariablesProxy();
         vector<Weight> facts;               // vector containing facts and their corresponding weight.
-        //facts.reserve(min(variables->size() * variables->operator[](0).get_domain_size(), facts.max_size()));
+        facts.reserve(min(variables->size() * variables->operator[](0).get_domain_size(), facts.max_size()));
         vector<Weight> weights_f;           // to temporarily store the c_k_f values of one variable
         vector<map<int, int >> states;      // to temporarily store the extended states of a fact
         vector<vector<int>> domains;        // temporarily contain the multi_fact_disambiguated domain with one fact
