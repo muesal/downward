@@ -4,8 +4,8 @@
 \chapter{Strengthening Potential Heuristics}\label{ch:strengthening-potential-heuristics}
 
 \citeauthor{fivser2020strengthening} proposed to improve potential heuristics with mutexes and disambiguations.
-This chapter contains the changes which need to made to do so, regarding the transformation of the planning task into TNF and the adaption of the optimization functions.
-It shows how the equations which were implemented~\ref{ch:implementation} were derived.
+This chapter contains the changes which are required to do so, regarding the transformation of a planning task into TNF and the adaption of the optimization functions.
+It shows how the equations which were later implemented (Chapter~\nameref{ch:implementation}) were derived.
 
 \section{Potential Heuristics}\label{sec:potential-heuristics}
 
@@ -29,7 +29,7 @@ As all variables are assigned in the goal state, the potential of one fact per v
 For the variables $v\in\text{vars}(G)$ we can simply use the potentials of their respective facts.
 Meanwhile we assume the worst case for the other variables, by using the maximal potential over their facts, as we do not know what fact they are assigned.
 
-Eq.\eqref{eq:2} assures consistency.
+Eq.~\eqref{eq:2} assures consistency.
 Recall the general consistency equation $h(s)\leq h(o\llbracket s\rrbracket)+\text{c}(o)$.
 It can be rewritten as $h(s)-h(o\llbracket s\rrbracket)\leq\text{c}(o)$.
 As the facts which do not occur in the effect are the same in both $s$ and $o\llbracket s\rrbracket$ we can leave them aside. % da substraktion
@@ -37,14 +37,48 @@ For $s$ we know what facts of the variables of the preconditions are assigned an
 For the variables which are in effect but not in the precondition we proceed similar to ~\eqref{eq:1}, as we do not know their values.
 The potentials of the facts in the effect can be used without modification for  $o\llbracket s\rrbracket$.
 
-The Advantage of this equations is that they are not state-dependent, even though they do not tell us what exactly the potentials should be.
+The advantage of this equations is that they are not state-dependent, even though they do not tell us explicitly what the potentials should be.
 However, they can be used as the constraints for a linear program (\textbf{LP}), the solution of which is a potential function that forms an admissible potential heuristic.
 More about this in~\ref{subsec:transition-normal-form}.
 
-\subsection{Generalize with Mutexes}\label{subsec:generalize-with-mutexes}
-\mytodo { some general writng about how mutexes can be used for narrowing down domains}
+\subsection{Generalization with Mutexes}\label{subsec:pot-generalize-with-mutexes}
+Mutexes can be used to reduce the domain of variables, which are not yet assigned in a partial state $p$.
+This property is very helpful, as it minimizes the amount of facts which are candidates for the not assigned variables in equations~\eqref{eq:1} and~\eqref{eq:2} of theorem~\ref{theorem:theorem 5}.
 
-Using this [above],~\ref{theorem:theorem 5} can be generalized by the following theorem.
+\mytodo{make this algorithm look a little nicer\ldots}
+\begin{algorithm}[H]
+    \caption{Multi-fact fixpoint disambiguation.}
+    \label{alg:multi-fact}
+    \begin{algorithmic}[1] % The number tells where the line numbering should start
+        \Require A planning task $\Pi$ with variables $\mathcal{V}$ and facts $F$, a partial state $p$, and a mutex-set $\mathcal{M}$.
+        \Ensure A set of disambiguations $\mathcal{D}$ of all variables $\mathcal{V}$ for $p$.
+
+        \State $D_v\leftarrow F_V$ for every $V\in\mathcal{V}$\;
+        \State $A\leftarrow \mathcal{M}_p$\;
+        \State change $\leftarrow$ True\;
+        \While{change\;}
+        \State change $\leftarrow$ False\;
+        \ForAll{$V\in\mathcal{V}$}
+        \If{$D_V\setminus A\neq D_V $}
+        \State $D_V\leftarrow D_V\setminus A$\;
+        \State $A\leftarrow A\cup \bigcap_{f\in D_V}\mathcal{M}_{p\cup \{f\}} $\; \label{lst:line:A}
+        \State change $\leftarrow$ True\;
+        \EndIf
+        \EndFor
+        \EndWhile
+        \State $\mathcal{D}\leftarrow\{D_V|V\in\mathcal{V}\}$\;
+    \end{algorithmic}
+\end{algorithm}
+
+At the beginning, the set $D_V$ contains all possible values for the variable $V\in\mathcal{V}$, while $A$ contains all facts which are a mutex with any fact in $p$.
+In each iteration of the while-loop, all $f=\langle v, V\rangle$ which are in $A$ and in $D_V$ are removed from the corresponding $D_V$.
+On line~\ref{lst:line:A} $A$ is extended with all facts that form a mutex with all facts remaining in $D_V$, i.e. which are a mutex with $p\cup\{f\}$ for all $f\in D_V$.
+
+In conclusion, after applying mutli-fact fixpoint disambiguation $p$ can be extended with any fact in $\mathcal{D}$ without reaching a dead-end state.
+If any $D_V\in\mathcal{D}$ is empty, then $p$ is already a dead-end itself.
+\mytodo{The algorithm is later on used to\ldots}
+
+This algorithm can now be used to generalize~\ref{theorem:theorem 5} by the following theorem.
 
 \begin{theorem}
     \label{theorem:7}
@@ -63,18 +97,15 @@ Using this [above],~\ref{theorem:theorem 5} can be generalized by the following 
 
 \citeauthor{fivser2020strengthening} proof the theorem by showing that equations~\eqref{eq:3} and~\eqref{eq:4} are generalizations of equations~\eqref{eq:1} and~\eqref{eq:2} respectively.
 
-$G_V$ is the disambiguation of $V\in\mathcal{V}$ for $G$, i.e., it holds all facts of $\mathcal{F}_V$ which are not a mutex with any of tha facts $f\in G$.
-If it is empty for any of the variables, then the problem is unsolvable.
-$E^o_V$ is the disambiguation of $V\in\text{vars(eff}(o))$ for $\text{pre}(o)$, $o\in\mathcal{O}$.
-In words, for all variables which are affected by the application of $o$, remove facts which are a mutex with any of the facts in the precondition.
+Both $G_V$ and $E_V^o$ are equal to $D_V\in\mathcal{D}$ which can be derived with algorithm~\autoref{alg:multi-fact} of the goal state or the $pre(o)$ respectively.
+If $G_V$ is empty for any of the variables, then the problem is unsolvable. \mytodo{Why?}
 $o$ is not applicable in any (partial) state, if $E^o_V$ is empty for any  $V\in\text{vars(eff}(o))$.
 
-\mytodo{anything else for this subsection? something kind of concluding is missing}
+To show the reader why this property is useful in practice, we first introduce the Transition Normal Form.
 
-
-\subsection{Transition Normal Form}\label{subsec:transition-normal-form}
+\section{Transition Normal Form}\label{sec:transition-normal-form}
 Planning Tasks can be in Transition Normal Form (\textbf{TNF}). \mytodo{why do we want this?}
-A planning task in TNF has a fully defined Goal ($\text{vars}(G)=\mathcal{V}$) and all variables of the effect are also in the precondition for each operator $o\in\mathcal{O}$ ($\text{vars(pre}(o)) = \text{vars(eff}(o))$).
+A planning task in TNF has a fully defined goal ($\text{vars}(G)=\mathcal{V}$) and all variables of the effect are also in the precondition for each operator $o\in\mathcal{O}$ ($\text{vars(pre}(o)) = \text{vars(eff}(o))$).
 Any planing task  $\Pi = \langle \mathcal{V}, \mathcal{O}, I, G \rangle$ can be transformed into TNF with the following rules cited from \cite{fivser2020strengthening}:
 \begin{itemize}
     \item Add a fresh value $U$ to the domain of every variable.
@@ -91,58 +122,58 @@ Each Variable $V\in\mathcal{V}$ gets a new value in its domain, which can be see
 It can be assigned 'for free', as the forgetting operator $o_f$ which assigns it has no cost, regardless of the current state and especially the current assignment of $V$.
 The next point is to assure, that for each operator the variables which are in the precondition are also in the effect.
 
-If $V$ is in the preconditions of an operation $o\in\mathcal{O}$ but not in the effect, then we can simply add the variable and the value it is already assigned to the effect.
+If $V$ is in the preconditions of an operator $o\in\mathcal{O}$ but not in the effect, then we can simply add the variable and the value it is already assigned to the effect.
 This is a formal change, but does not change the effect of the operator at all, as it would not have changed this fact anyway.
 
-The case of an operation $o\in\mathcal{O}$ where $V$ is in the effect, but not in the precondition, is a little more complicated to explain.
+The case of an operator $o\in\mathcal{O}$ where $V$ is in the effect, but not in the precondition, is a little more complicated to explain.
 Here, the precondition is changed, such that it contains also the fact $\langle V, U\rangle$.
-If $o$ was applicable in $s$ before, then after transforming it to TNF the corresponding $o_f$ needs to be applied beforehand in order to 'forget' the value of $V$.
-This change of the variable is insignificant, as the value then gets changed at applying the operation.
+If $o$ was applicable in $s$ before, then after transforming the plan into TNF the corresponding $o_f$ needs to be applied beforehand in order to 'forget' the value of $V$.
+This change of the variable is insignificant, as the value then gets changed at applying the operator anyways.
 
 Last, all variables which were not included in the partial state $G$ need to be added into it.
 if they are assigned the fresh value $U$, then the goal state can be reached from every state which expanded it before.
 Without creating more cost, the values of all 'non mattering' variables are changed to the fresh value.
 
-\mytodo{does the above belong to the background? and is it ok to mention all rules twice?}
+\subsection{Generalization with Mutexes}\label{subsec:tnf-generalize-with-mutexes}
+Similar to section~\ref{subsec:pot-generalize-with-mutexes} these rules can be generalized with disambiguations:
 
-the following is correct regarding the content, but needs to be changed a lot:
-
-Introduce LP variables $X_f=\mathtt{P}(f)$ for every fact $f\in\mathcal{F}$ and $M_V$ corresponding to $\max_{f\in\mathcal{F}_V}\mathtt{P}(f)$ with the constraint that $x_f\leq M_V$ for every $f\in\mathcal{F}$.
-
-Then write the new constraints (5 and 6)
-
-Explain why $M_V=\mathtt{P}(U)$ (pot von U richtig?):
-
-In TNF $V\in\mathcal{V}\setminus\text{vars}(G)$ as well as $\text{vars)}^*(o)$ for each $o\in\mathcal{O}$ are empty.
-The facts $f_U$in $G$ and $\text{pre}^*(o)$ respectively are $\langle V,U\rangle$ for the corresponding variable $V\in\mathcal{V}$, therefore $\mathtt{P}(f_U)$ must hold $M_V$.
-
-
-For Theorem 7 (in paper\dots):
-instead of adding $U$ we add $U_{G_V}$ and $U_{E_V^o}$ for each value and the goal or each operator respectively.
-This changes the above rules to:
 \begin{itemize}
-    \item Add fresh values $U_{G_V}$ for the goal and $U_{E_V^o}$ for all $o\in\mathcal{O}$ to the domain of every variable.
-    \item For every variable $V\in\mathcal{V}$ and every fact $f\in\mathcal{F}_V$, $f\neq\langle V,U\rangle$, add new \textit{forgetting} operators $o_f$ with $\text{pre}(o_f)=\{f\}$ and $\text{eff}(o_f)=\{\langle V,U\rangle\}$ and the cost $\text{c}(o_f)=0$. \mytodo{for each UV and UEOV}
-    \item For every operator $o\in\mathcal{O}$ and every variable $V\in\mathcal{V}$:
+    \item Add fresh value $U_{G_V}$ to the domain of every $V\in\mathcal{V}$.
+    \item For every variable $V\in\mathcal{V}$ and every fact $f\in G_V$, $f\neq\langle V,U_{G_V}\rangle$, add new \textit{forgetting} operators $o_{f_G}$ with $\text{pre}(o_{f_G})=\{f\}$ and $\text{eff}(o_{f_G})=\{\langle V,U_{G_V}\rangle\}$ and the cost $\text{c}(o_{f_G})=0$.
+    \item For every $V\in\mathcal{V}\setminus\text{vars}(G)$ add $\langle V,U_{G_V}\rangle$ to $G$.
+    \item For every operator $o\in\mathcal{O}$ add $\langle V,U_V\rangle$ to the domain of variable $V\in\mathcal{V}$:
     \begin{itemize}
         \item If $V\in\text{vars(pre}(o))$ and $V\notin\text{vars(eff}(o))$, then add $\langle V,\text{pre}(o)[V]\rangle$ to $\text{eff}(o)$.
         \item If $V\in\text{vars(eff}(o))$ and $V\notin\text{vars(pre}(o))$, then add $\langle V,U_{E^o_V}\rangle$ to $\text{pre}(o)$.
     \end{itemize}
-    \item For every $V\in\mathcal{V}\setminus\text{vars}(G)$ add $\langle V,U_V\rangle$ to $G$.
+    \item For every variable $V\in\mathcal{V}$ and every fact $f\in E_V^o$, $f\neq\langle V,U_{E^o_V}\rangle$, add new \textit{forgetting} operators $o_{f_E}$ with $\text{pre}(o_{f_E})=\{f\}$ and $\text{eff}(o_{f_E})=\{\langle V,U_{E^o_V}\rangle\}$ and the cost $\text{c}(o_{f_E})=0$.
 \end{itemize}
 
-This changes the new constraints to:
+We introduce more fresh values, as each variable has one per each operator and one for the goal state.
+However, this results in less forgetting operators, as facts which are a mutex with the corresponding domain are ignored.
+For the goal state forgetting operators are only created for the facts in $F_V$ which are not a mutex with any $f\in\ G$ for every $V\notin\text{vars}(G)$.
+Similar, facts in $F_V$ which are a mutex with any $f\in\text{pre}(o)$ are not taken into account for all $o\in\mathcal{O}$ and every $V\in\text{vars(eff}(o))$.
 
+\section{Linear Program}\label{sec:linear-programm}
+Lin
+The formluas from theorem~\ref{theorem:7} can be used to formulate a Linear Program.
+The Solution of this LP is then the admissi
+
+In order to get the potentials a lp solver needs to be constructed.
+
+
+
+Introduce LP variables $X_f=\mathtt{P}(f)$ for every fact $f\in\mathcal{F}$ and $M_V$ corresponding to $\max_{f\in\mathcal{F}_V}\mathtt{P}(f)$ with the constraint that $x_f\leq M_V$ for every $f\in\mathcal{F}$.
+
+Explain why $M_V=\mathtt{P}(U)$ (pot von U richtig?):
+
+In TNF $V\in\mathcal{V}\setminus\text{vars}(G)$ as well as $\text{vars}^*(o)$ for each $o\in\mathcal{O}$ are empty.
+The facts $f_U$in $G$ and $\text{pre}^*(o)$ respectively are $\langle V,U\rangle$ for the corresponding variable $V\in\mathcal{V}$, therefore $\mathtt{P}(f_U)$ must hold $M_V$.
+
+LP constraints:
 \[\sum_{f\in G}X_f+\sum_{V\in\mathcal{V}\setminus\text{vars}(G)}M_{G_V}\leq0\tag{i}\]
 and
 \[\sum_{f\in\text{pre}^*(o)}X_f+\sum_{V\in\text{vars}^*(o)}M_{E^o_V}-\sum_{f\in\text{eff}(o)}X_f\leq c(o)\tag{ii}\]
-
-
-\mytodo{
-New Subsection?
-what is different for mutexes?
-How does the lp thingy look herefor?
-}
 
 
 \begin{comment}
