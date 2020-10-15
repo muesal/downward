@@ -280,7 +280,7 @@ void PotentialOptimizer::construct_mutex_lp() {
     vector<vector<int>> domains = table->multi_fact_disambiguation(goal_map);
     if (domains[0].empty()) {
         // problem unsolvable, if goal-state it contains a mutex.
-        utils::exit_with(ExitCode::SEARCH_CRITICAL_ERROR);
+        utils::exit_with(ExitCode::SEARCH_UNSOLVABLE);
     }
     for (VariableProxy var : task_proxy.get_variables()) {
         if (goal[var.get_id()] == -1) {

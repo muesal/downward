@@ -271,7 +271,7 @@ namespace potentials {
                 "k",
                 "size of extended state",
                 "1",
-                Bounds("0", "1"));
+                Bounds("0", "infinity"));
         prepare_parser_for_admissible_potentials(parser);
         Options opts = parser.parse();
         if (parser.dry_run())
