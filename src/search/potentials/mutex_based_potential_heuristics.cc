@@ -73,6 +73,10 @@ namespace potentials {
     static vector<map<int, int>>
     get_all_extensions(map<int, int> &state, int k, vector<vector<int>> &domains) {
         vector<map<int, int>> states;
+        if (k <= 0) {
+            states.push_back(state);
+            return states;
+        }
         states.reserve(min(domains.size() * domains[0].size() * k, states.max_size()));
         vector<int> variables;
         variables.reserve(state.size());
