@@ -45,6 +45,11 @@ static shared_ptr<Heuristic> _parse(OptionParser &parser, OptimizeFor opt_func) 
         "use h2 heuristic",
         "2",
         Bounds("0", "infinity"));
+    parser.add_option<int>(
+            "init-const",
+            "Use the addition constraint on the initial state in potential optimizer",
+            "0",
+            Bounds("0", "1"));
 
     prepare_parser_for_admissible_potentials(parser);
     Options opts = parser.parse();

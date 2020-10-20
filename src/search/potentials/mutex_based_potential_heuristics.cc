@@ -267,6 +267,11 @@ namespace potentials {
                 "1",
                 Bounds("0", "1"));
         parser.add_option<int>(
+                "init-const",
+                "Use the addition constraint on the initial state in potential optimizer",
+                "0",
+                Bounds("0", "1"));
+        parser.add_option<int>(
                 "m",
                 "use h2 heuristic",
                 "2",
@@ -293,6 +298,11 @@ namespace potentials {
                 "mutex",
                 "Use mutexes in potential optimizer",
                 "1",
+                Bounds("0", "1"));
+        parser.add_option<int>(
+                "init-const",
+                "Use the addition constraint on the initial state in potential optimizer",
+                "0",
                 Bounds("0", "1"));
         parser.add_option<int>(
                 "m",

@@ -30,7 +30,8 @@ PotentialOptimizer::PotentialOptimizer(const Options &opts)
       lp_solver(opts.get<lp::LPSolverType>("lpsolver")),
       max_potential(opts.get<double>("max_potential")),
       num_lp_vars(0),
-      use_mutexes(opts.get<int>("mutex") == 1) {
+      use_mutexes(opts.get<int>("mutex") == 1),
+      initial_constraint(opts.get<int>("init-const") == 1) {
     task_properties::verify_no_axioms(task_proxy);
     task_properties::verify_no_conditional_effects(task_proxy);
     if (use_mutexes) {
@@ -220,6 +221,28 @@ void PotentialOptimizer::construct_lp() {
         }
     }
     lp_solver.load_problem(lp::LPObjectiveSense::MAXIMIZE, lp_variables, lp_constraints);
+
+    // add the constraint \sum_{f\in I} P(f) = h^P_I(I).
+    if (initial_constraint) {
+        utils::g_log << "Adding initial constraint." << endl;
+        State init = task_proxy.get_initial_state();
+        optimize_for_samples({init});
+        float heuristic_value = 0;
+        for (FactProxy fact : init) {
+            int var_id = fact.get_variable().get_id();
+            int value = fact.get_value();
+            assert(utils::in_bounds(var_id, fact_potentials));
+            assert(utils::in_bounds(value, fact_potentials[var_id]));
+            heuristic_value += fact_potentials[var_id][value];
+        }
+
+        lp::LPConstraint constraint(heuristic_value, heuristic_value);
+        for (FactProxy fact : init) {
+            constraint.insert(lp_var_ids[fact.get_variable().get_id()][fact.get_value()], 1);
+        }
+
+        lp_solver.add_temporary_constraints({constraint});
+    }
 }
 
 void PotentialOptimizer::construct_mutex_lp() {
@@ -247,11 +270,11 @@ void PotentialOptimizer::construct_mutex_lp() {
             VariableProxy var = effect.get_fact().get_variable();
             int var_id = var.get_id();
 
-            // Set pre to pre(op) if defined, otherwise to u = |dom(var)|.
+            // Set pre to pre(op) if defined, otherwise to U_E^o_V = |dom(var)| + op.id.
             int pre = -1;
             auto it = var_to_precondition.find(var_id);
             if (it == var_to_precondition.end()) {
-                pre = get_undefined_value_for_operator(var, op); // NEU
+                pre = get_undefined_value_for_operator(var, op);
             } else {
                 pre = it->second;
             }
@@ -288,6 +311,7 @@ void PotentialOptimizer::construct_mutex_lp() {
         }
     }
 
+    // add constraints on U_G_V
     for (VariableProxy var : task_proxy.get_variables()) {
         int var_id = var.get_id();
         lp::LPVariable &lp_var = lp_variables[lp_var_ids[var_id][goal[var_id]]];
@@ -297,7 +321,15 @@ void PotentialOptimizer::construct_mutex_lp() {
         int undef_val_lp = lp_var_ids[var_id][get_undefined_value(var)];
         for (int val : domains[var_id]) {
             int val_lp = lp_var_ids[var_id][val];
-            // Create constraint: P_{V=v} <= P_{V=u_G}
+            /*
+             Create constraint (using variable bounds): P_{V=goal[V]} = 0
+             When each variable has a goal value (including the
+             "undefined goal" value), this is equivalent to the goal-awareness
+             constraint \sum_{fact in goal} P_fact <= 0. We can't set the
+             potential of one goal fact to +2 and another to -2, but if
+             all variables have goal values, this is not beneficial
+             anyway.
+           */
             lp::LPConstraint constraint(-lp_solver.get_infinity(), 0);
             constraint.insert(val_lp, 1);
             constraint.insert(undef_val_lp, -1);
@@ -305,7 +337,7 @@ void PotentialOptimizer::construct_mutex_lp() {
         }
     }
 
-
+    // add constraints for U_E^o_V
     for (OperatorProxy o : task_proxy.get_operators()) {
         map<int, int> pre;
         for(FactProxy fact : o.get_preconditions()) {
@@ -317,15 +349,6 @@ void PotentialOptimizer::construct_mutex_lp() {
             continue;
         }
         for (VariableProxy var : task_proxy.get_variables()) {
-            /*
-              Create constraint (using variable bounds): P_{V=goal[V]} = 0
-              When each variable has a goal value (including the
-              "undefined" value), this is equivalent to the goal-awareness
-              constraint \sum_{fact in goal} P_fact <= 0. We can't set the
-              potential of one goal fact to +2 and another to -2, but if
-              all variables have goal values, this is not beneficial
-              anyway.
-            */
             int var_id = var.get_id();
 
             int undef_val_lp = lp_var_ids[var_id][get_undefined_value_for_operator(var, o)];
@@ -342,6 +365,28 @@ void PotentialOptimizer::construct_mutex_lp() {
         }
     }
     lp_solver.load_problem(lp::LPObjectiveSense::MAXIMIZE, lp_variables, lp_constraints);
+
+    // add the constraint \sum_{f\in I} P(f) = h^P_I(I).
+    if (initial_constraint) {
+        utils::g_log << "Adding initial constraint." << endl;
+        State init = task_proxy.get_initial_state();
+        optimize_for_samples({init});
+        float heuristic_value = 0;
+        for (FactProxy fact : init) {
+            int var_id = fact.get_variable().get_id();
+            int value = fact.get_value();
+            assert(utils::in_bounds(var_id, fact_potentials));
+            assert(utils::in_bounds(value, fact_potentials[var_id]));
+            heuristic_value += fact_potentials[var_id][value];
+        }
+
+        lp::LPConstraint constraint(heuristic_value, heuristic_value);
+        for (FactProxy fact : init) {
+            constraint.insert(lp_var_ids[fact.get_variable().get_id()][fact.get_value()], 1);
+        }
+
+        lp_solver.add_temporary_constraints({constraint});
+    }
 }
 
 void PotentialOptimizer::solve_and_extract() {
