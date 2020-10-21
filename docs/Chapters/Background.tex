@@ -72,14 +72,14 @@ One class of heuristics are potential heuristics which assign a potential to eac
 \begin{definition}
     Let $\Pi$ denote a planning task with facts $\mathcal{F}$.
     A \textbf{potential function} is a function $\mathtt{P}:\mathcal{F}\mapsto\mathbb{R}$.
-    A \textbf{potential heursistic} for $\mathtt{P}$ maps each state $s\in\mathcal{R}$ to the sum of potentials of facts in $s$, i.e., $h^\mathtt{P}(s)=\sum_{f\in s}P(f)$.
+    A \textbf{potential heuristic} for $\mathtt{P}$ maps each state $s\in\mathcal{R}$ to the sum of potentials of facts in $s$, i.e., $h^\mathtt{P}(s)=\sum_{f\in s}P(f)$.
 \end{definition}
 
-Potential heuristics are goal aware, consistent and admissible~\cite{fivser2020strengthening}.
-The potentials themselves are obtained through optimization which will be further analyzed in chapter~\ref{ch:strengthening-potential-heuristics}.
+Potential heuristics are goal-aware, consistent and admissible~\cite{fivser2020strengthening}.
+The potentials themselves are obtained through optimization which will be further analyzed in Chapter~\ref{ch:strengthening-potential-heuristics}.
 
-One further approach are \textbf{ensemble heuristics}.
-\mytodo{TODO: Lektuere?}
+One further approach is \textbf{ensemble heuristics}.
+Instead of only one heuristic, this approach uses multiple heuristics and chooses the highest value as heuristic value for each state.
 
 \section{Mutexes and Disambiguations}\label{sec:mutexes-and-disambiguations}
 Mutex means, that two or more things mutually exclude each other.

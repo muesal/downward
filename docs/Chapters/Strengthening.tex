@@ -3,9 +3,9 @@
 
 \chapter{Strengthening Potential Heuristics}\label{ch:strengthening-potential-heuristics}
 
-\citeauthor{fivser2020strengthening} proposed to improve potential heuristics with mutexes and disambiguations.
+\citeauthor{fivser2020strengthening} propose a method to improve potential heuristics with mutexes and disambiguations.
 This chapter contains the changes which are required to do so, regarding the transformation of a planning task into TNF and the adaption of the optimization functions.
-It shows how the equations which were later implemented (Chapter~\nameref{ch:implementation}) were derived.
+It shows how the equations which were later implemented (Chapter~\nameref{ch:implementation}) are derived.
 
 \section{Potential Heuristics}\label{sec:potential-heuristics}
 
@@ -17,9 +17,9 @@ When~\citeauthor{pommerening2015non} first introduced potential heuristics, they
     potential function, and for every operator $o\in\mathcal{O}$, let
     $\mathrm{pre}^*(o)=\{\langle V, \mathrm{pre}(o)[V]\rangle |V\in \mathrm{vars(pre}(o))\cap\mathrm{vars(eff}(o))\}$ and
     $\mathrm{vars}^*(o)=\mathrm{vars(eff}(o))\setminus\mathrm{vars(pre}(o))$. If
-    \[\sum_{f\in G}\mathtt{P}(f)+\sum_{V\in\mathcal{V}\setminus\mathrm{vars}(G)}\max_{f\in\mathcal{F}_V}\mathtt{P}(f)\leq0\label{eq:1}\tag{1}\]
+    \begin{equation}\sum_{f\in G}\mathtt{P}(f)+\sum_{V\in\mathcal{V}\setminus\mathrm{vars}(G)}\max_{f\in\mathcal{F}_V}\mathtt{P}(f)\leq0\label{eq:1}\end{equation}
     and for every operator $o\in\mathcal{O}$ it holds that
-    \[\sum_{f\in\mathrm{pre}^*(o)}\mathtt{P}(f)+\sum_{V\in\mathrm{vars}^*(o)}\max_{f\in\mathcal{F}_V}\mathtt{P}(f)-\sum_{f\in\mathrm{eff}(o)}\mathtt{P}(f)\leq c(o)\label{eq:2}\tag{2}\]
+    \begin{equation}sum_{f\in\mathrm{pre}^*(o)}\mathtt{P}(f)+\sum_{V\in\mathrm{vars}^*(o)}\max_{f\in\mathcal{F}_V}\mathtt{P}(f)-\sum_{f\in\mathrm{eff}(o)}\mathtt{P}(f)\leq c(o)\label{eq:2}\end{equation}
     then the potential heuristic for $\mathtt{P}$ is admissible.
 \end{theorem}
 
@@ -30,20 +30,20 @@ For the variables $v\in\text{vars}(G)$ we can simply use the potentials of their
 Meanwhile we assume the worst case for the other variables, by using the maximal potential over their facts, as we do not know what fact they are assigned.
 
 Eq.~\eqref{eq:2} assures consistency.
-Recall the general consistency equation $h(s)\leq h(o\llbracket s\rrbracket)+\text{c}(o)$.
+Recall the general heuristics consistency equation $h(s)\leq h(o\llbracket s\rrbracket)+\text{c}(o)$.
 It can be rewritten as $h(s)-h(o\llbracket s\rrbracket)\leq\text{c}(o)$.
 As the facts which do not occur in the effect are the same in both $s$ and $o\llbracket s\rrbracket$ we can leave them aside. % da substraktion
 For $s$ we know what facts of the variables of the preconditions are assigned and sum the potentials of those which are also in the effect.
-For the variables which are in effect but not in the precondition we proceed similar to ~\eqref{eq:1}, as we do not know their values.
+For the variables which are in the effect but not in the precondition we proceed similarly to ~\eqref{eq:1}, as we do not know their values.
 The potentials of the facts in the effect can be used without modification for  $o\llbracket s\rrbracket$.
 
-The advantage of this equations is that they are not state-dependent, even though they do not tell us explicitly what the potentials should be.
-However, they can be used as the constraints for a linear program (\textbf{LP}), the solution of which is a potential function that forms an admissible potential heuristic.
-More about this in~\ref{subsec:transition-normal-form}.
+The advantage of these equations is that they are not state-dependent, even though they do not tell us explicitly what the potentials should be.
+However, they can be used as the constraints for a linear program, the solution of which is a potential function that forms an admissible potential heuristic.
+More about this in Section~\ref{sec:transition-normal-form}.
 
 \subsection{Generalization with Mutexes}\label{subsec:pot-generalize-with-mutexes}
 Mutexes can be used to reduce the domain of variables, which are not yet assigned in a partial state $p$.
-This property is very helpful, as it minimizes the amount of facts which are candidates for the not assigned variables in equations~\eqref{eq:1} and~\eqref{eq:2} of theorem~\ref{theorem:theorem 5}.
+This property is very helpful, as it minimizes the amount of facts which are candidates for the not assigned variables in Equations~\eqref{eq:1} and~\eqref{eq:2} of Theorem~\ref{theorem:theorem 5}.
 
 \mytodo{make this algorithm look a little nicer\ldots}
 \begin{algorithm}[H]
@@ -72,13 +72,13 @@ This property is very helpful, as it minimizes the amount of facts which are can
 
 At the beginning, the set $D_V$ contains all possible values for the variable $V\in\mathcal{V}$, while $A$ contains all facts which are a mutex with any fact in $p$.
 In each iteration of the while-loop, all $f=\langle v, V\rangle$ which are in $A$ and in $D_V$ are removed from the corresponding $D_V$.
-On line~\ref{lst:line:A} $A$ is extended with all facts that form a mutex with all facts remaining in $D_V$, i.e. which are a mutex with $p\cup\{f\}$ for all $f\in D_V$.
+On line~\ref{lst:line:A}, $A$ is extended with all facts that form a mutex with all facts remaining in $D_V$, i.e., which are a mutex with $p\cup\{f\}$ for all $f\in D_V$.
 
 In conclusion, after applying mutli-fact fixpoint disambiguation $p$ can be extended with any fact in $\mathcal{D}$ without reaching a dead-end state.
 If any $D_V\in\mathcal{D}$ is empty, then $p$ is already a dead-end itself.
-\mytodo{The algorithm is later on used to\ldots}
 
-This algorithm can now be used to generalize~\ref{theorem:theorem 5} by the following theorem.
+This algorithm is used for several applications during the remainder of this chapter.
+In this section, it can be used to generalize Theorem~\ref{theorem:theorem 5} by the following theorem.
 
 \begin{theorem}
     \label{theorem:7}
@@ -89,24 +89,25 @@ This algorithm can now be used to generalize~\ref{theorem:theorem 5} by the foll
     \end{enumerate}
 
     If
-    \[\sum_{V\in\mathcal{V}}\max_{f\in G_V}\mathtt{P}(f)\leq0\label{eq:3}\tag{3}\]
+    \begin{equation}\sum_{V\in\mathcal{V}}\max_{f\in G_V}\mathtt{P}(f)\leq0\label{eq:3}\end{equation}
     and for every operator $o\in\mathcal{O}$ it holds that
-    \[\sum_{V\in\mathrm{vars(eff}(o))}\max_{f\in E^o_V}\mathtt{P}(f) - \sum_{f\in\mathrm{eff}(o)}\mathtt{P}(f)\leq\mathrm{c}(o)\label{eq:4}\tag{4}\]
+    \begin{equation}\sum_{V\in\mathrm{vars(eff}(o))}\max_{f\in E^o_V}\mathtt{P}(f) - \sum_{f\in\mathrm{eff}(o)}\mathtt{P}(f)\leq\mathrm{c}(o)\label{eq:4}\end{equation}
     then the potential heuristic $\mathtt{P}$ is admissible.
 \end{theorem}
 
-\citeauthor{fivser2020strengthening} proof the theorem by showing that equations~\eqref{eq:3} and~\eqref{eq:4} are generalizations of equations~\eqref{eq:1} and~\eqref{eq:2} respectively.
+\citeauthor{fivser2020strengthening} prove the theorem by showing that Equations~\eqref{eq:3} and~\eqref{eq:4} are generalizations of Equations~\eqref{eq:1} and~\eqref{eq:2}, respectively.
 
-Both $G_V$ and $E_V^o$ are equal to $D_V\in\mathcal{D}$ which can be derived with algorithm~\autoref{alg:multi-fact} of the goal state or the $pre(o)$ respectively.
-If $G_V$ is empty for any of the variables, then the problem is unsolvable. \mytodo{Why?}
+Both $G_V$ and $E_V^o$ are equal to $D_V\in\mathcal{D}$ which can be derived with Algorithm~\autoref{alg:multi-fact} of the goal state or $pre(o)$, respectively.
+If $G_V$ is empty for any of the variables, then the problem is unsolvable, as the goal contains a mutex and is therefore not a reachable state.
 $o$ is not applicable in any (partial) state, if $E^o_V$ is empty for any  $V\in\text{vars(eff}(o))$.
 
 To show the reader why this property is useful in practice, we first introduce the Transition Normal Form.
 
 \section{Transition Normal Form}\label{sec:transition-normal-form}
-Planning Tasks can be in Transition Normal Form (\textbf{TNF}). \mytodo{why do we want this?}
+Planning tasks can be in Transition Normal Form (TNF).
 A planning task in TNF has a fully defined goal ($\text{vars}(G)=\mathcal{V}$) and all variables of the effect are also in the precondition for each operator $o\in\mathcal{O}$ ($\text{vars(pre}(o)) = \text{vars(eff}(o))$).
-Any planing task  $\Pi = \langle \mathcal{V}, \mathcal{O}, I, G \rangle$ can be transformed into TNF with the following rules cited from \cite{fivser2020strengthening}:
+\mytodo{why do we want this?}
+Any planing task  $\Pi = \langle \mathcal{V}, \mathcal{O}, I, G \rangle$ can be transformed into TNF with the following rules cited from~\citeauthor{fivser2020strengthening}:
 \begin{itemize}
     \item Add a fresh value $U$ to the domain of every variable.
     \item For every variable $V\in\mathcal{V}$ and every fact $f\in\mathcal{F}_V$, $f\neq\langle V,U\rangle$, add a new \textit{forgetting} operator $o_f$ with $\text{pre}(o_f)=\{f\}$ and $\text{eff}(o_f)=\{\langle V,U\rangle\}$ and the cost $\text{c}(o_f)=0$.
@@ -118,30 +119,33 @@ Any planing task  $\Pi = \langle \mathcal{V}, \mathcal{O}, I, G \rangle$ can be 
     \item For every $V\in\mathcal{V}\setminus\text{vars}(G)$ add $\langle V,U\rangle$ to $G$.
 \end{itemize}
 
-Each Variable $V\in\mathcal{V}$ gets a new value in its domain, which can be seen as a sort of placeholder.
-It can be assigned 'for free', as the forgetting operator $o_f$ which assigns it has no cost, regardless of the current state and especially the current assignment of $V$.
-The next point is to assure, that for each operator the variables which are in the precondition are also in the effect.
+Each Variable $V\in\mathcal{V}$ gets a new value $U$ in its domain, which can be seen as a sort of placeholder.
+The fact $\langle V,U\rangle$ can be assigned with cost 0, as the forgetting operator $o_f$ which assigns it has no cost, regardless of the current state and especially the current assignment of $V$.
+The next point is to assure that for each operator the variables which are in the precondition are also in the effect.
 
-If $V$ is in the preconditions of an operator $o\in\mathcal{O}$ but not in the effect, then we can simply add the variable and the value it is already assigned to the effect.
+If $V$ is present in the preconditions of an operator $o\in\mathcal{O}$ but not in the effect, then we can simply add the variable and the value it is already assigned to the effect.
 This is a formal change, but does not change the effect of the operator at all, as it would not have changed this fact anyway.
 
-The case of an operator $o\in\mathcal{O}$ where $V$ is in the effect, but not in the precondition, is a little more complicated to explain.
-Here, the precondition is changed, such that it contains also the fact $\langle V, U\rangle$.
-If $o$ was applicable in $s$ before, then after transforming the plan into TNF the corresponding $o_f$ needs to be applied beforehand in order to 'forget' the value of $V$.
-This change of the variable is insignificant, as the value then gets changed at applying the operator anyways.
+The case of an operator $o\in\mathcal{O}$, where $V$ is in the effect but not in the precondition, is a little more complicated.
+Here, the precondition is changed such that it contains also the fact $\langle V, U\rangle$.
+If $o$ was applicable in $s$ before, then, after transforming the plan into TNF, the corresponding $o_f$ needs to be applied beforehand in order to forget the value of $V$.
+This change of the variable is insignificant, as the value then gets changed by applying the operator anyways.
 
 Last, all variables which were not included in the partial state $G$ need to be added into it.
-if they are assigned the fresh value $U$, then the goal state can be reached from every state which expanded it before.
-Without creating more cost, the values of all 'non mattering' variables are changed to the fresh value.
+If they are assigned the fresh value $U$, then the goal state can be reached from every state which expanded it before.
+Without creating more cost, the values of all unimportant variables are changed to the fresh value.
+The compilation into TNF can produce a plan twice the size of the original task in worst case~\cite{seipp2015new}.
 
 \subsection{Generalization with Mutexes}\label{subsec:tnf-generalize-with-mutexes}
-Similar to section~\ref{subsec:pot-generalize-with-mutexes} these rules can be generalized with disambiguations:
+Similar to Section~\ref{subsec:pot-generalize-with-mutexes}, these rules can be generalized with disambiguations.
+Therefore, to replace $U$ we introduce the fresh values $U_{G_V}$ and $U_{E^o_V}$.
+Instead of adding forgetting operators from every fact in every $V\in\mathcal{V}$, we use the disambiguation sets $G_V$ and $E_V^o$.
 
 \begin{itemize}
     \item Add fresh value $U_{G_V}$ to the domain of every $V\in\mathcal{V}$.
     \item For every variable $V\in\mathcal{V}$ and every fact $f\in G_V$, $f\neq\langle V,U_{G_V}\rangle$, add new \textit{forgetting} operators $o_{f_G}$ with $\text{pre}(o_{f_G})=\{f\}$ and $\text{eff}(o_{f_G})=\{\langle V,U_{G_V}\rangle\}$ and the cost $\text{c}(o_{f_G})=0$.
     \item For every $V\in\mathcal{V}\setminus\text{vars}(G)$ add $\langle V,U_{G_V}\rangle$ to $G$.
-    \item For every operator $o\in\mathcal{O}$ add $\langle V,U_V\rangle$ to the domain of variable $V\in\mathcal{V}$:
+    \item For every operator $o\in\mathcal{O}$ add fresh value $U_{E^o_V}$ to the domain of every $V\in\mathcal{V}$:
     \begin{itemize}
         \item If $V\in\text{vars(pre}(o))$ and $V\notin\text{vars(eff}(o))$, then add $\langle V,\text{pre}(o)[V]\rangle$ to $\text{eff}(o)$.
         \item If $V\in\text{vars(eff}(o))$ and $V\notin\text{vars(pre}(o))$, then add $\langle V,U_{E^o_V}\rangle$ to $\text{pre}(o)$.
@@ -149,45 +153,121 @@ Similar to section~\ref{subsec:pot-generalize-with-mutexes} these rules can be g
     \item For every variable $V\in\mathcal{V}$ and every fact $f\in E_V^o$, $f\neq\langle V,U_{E^o_V}\rangle$, add new \textit{forgetting} operators $o_{f_E}$ with $\text{pre}(o_{f_E})=\{f\}$ and $\text{eff}(o_{f_E})=\{\langle V,U_{E^o_V}\rangle\}$ and the cost $\text{c}(o_{f_E})=0$.
 \end{itemize}
 
-We introduce more fresh values, as each variable has one per each operator and one for the goal state.
-However, this results in less forgetting operators, as facts which are a mutex with the corresponding domain are ignored.
-For the goal state forgetting operators are only created for the facts in $F_V$ which are not a mutex with any $f\in\ G$ for every $V\notin\text{vars}(G)$.
-Similar, facts in $F_V$ which are a mutex with any $f\in\text{pre}(o)$ are not taken into account for all $o\in\mathcal{O}$ and every $V\in\text{vars(eff}(o))$.
+For the goal state, forgetting operators are only created for the facts in $F_V$ which are not a mutex with any $f\in G$ for every $V\notin\text{vars}(G)$.
+Similarly, facts in $F_V$ which are a mutex with any $f\in\text{pre}(o)$ are not taken into account for all $o\in\mathcal{O}$ and every $V\in\text{vars(eff}(o))$.
+This creates at most $|\mathcal{O}|*|\mathcal{V}|$ $U_{E_V^o}$ and $|\mathcal{V}|$ $U_{G_V}$, and the same amount of forgetting operators in the worst case.
+In practice,~\citeauthor{fivser2020strengthening} show that the transformation with disambiguations is never bigger than without disambiguations.
 
 \section{Linear Program}\label{sec:linear-programm}
-Lin
-The formluas from theorem~\ref{theorem:7} can be used to formulate a Linear Program.
-The Solution of this LP is then the admissi
+The formulas and rules which were defined in the previous two sections can now be used to form a Linear Program (LP).
 
-In order to get the potentials a lp solver needs to be constructed.
+An LP consists of LP-variables which are constrained by multiple inequalities (constraints) and which are part of an optimization function.
+An LP-solver then assigns each LP-variable a value, such that all constraints are satisfied and the optimization function is optimized.
+We will look at different optimization functions in the next section (\ref{sec:optimization}).
 
+\begin{definition}
+    \label{definition:LP}
+    Let $f$ be a solution to the following LP:
 
+    Maximize $\mathrm{opt}$ subject to $\sum_{V\in\mathcal{V}}\mathtt{P}_{\langle V, s[V]\rangle}\leq0$ and
+    $\sum_{V\in\mathrm{vars(eff}(o))}(\mathtt{P}_{\langle V, \mathrm{pre}(o)[V]\rangle}-\mathtt{P}_{\langle V, \mathrm{eff}(o)[V]\rangle})\newline\leq\mathrm{c}(o)$
+    for all $o\in\mathcal{O}$, where the {\color{red} objective} function $\mathrm{opt}$ can be chosen arbitrarily.
 
-Introduce LP variables $X_f=\mathtt{P}(f)$ for every fact $f\in\mathcal{F}$ and $M_V$ corresponding to $\max_{f\in\mathcal{F}_V}\mathtt{P}(f)$ with the constraint that $x_f\leq M_V$ for every $f\in\mathcal{F}$.
+    Then the function $\mathrm{pot}_{\mathrm{opt}}(\langle V,v\rangle)=f(\mathtt{P}_{\langle V,v\rangle})$ is the {\normalfont potential function optimized for $\mathrm{opt}$} and $h^{\mathrm{pot}}_{\mathrm{opt}}$ is the {\normalfont potential heuristic optimized for $\mathrm{opt}$}.
+\end{definition}
 
-Explain why $M_V=\mathtt{P}(U)$ (pot von U richtig?):
-
-In TNF $V\in\mathcal{V}\setminus\text{vars}(G)$ as well as $\text{vars}^*(o)$ for each $o\in\mathcal{O}$ are empty.
-The facts $f_U$in $G$ and $\text{pre}^*(o)$ respectively are $\langle V,U\rangle$ for the corresponding variable $V\in\mathcal{V}$, therefore $\mathtt{P}(f_U)$ must hold $M_V$.
-
-LP constraints:
-\[\sum_{f\in G}X_f+\sum_{V\in\mathcal{V}\setminus\text{vars}(G)}M_{G_V}\leq0\tag{i}\]
+In order to find a potential heuristic, the LP-variables are the potentials of the facts, $P(f)$.
+Further we define the constraints as Equation~\eqref{eq:3} for the goal state and Equations~\eqref{eq:4} for every operator.
+Since these two formulas assure admissibility, any solution of the LP builds an admissible $h^\mathtt{p}$.
+We introduce the the LP-variables $X_f=\mathtt{P}(f)$ for every $f\in\mathcal{F}$ and $M_{G_V}$ and $M_{E^o_V}$ corresponding to $U_{G_V}$ and $U_{E_V^o}$, respectively, with the constraint that $X_f\leq M_{G_V}$ and $X_f\leq M_{E^o_V}$ for every $f\in\mathcal{F}$.
+This gives the constraints
+\begin{equation}\sum_{f\in G}X_f+\sum_{V\in\mathcal{V}\setminus\text{vars}(G)}M_{G_V}\leq0\end{equation}
 and
-\[\sum_{f\in\text{pre}^*(o)}X_f+\sum_{V\in\text{vars}^*(o)}M_{E^o_V}-\sum_{f\in\text{eff}(o)}X_f\leq c(o)\tag{ii}\]
+\begin{equation}\sum_{f\in\text{pre}^*(o)}X_f+\sum_{V\in\text{vars}^*(o)}M_{E^o_V}-\sum_{f\in\text{eff}(o)}X_f\leq c(o)\end{equation}
+which are coherent to the formulas in Definition~\ref{definition:LP} (\citeauthor{pommerening2015non}).
+$M_{G_V}$ and $M_{E^o_V}$ correspond to $U_{G_V}$ and $U_{E_V^o}$, respectively, since these are the facts which are assigned if a variable is not defined in the goal state or in a precondition of an operator.
 
+The solution of the LP might differ vastly depending on the used optimization function.
+We will look at multiple different possibilities for optimization functions.
 
-\begin{comment}
-    %TODO: this is for the LP solver, from one of helmerts papers?
-    \begin{definition}
-        Let $f$ be a solution to the following LP:
-        Maximize $\mathrm{opt}$ subject to $\sum_{V\in\mathcal{V}}\mathtt{P}_{\langle V, s[V]\rangle}\leq0$ and
-        $\sum_{V\in\mathrm{vars(eff}(o))}(\mathtt{P}_{\langle V, \mathrm{pre}(o)[V]\rangle}-\mathtt{P}_{\langle V, \mathrm{eff}(o)[V]\rangle})\leq\mathrm{c}(o)$
-        for all $o\in\mathcal{O}$, where the objective function $\athrm{opt}$ can be chosen arbitrarily.
-        Then the function $\mathrm{pot}_{\mathrm{opt}}(\langle V,v\rangle)=f()$
-    \end{definition}
-\end{comment}
+\section{Optimization Functions}\label{sec:optimization}
+An optimization function $\mathrm{opt}$ is a linear combination of the LP-variables.
+In our case, the goal is to maximize it in order to maximize the average $h^\mathtt{P}$-value.
 
+In the first proposal for potential heuristics from~\citeauthor{pommerening2015non}, the optimization for the initial state was used,
+\begin{equation}\mathrm{opt}_I=\sum_{f\in I}\mathtt{P}(f).\label{eq:initial-state}\end{equation}
+The drawback of this function is that facts which do not appear in the initial state are not taken into account.
+One solution to this would be to recalculate the potentials for each single state, but this is computationally too expensive.
 
-\section{Optimization}\label{sec:optimization}
+Alternatively, we could optimize the potentials for all reachable states at once, with the all-states-potentials optimization function:
+\begin{equation}\mathrm{opt}_\mathcal{R} = \frac{1}{|\mathcal{R}|}\sum_{s\in\mathcal{R}}\sum_{f\in s}\mathtt{P}(f).\label{eq:all-states}\end{equation}
 
+It calculates the weighted sum of all facts, i.e., it multiplies the potential of a fact with the amount of reachable states containing this fact and normalizes it with the total amount of reachable states.
+The potentials generated with this optimization function would result in the heuristic with the maximal average heuristic value over all reachable states.
+Unfortunately, calculating this is, again, computationally expensive or even infeasible, if the planning task and therefore the size of $\mathcal{R}$ are big.
+To avoid this, we could sample some states $S\subseteq\mathcal{R}$, and calculate Equation~\eqref{eq:all-states} over these states, instead of $\mathcal{R}$:
+\begin{equation} \mathrm{opt}_\mathcal{\hat{S}}=\frac{1}{|\mathcal{S}|}\sum_{s\in\mathcal{S}}\sum_{f\in s} \mathrm{P}(f).\label{eq:uniform-opt}\end{equation}
 
+The optimization function could also assume uniform distribution and give all facts the same weight.
+Instead of going over all facts of all states, we would sum over the domains of all variables:
+\begin{equation} \mathrm{opt}_\mathcal{S}=\sum_{\langle V,v \rangle\in\mathcal{F}}\frac{1}{|\mathrm{dom}(V)}\mathtt{P}(\langle V,v \rangle).\end{equation}
+
+These two approaches for the all-states-potential optimization function can be strengthened with mutexes and disambiguations, which we will describe in the next sections.
+
+\subsection{Strengthening All State Potentials}\label{subsec:strengthening-all-state-potential}
+To estimate the amount of reachable states containing $f=\langle V,v \rangle$ we will calculate the upper bound of these states, and try to lower it.
+The product of the domains of all variables except $V$, since $V$ is already assigned, is the total amount of (non-reachable) states which contain $f$.
+With Algorithm~\ref{alg:multi-fact} from Section~\ref{subsec:pot-generalize-with-mutexes} we can remove all facts from all domains which are mutex with $f$.
+These facts could never be assigned in any reachable state containing $f$.
+Therefore, the product over all domains in the resulting disambiguation set is again an upper bound of appearances of $f$.
+
+This holds not only for a single fact, but can be applied to estimate the appearances of any partial state $p$.
+As the product of all domains in the disambiguation set is taken, the value is zero, if $p$ is a mutex itself.
+
+If we define $\mathcal{M}$ as the superset of all mutexes and $\mathcal{M}_p$ as the set of all facts which form a mutex with patial state $p$, then an upper bound for the amount of reachable states of size $k$ containing $f$ is
+
+\begin{equation}
+    \mathcal{C}_f^k(\mathcal{M}) = \sum_{p\in\mathcal{P}_k^{\{f\}}}\prod_{V\in\mathcal{V}} |F_V\setminus\mathcal{M}_p|
+.\label{eq:ckf}\end{equation}
+
+The Equation has the constraint to only extend states to size $k$, as it would get computationally too expensive to compute all reachable states which hold $f$.
+
+We will now use Equation~\eqref{eq:ckf} to calculate the weights for the potential of each $f\in\mathcal{F}$ and form the following optimization function:
+
+\begin{equation}
+    \mathrm{opt}^k_\mathcal{M}=\sum_{f=\langle V,v \rangle\in\mathcal{F}}\frac{\mathcal{C}_f^k(\mathcal{M})}{\sum_{f'\in\mathcal{F}_V}\mathcal{C}_{f'}^k(\mathcal{M})}\mathtt{P}(f).
+    \label{eq:opt1}
+\end{equation}
+
+The result is a modification of $\mathrm{opt}_{\hat{S}}$ (Eq.~\eqref{eq:uniform-opt}) that des not assume uniformly distributed facts.
+Each fact is weighted according to its appearance in all reachable states of size $k$ in relation to the other facts of the corresponding variable.
+The sum of the weights for all facts of one variable is 1.
+We can use this not only as a single heuristic, but also in ensemble heuristics as we will show in the next section.
+
+\subsection{Strengthening Conditioned Ensemble Potentials}\label{subsec:strengthening-conditioned-ensemble}
+If we divide $\mathcal{R}$ into multiple subsets $S_i\subset\mathcal{R}$, with $i=1,\dots,n$ and $S_1\cup\dots\cup S_n=\mathcal{R}$, the solution of the LP with optimization function $\mathrm{opt}_{\hat{S}_i}$ gives better heuristic values for the states in $S_i$ than $\mathrm{opt}_\mathcal{R}$.
+If we calculate the potentials for the optimization of all $S_i$, the resulting heuristics can be used as ensemble heuristics.
+This gives a result which lies somewhere between the all-states-potential heuristic and calculating the potentials for each individual state.
+
+We will choose $S_i$ as the states extending one particular partial state $t$, and use the potentials generated with an adjusted $\mathrm{opt}^k_\mathcal{M}$ as one of multiple ensemble heuristics.
+For this we adapt Equation~\eqref{eq:ckf}, such that it counts how many reachable states of size $|t| + k$ extend $t$:
+\begin{equation}
+    \mathcal{K}^k_f(\mathcal{M}, t) = \sum_{p\in\mathcal{P}^{t\cup\{f\}}_{|t|+k}}\prod_{V\in\mathcal{V}}|\mathcal{F}\setminus\mathcal{M}_p|.
+\end{equation}
+
+The corresponding optimization function uses the weights calculated with $\mathcal{K}^k_f(\mathcal{M}, t)$,
+\begin{equation}
+    \mathrm{opt}^{t,k}_\mathcal{M}=\sum_{f=\langle V,v \rangle\in\mathcal{F}}\frac{\mathcal{K}^k_f(\mathcal{M}, t)}{\sum_{f'\in\mathcal{F}_V}\mathcal{K}^k_f(\mathcal{M}, t)}\mathtt{P}(f).
+    \label{eq:opt2}
+\end{equation}
+
+For this thesis, the partial states $t$ were sampled uniformly at random, as did~\citeauthor{fivser2020strengthening}.
+Future research could be to investigate other ways to choose them.
+
+\subsection{Adding Constraint on Initial State}\label{subsec:adding-constraint-on-initial-state}
+Both $\mathrm{opt}^k_\mathcal{M}$ and $\mathrm{opt}^{t,k}_\mathcal{M}$ optimize the potentials in regard of the entire reachable state space.
+However, the importance of states may vary strongly, depending on where we start and what path is taken from there towards the goal.
+For example, a planning task with multiple goal states may have smaller heuristic values, even though the constraints enforce goal-awareness.
+This is why we now look at a third approach which gives the initial state more weight and adds the constraint  \begin{equation}\sum_{f\in I}\mathtt{P}(f)=h^\mathtt{P}_I (I)\end{equation} to the linear program, where $h^\mathtt{P}_I$ denotes the potential heuristic optimized for the initial state (Eq.~\eqref{eq:initial-state}).
+By calculating the potentials for this heuristic first and then taking it into account for the actual potentials, we force the solver to find potentials which guarantee high heuristic values for the initial state.
+This approach can be combined with all previously discussed optimization functions.
