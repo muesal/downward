@@ -227,7 +227,7 @@ void PotentialOptimizer::construct_lp() {
         utils::g_log << "Adding initial constraint." << endl;
         State init = task_proxy.get_initial_state();
         optimize_for_samples({init});
-        float heuristic_value = 0;
+        long double heuristic_value = 0;
         for (FactProxy fact : init) {
             int var_id = fact.get_variable().get_id();
             int value = fact.get_value();
@@ -371,7 +371,7 @@ void PotentialOptimizer::construct_mutex_lp() {
         utils::g_log << "Adding initial constraint." << endl;
         State init = task_proxy.get_initial_state();
         optimize_for_samples({init});
-        float heuristic_value = 0;
+        long double heuristic_value = 0;
         for (FactProxy fact : init) {
             int var_id = fact.get_variable().get_id();
             int value = fact.get_value();
