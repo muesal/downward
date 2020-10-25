@@ -1,10 +1,18 @@
 #include "mutexes.h"
 
-MutexTable::MutexTable(const Options &opts, VariablesProxy variables, State &state)
-        : variables(variables) {
-    auto hm = make_shared<HMHeuristic>(opts);
-    mutexes = hm->get_unreachable_tuples(state);
-    hm.reset();
+MutexTable::MutexTable(const Options &opts, TaskProxy task_proxy)
+        : variables(task_proxy.get_variables()),
+        task_proxy(task_proxy) {
+    generate_all_pairs();
+    vector<FactPair> s_tup = task_properties::get_fact_pairs(task_proxy.get_initial_state());
+    init_hm_table(s_tup);
+    update_hm_table();
+
+    for (pair<Pair, int> pair: this->hm_table) {
+        if (pair.second == 1) {
+            mutexes.push_back(pair.first);
+        }
+    }
     utils::g_log << "Built mutex table." << endl;
 }
 
@@ -13,12 +21,12 @@ bool MutexTable::unassigned(map<int, int> &state, int variable_id) {
 }
 
 /**
-     * Used in fact_disambiguation's, to subtract all non-possible values (mutexes) from the domain of a variable
-     * @param domain domain of the variable
-     * @param mutex facts which are mutex with the current state
-     * @param variable_id id of the variable
-     * @return the remaining domain of the variable
-     */
+ * Used in fact_disambiguation's, to subtract all non-possible values (mutexes) from the domain of a variable
+ * @param domain domain of the variable
+ * @param mutex facts which are mutex with the current state
+ * @param variable_id id of the variable
+ * @return the remaining domain of the variable
+ */
 vector<int> MutexTable::set_minus(const vector<int> &domain, const vector<FactPair> &mutex, int variable_id) {
     set<int> dom(domain.begin(), domain.end()); // Sets are unique
     for (FactPair m : mutex) {                  // For each fact in mutex...
@@ -57,11 +65,11 @@ vector<FactPair> MutexTable::intersection(const vector<FactPair> &one, const vec
   */
 vector<FactPair> MutexTable::get_mutex_with_state(map<int, int> &state) {
     vector<FactPair> mf;
-    for (vector<FactPair> mutex : mutexes) {
-        if (!unassigned(state, mutex[0].var) && state.find(mutex[0].var)->second == mutex[0].value) {
-            mf.push_back(mutex[1]);
-        } else if (!unassigned(state, mutex[1].var) && state.find(mutex[1].var)->second == mutex[1].value) {
-            mf.push_back(mutex[0]);
+    for (Pair mutex : mutexes) {
+        if (!unassigned(state, mutex.first.var) && state.find(mutex.first.var)->second == mutex.first.value) {
+            mf.push_back(mutex.second);
+        } else if (!unassigned(state, mutex.second.var) && state.find(mutex.second.var)->second == mutex.second.value) {
+            mf.push_back(mutex.first);
         }
     }
     return mf;
@@ -75,11 +83,11 @@ vector<FactPair> MutexTable::get_mutex_with_state(map<int, int> &state) {
    * @param mf tuple in which to save the mutexes
    */
 void MutexTable::get_mutex_with_fact(int variable, int value, vector<FactPair> &mf) {
-    for (vector<FactPair> mutex : mutexes) {
-        if (mutex[0].var == variable && mutex[0].value == value) {
-            mf.push_back(mutex[1]);
-        } else if (mutex[1].var == variable && mutex[1].value == value) {
-            mf.push_back(mutex[0]);
+    for (Pair mutex : mutexes) {
+        if (mutex.first.var == variable && mutex.first.value == value) {
+            mf.push_back(mutex.second);
+        } else if (mutex.second.var == variable && mutex.second.value == value) {
+            mf.push_back(mutex.first);
         }
     }
 }
@@ -127,7 +135,7 @@ MutexTable::multi_fact_disambiguation(map<int, int> &state) {
                 //algorithm 2 l. 8 (A <- A U [intersection over all facts in D_V of M_(p U {f})] )
                 if (domains[id].size() < size) {
                     if (domains[id].empty()) {  // The state is a dead end.
-                        for (auto & domain : domains){
+                        for (auto &domain : domains) {
                             domain.clear();
                         }
                         return domains; // return empty domains, as none are leading
@@ -154,4 +162,96 @@ MutexTable::multi_fact_disambiguation(map<int, int> &state) {
 const VariablesProxy *MutexTable::getVariablesProxy() const {
     auto var = &variables;
     return var;
+}
+
+/**
+ * Generate the hm_table.
+ * Expand and store all pairs of facts with the unreachable value (1).
+ */
+void MutexTable::generate_all_pairs() {
+    Pair pair ({0,0}, {0,0});
+    int num_variables = task_proxy.get_variables().size();
+    for (int i = 0; i < num_variables; ++i) {
+        for (int j = 0; j < task_proxy.get_variables()[i].get_domain_size(); ++j) {
+            pair.first = {i, j} ;
+            for (int i2 = i+1; i < num_variables; ++i) {
+                for (int j2 = 0; j < task_proxy.get_variables()[i].get_domain_size(); ++j) {
+                    pair.second = {i2, j2} ;
+                    hm_table[pair] = 1;
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Generate all pairs from the given facts.
+ * @param t list f facts
+ * @param base generated pairs
+ */
+vector<MutexTable::Pair> MutexTable::generate_all_pairs(vector<FactPair> &t) {
+    vector<Pair> base;
+    for (int i = 0; i < t.size(); ++i) {
+        for (int j = i; j < t.size(); ++j) {
+            base.emplace_back(t[i], t[j]);
+        }
+    }
+    return base;
+}
+
+/**
+ * All pairs which are in t are reachable. Set their values in the hm-table to zero.
+ * @param t initial state
+ */
+void MutexTable::init_hm_table(vector<FactPair> &t) {
+    for (Pair pair : generate_all_pairs(t)) {
+        hm_table[pair] = 0;
+    }
+}
+
+/**
+ * While something changes, go through all operators. For the operators where all preconditions are reachable, set all
+ * effects to reachable, and delete the operator from the list, as there is no need to look at it again. Stop, when
+ * nothing changes anymore.
+ */
+void MutexTable::update_hm_table() {
+    bool was_updated = true;
+    vector<OperatorProxy> ops;
+    for (OperatorProxy op : task_proxy.get_operators()) {
+        ops.push_back(op);
+    }
+
+    while (was_updated) {
+        was_updated = false;
+
+        for (auto op = ops.begin(); op != ops.end(); ++op) {
+            vector<FactPair> pre = task_properties::get_fact_pairs((*op).get_preconditions());
+
+            if (all_reachable(pre)) { // if all preconditions are reachable
+                vector<FactPair> eff = task_properties::get_fact_pairs((*op).get_effects());
+                for (Pair pair : generate_all_pairs(eff)) {
+                    if (hm_table[pair] == 1) { // set all in effect to reachable
+                        hm_table[pair] = 0;
+                        was_updated = true;
+                    }
+                }
+                ops.erase(op); // delete operator from list, as all preconditions and effects are reachable
+                op--; // set iterator one back, as element was deleted
+            }
+        }
+    }
+}
+
+/**
+ * Go through all hm_entries for the fact pairs of t, if any of them is not reachable return false.
+ * @param t vector of facts
+ * @return true if all facts in t are reachable
+ */
+bool MutexTable::all_reachable(vector<FactPair> &t) {
+    for (Pair pair : generate_all_pairs(t)) {
+        if (hm_table[pair] == 1) {
+            return false;
+        }
+    }
+    return true;
 }
