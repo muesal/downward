@@ -14,19 +14,6 @@ MutexTable::MutexTable(TaskProxy task_proxy)
         }
     }
     utils::g_log << "Built mutex table." << endl;
-    //utils::exit_with(utils::ExitCode::SEARCH_INPUT_ERROR);
-    //write to file
-    string filename = "mutex_table.txt";
-    ofstream create(filename);
-    if (create.is_open()) {
-        for (Pair mutex : mutexes) {
-            create << mutex.first.var << " " << mutex.first.value << " ";
-            create << mutex.second.var << " " << mutex.second.value << "\n";
-        }
-        create.close();
-    } else {
-        cout << "Unable to store mutex table";
-    }
 }
 
 bool MutexTable::unassigned(map<int, int> &state, int variable_id) {
