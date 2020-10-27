@@ -4,20 +4,22 @@
 #include "util.h"
 
 #include "../option_parser.h"
+#include "../task_utils/task_properties.h"
 #include "../plugin.h"
 #include "../global_state.h"
 #include "../utils/rng.h"
 #include "../utils/rng_options.h"
+#include "../heuristic.h" // something here includes utils::log
 
-
-#include "../heuristics/hm_heuristic.h"
 #include <iostream>
 #include <fstream>
+#include <map>
+#include <vector>
 #include <zconf.h>
 
 
 using namespace std;
-using namespace hm_heuristic;
+using namespace potentials;
 
 namespace options {
     class Options;
@@ -25,11 +27,25 @@ namespace options {
 
 class MutexTable {
 
-public:
-    vector<vector<FactPair>> mutexes;
-    VariablesProxy variables;
+    using Pair = std::pair<FactPair, FactPair>;
 
-    explicit MutexTable(const Options &opts, VariablesProxy variables, State &state);
+private:
+    vector<Pair> mutexes;
+    VariablesProxy variables;
+    TaskProxy task_proxy;
+    std::map<Pair, int> hm_table;
+    bool was_updated;
+
+    void generate_all_pairs(); // recursively generate all tuples.
+    static vector<Pair> generate_all_pairs(vector<FactPair> &tuples); // generate all pairs.
+
+    void init_hm_table(vector<FactPair> &t);
+
+    void update_hm_table();
+
+    bool all_reachable(vector<FactPair> &t);
+
+    void extend_fact(const FactPair &fact, const vector<FactPair> &pre, const set<int> &op_vars);
 
     static bool unassigned(map<int, int> &state, int variable_id);
 
@@ -41,13 +57,15 @@ public:
 
     void get_mutex_with_fact(int variable, int value, vector<FactPair> &mf);
 
+public:
+    explicit MutexTable(TaskProxy task_proxy);
+
     vector<vector<int>>
     multi_fact_disambiguation(map<int, int> &state);
 
-    ~MutexTable() = default;
-
     const VariablesProxy *getVariablesProxy() const;
-};
 
+    ~MutexTable() = default;
+};
 
 #endif //DOWNWARD_MUTEXES_H

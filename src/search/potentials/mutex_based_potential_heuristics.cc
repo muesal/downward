@@ -11,7 +11,6 @@
 #include <map>
 
 using namespace std;
-using namespace hm_heuristic;
 using Tuple = vector<FactPair>;
 using Weight = tuple<int, int, long double>; // Variable id, value and corresponding weight
 
@@ -224,8 +223,7 @@ namespace potentials {
 
         MutexTable *table = optimizer.get_mutex_table();
         if (table == nullptr) {
-            State initial = task_proxy.get_initial_state();
-            table = new MutexTable(opts, variables, initial);
+            table = new MutexTable(task_proxy);
         }
 
         int k = opts.get<int>("k");
@@ -244,8 +242,7 @@ namespace potentials {
 
         MutexTable *table = optimizer.get_mutex_table();
         if (table == nullptr) {
-            State initial = task_proxy.get_initial_state();
-            table = new MutexTable(opts, variables, initial);
+            table = new MutexTable(task_proxy);
         }
 
         int k = opts.get<int>("k");
