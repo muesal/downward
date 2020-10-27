@@ -2,8 +2,8 @@
 
 MutexTable::MutexTable(TaskProxy task_proxy)
         : variables(task_proxy.get_variables()),
-        task_proxy(task_proxy) {
-    generate_all_pairs();
+          task_proxy(task_proxy) {
+    utils::g_log << "Start building mutex table." << endl;
     vector<FactPair> s_tup = task_properties::get_fact_pairs(task_proxy.get_initial_state());
     init_hm_table(s_tup);
     update_hm_table();
@@ -185,11 +185,11 @@ void MutexTable::generate_all_pairs() {
     int num_variables = task_proxy.get_variables().size();
     for (int i = 0; i < num_variables; ++i) {
         for (int j = 0; j < task_proxy.get_variables()[i].get_domain_size(); ++j) {
-            Pair pair ({i,j}, {i,j}); // single facts must be in the table as well TODO
+            Pair pair({i, j}, {i, j}); // single facts must be in the table as well
             hm_table[pair] = 0;
-            for (int i2 = i+1; i2 < num_variables; ++i2) {
+            for (int i2 = i + 1; i2 < num_variables; ++i2) {
                 for (int j2 = 0; j2 < task_proxy.get_variables()[i2].get_domain_size(); ++j2) {
-                    Pair pair2 ({i,j}, {i2,j2});
+                    Pair pair2({i, j}, {i2, j2});
                     hm_table[pair2] = 1;
                 }
             }
@@ -205,8 +205,8 @@ void MutexTable::generate_all_pairs() {
 vector<MutexTable::Pair> MutexTable::generate_all_pairs(vector<FactPair> &t) {
     vector<Pair> base;
     for (size_t i = 0; i < t.size(); ++i) {
-        base.emplace_back(t[i], t[i]); //TODO
-        for (size_t j = i+1; j < t.size(); ++j) {
+        base.emplace_back(t[i], t[i]); // for reachability of single facts
+        for (size_t j = i + 1; j < t.size(); ++j) {
             base.emplace_back(t[i], t[j]);
         }
     }
@@ -218,6 +218,7 @@ vector<MutexTable::Pair> MutexTable::generate_all_pairs(vector<FactPair> &t) {
  * @param t initial state
  */
 void MutexTable::init_hm_table(vector<FactPair> &t) {
+    generate_all_pairs();
     vector<Pair> pairs = generate_all_pairs(t);
     for (Pair pair : pairs) {
         hm_table[pair] = 0;
@@ -230,34 +231,37 @@ void MutexTable::init_hm_table(vector<FactPair> &t) {
  * nothing changes anymore.
  */
 void MutexTable::update_hm_table() {
-    bool was_updated = true;
-    vector<OperatorProxy> ops;
-    for (OperatorProxy op : task_proxy.get_operators()) {
-        ops.push_back(op);
-    }
-
+    was_updated = true;
     while (was_updated) {
         was_updated = false;
-
-        for (size_t op = 0; op < ops.size(); op++) {
-            vector<FactPair> pre = task_properties::get_fact_pairs(ops[op].get_preconditions());
+        for (OperatorProxy op : task_proxy.get_operators()) {
+            vector<FactPair> pre = task_properties::get_fact_pairs(op.get_preconditions());
             sort(pre.begin(), pre.end());
+            set<int> op_vars;
+            for (FactPair f : pre){
+                op_vars.insert(f.var);
+            }
 
             bool all = all_reachable(pre);
             if (all) { // if all preconditions are reachable
                 vector<FactPair> eff;
-                for (EffectProxy effect : ops[op].get_effects()) {
+                for (EffectProxy effect : op.get_effects()) {
                     eff.push_back(effect.get_fact().get_pair());
+                    op_vars.insert(effect.get_fact().get_pair().var);
                 }
                 sort(eff.begin(), eff.end());
 
                 vector<Pair> effs = generate_all_pairs(eff);
                 for (Pair pair : effs) {
-                    hm_table[pair] = 0;
+                    if (hm_table[pair] == 1) {
+                        hm_table[pair] = 0;
+                        was_updated = true;
+                    }
                 }
-                was_updated = true;
-                ops.erase(ops.begin() + op); // delete operator from list, as all preconditions and effects are reachable
-                if (op > 0) op--;
+
+                for (FactPair f : eff) {
+                    extend_fact(f, pre, op_vars);
+                }
             }
         }
     }
@@ -276,4 +280,43 @@ bool MutexTable::all_reachable(vector<FactPair> &t) {
         }
     }
     return true;
+}
+
+void MutexTable::extend_fact(const FactPair &fact, const vector<FactPair> &pre, const set<int> &op_vars) {
+    for (int i = 0; i < fact.var; ++i) { // all variables
+        if (op_vars.count(i) == 0) { // which are on in the effect
+            for (int j = 0; j < task_proxy.get_variables()[i].get_domain_size(); ++j) {
+                // if {preconditions u f2} is reachable set {f,f2} to reachable
+                FactPair f2 (i,j);
+                Pair pair(f2, fact);
+                if (hm_table[pair] == 1) {
+                    vector<FactPair> p(pre);
+                    p.push_back(f2);
+                    sort(p.begin(), p.end());
+                    if (all_reachable(p)) {
+                        hm_table[pair] = 0;
+                        was_updated = true;
+                    }
+                }
+            }
+        }
+    }
+    for (int i = fact.var + 1; i < variables.size(); ++i) {
+        if (op_vars.count(i) == 0) { // which are on in the effect
+            for (int j = 0; j < task_proxy.get_variables()[i].get_domain_size(); ++j) {
+                // if {preconditions u f2} is reachable set {f,f2} to reachable
+                FactPair f2 (i,j);
+                Pair pair(fact, f2);
+                if (hm_table[pair] == 1) {
+                    vector<FactPair> p(pre);
+                    p.push_back(f2);
+                    sort(p.begin(), p.end());
+                    if (all_reachable(p)) {
+                        hm_table[pair] = 0;
+                        was_updated = true;
+                    }
+                }
+            }
+        }
+    }
 }
