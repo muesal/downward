@@ -223,7 +223,7 @@ namespace potentials {
 
         MutexTable *table = optimizer.get_mutex_table();
         if (table == nullptr) {
-            table = new MutexTable(opts, task_proxy);
+            table = new MutexTable(task_proxy);
         }
 
         int k = opts.get<int>("k");
@@ -242,7 +242,7 @@ namespace potentials {
 
         MutexTable *table = optimizer.get_mutex_table();
         if (table == nullptr) {
-            table = new MutexTable(opts, task_proxy);
+            table = new MutexTable(task_proxy);
         }
 
         int k = opts.get<int>("k");

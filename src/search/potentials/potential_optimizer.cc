@@ -36,7 +36,7 @@ PotentialOptimizer::PotentialOptimizer(const Options &opts)
     task_properties::verify_no_conditional_effects(task_proxy);
     if (use_mutexes) {
         State initial = task_proxy.get_initial_state();
-        table = new MutexTable(opts, task_proxy);
+        table = new MutexTable(task_proxy);
     }
     initialize();
 }

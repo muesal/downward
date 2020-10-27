@@ -4,7 +4,7 @@
 #include "util.h"
 
 #include "../option_parser.h"
-#include <task_utils/task_properties.h>
+#include "../task_utils/task_properties.h"
 #include "../plugin.h"
 #include "../global_state.h"
 #include "../utils/rng.h"
@@ -54,15 +54,15 @@ private:
 
     void get_mutex_with_fact(int variable, int value, vector<FactPair> &mf);
 
-    ~MutexTable() = default;
-
 public:
-    explicit MutexTable(const Options &opts, TaskProxy task_proxy);
+    explicit MutexTable(TaskProxy task_proxy);
 
     vector<vector<int>>
     multi_fact_disambiguation(map<int, int> &state);
 
     const VariablesProxy *getVariablesProxy() const;
+
+    ~MutexTable() = default;
 };
 
 #endif //DOWNWARD_MUTEXES_H
