@@ -34,7 +34,7 @@ private:
     VariablesProxy variables;
     TaskProxy task_proxy;
     std::map<Pair, int> hm_table;
-    bool was_updated;
+    bool was_updated = false;
 
     void generate_all_pairs(); // recursively generate all tuples.
     static vector<Pair> generate_all_pairs(vector<FactPair> &tuples); // generate all pairs.
@@ -45,7 +45,7 @@ private:
 
     bool all_reachable(vector<FactPair> &t);
 
-    void extend_fact(const FactPair &fact, const vector<FactPair> &pre, const set<int> &op_vars);
+    void extend_fact(const FactPair &fact, const vector<FactPair> &pre, const set<int> &eff_vars);
 
     static bool unassigned(map<int, int> &state, int variable_id);
 
@@ -57,6 +57,8 @@ private:
 
     void get_mutex_with_fact(int variable, int value, vector<FactPair> &mf);
 
+    bool reachable_from(const vector<FactPair> &vector, FactPair pair);
+
 public:
     explicit MutexTable(TaskProxy task_proxy);
 
@@ -66,6 +68,7 @@ public:
     const VariablesProxy *getVariablesProxy() const;
 
     ~MutexTable() = default;
+
 };
 
 #endif //DOWNWARD_MUTEXES_H

@@ -224,14 +224,11 @@ void MutexTable::update_hm_table() {
         for (OperatorProxy op : task_proxy.get_operators()) {
             vector<FactPair> pre = task_properties::get_fact_pairs(op.get_preconditions());
             sort(pre.begin(), pre.end());
-            set<int> op_vars;
-            for (FactPair f : pre){
-                op_vars.insert(f.var);
-            }
 
             bool all = all_reachable(pre);
             if (all) { // if all preconditions are reachable
                 vector<FactPair> eff;
+                set<int> op_vars;
                 for (EffectProxy effect : op.get_effects()) {
                     eff.push_back(effect.get_fact().get_pair());
                     op_vars.insert(effect.get_fact().get_pair().var);
@@ -269,18 +266,49 @@ bool MutexTable::all_reachable(vector<FactPair> &t) {
     return true;
 }
 
-void MutexTable::extend_fact(const FactPair &fact, const vector<FactPair> &pre, const set<int> &op_vars) {
+/**
+ * Retrn True whenthe fact is reachable with all preconditions.
+ * Same as all_reachable, with the assumption that preconditions are reachable themselves.
+ * @param preconditions
+ * @param fact
+ * @return true when all reachable
+ */
+bool MutexTable::reachable_from(const vector<FactPair> & preconditions, FactPair fact) {
+    int var = fact.var;
+    for (FactPair pre : preconditions) {
+        if ( var == pre.var && fact.value != pre.value) {
+            return false; // contradicts the precondition
+        } else if (var < pre.var ) {
+            Pair pair(fact, pre);
+            if (hm_table[pair] == 1) { // not reachable
+                return false;
+            }
+        } else {
+            Pair pair(pre, fact);
+            if (hm_table[pair] == 1) { // not reachable
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+/**
+ * Go over all facts f2 of variables which are neither the fact, in the precondition nor the effect (i.e., not in op_vars)
+ * and add <f,f2> as reachable, if precondition u {f2} are reachable.
+ * @param fact the fact
+ * @param pre all FactPairs of the precondition
+ * @param eff_vars list of all variables in the effeect and the preconditions of the operator.
+ */
+void MutexTable::extend_fact(const FactPair &fact, const vector<FactPair> &pre, const set<int> &eff_vars) {
     for (int i = 0; i < fact.var; ++i) { // all variables
-        if (op_vars.count(i) == 0) { // which are on in the effect
+        if (eff_vars.count(i) == 0) { // which are on in the effect
             for (int j = 0; j < task_proxy.get_variables()[i].get_domain_size(); ++j) {
                 // if {preconditions u f2} is reachable set {f,f2} to reachable
-                FactPair f2 (i,j);
+                FactPair f2(i, j);
                 Pair pair(f2, fact);
                 if (hm_table[pair] == 1) {
-                    vector<FactPair> p(pre);
-                    p.push_back(f2);
-                    sort(p.begin(), p.end());
-                    if (all_reachable(p)) {
+                    if (reachable_from(pre, f2)) {
                         hm_table[pair] = 0;
                         was_updated = true;
                     }
@@ -289,16 +317,13 @@ void MutexTable::extend_fact(const FactPair &fact, const vector<FactPair> &pre, 
         }
     }
     for (int i = fact.var + 1; i < variables.size(); ++i) {
-        if (op_vars.count(i) == 0) { // which are on in the effect
+        if (eff_vars.count(i) == 0) { // which are on in the effect
             for (int j = 0; j < task_proxy.get_variables()[i].get_domain_size(); ++j) {
                 // if {preconditions u f2} is reachable set {f,f2} to reachable
-                FactPair f2 (i,j);
+                FactPair f2(i, j);
                 Pair pair(fact, f2);
                 if (hm_table[pair] == 1) {
-                    vector<FactPair> p(pre);
-                    p.push_back(f2);
-                    sort(p.begin(), p.end());
-                    if (all_reachable(p)) {
+                    if (reachable_from(pre, f2)) {
                         hm_table[pair] = 0;
                         was_updated = true;
                     }
