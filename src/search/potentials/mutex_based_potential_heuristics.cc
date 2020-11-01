@@ -144,7 +144,7 @@ namespace potentials {
                 }
 
                 // normalize all weights
-                for (auto & d : weights_f) {
+                for (auto &d : weights_f) {
                     get<2>(d) = get<2>(d) / sum;
                     facts.push_back(d);
                 }
@@ -190,10 +190,10 @@ namespace potentials {
 
         // generate n optimization functions for one randomly sampled state
         vector<unique_ptr<PotentialFunction>> functions;
-        functions.resize(n);
         vector<Weight> weights;
         map<int, int> state;
-        for (int i = 0; i < n; i++) {
+        int i = 0;
+        while (i < n) {
             state.clear();
             for (int t_i = 0; t_i < t; t_i++) {
                 int v = dist_v(gen);
@@ -203,12 +203,11 @@ namespace potentials {
                 } else t_i--;
             }
             weights = opt_k_m(k - t, state, table);
-            if (weights.empty()) {
-                n--; // State was a dead end;
-            } else {
+            if (!weights.empty()) {
+                i++;
                 optimizer.optimize_for_weighted_samples(weights);
-                functions[i] = optimizer.get_potential_function();
-                utils::g_log << "Calculated " << i << "potential functions." << endl;
+                functions.push_back(optimizer.get_potential_function());
+                utils::g_log << "Calculated " << i << " potential functions." << endl;
             }
         }
         return functions;
