@@ -279,7 +279,9 @@ This approach can be combined with all previously discussed optimization functio
 Our implementation of mutex based potential heuristics is embedded in the planning system Fast Downward and written in C++.
 
 We first implemented Algorithm~\ref{alg:multi-fact}, which uses the Fast Downward hm-heuristic with $m=2$ to build a mutex table.
-The computation of heuristic is very slow, which is unfortunate. \mytodo{i made it better (hopefully)}.
+The computation of the hm-heuristic in Fast Downward is very slow.
+Therefore we implemented a new generator for the mutex table, which has a very similar approach to the hm-heuristic, but which is optimized for finding mutexes.
+We show that it is faster in Chapter~\ref{ch:evaluation}
 
 Fast Downward has a potential optimizer, which initializes and constructs an LP-solver.
 We implemented a new LP-constructor which builds the constraints according to Equations~\eqref{eq:3} and~\eqref{eq:4}.

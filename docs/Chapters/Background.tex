@@ -3,18 +3,14 @@
 
 \chapter{Background}\label{ch:background}
 
-The goal of this chapter is to define and explain the terminology in this thesis.
-For visualization the 8-Tiles problem is used as an example.
+The goal of this chapter is to define and explain the terminology used in this thesis.
+For visualization, we use the 8-Tiles problem as an example.
 This is a classical planning problem, in which 8 tiles are arranged in a 3x3-Grid.
 One spot remains empty, the goal is to bring the tiles in a specific order by sliding them around.
-% TODO: explain why we do this? what is a classical planning problem?
 
 \section {Planning Tasks}\label{sec:planning-tasks}
-In order to solve a classical planning problem with heuristic search it is represented as a \textbf{planning task}.
-\citeauthor{fivser2020strengthening} use the finite domain representation (\textbf{FDR}) where $\Pi$ is specified by a tuple $ \Pi = \langle \mathcal{V}, \mathcal{O}, I, G \rangle$~\cite{helmert2009concise}.
-
-$\mathcal{V}$ is a finite set of \textbf{variables}, each of the variables $V\in\mathcal{V}$ has a finite set of \textbf{domains} $\text{dom}(V)$.
-For 8-Tiles, the variables could be defined as the 9 fields in the grid ($v_1$ to $v_9$), and their domains hold the values of all tiles and the blank space (1 to 8 and 0 for the blank tile).
+We define $\mathcal{V}$ as the finite set of \textbf{variables}, each of the variables $V\in\mathcal{V}$ has a finite set of \textbf{domains} $\text{dom}(V)$.
+For 8-Tiles, the variables could be defined as the 9 fields in the grid ($v_1,\dots,v_9$), and their domains hold the values of all tiles and the blank space (1 to 8 and 0 for the blank tile).
 A \textbf{fact} $f=\langle V, v\rangle$ consists of a variable $V\in\mathcal{V}$ and one of its values $v\in\text{dom}(V)$.
 The fact for tile number 5 being in the first position would be $\langle v_1,5\rangle$.
 $\mathcal{F}_V$ is the set of all possible facts of variable $V\in\mathcal{V}$ while $\mathcal{F}$ is the set of all facts of this problem.
@@ -34,9 +30,10 @@ $s = \{v_1\mapsto1, v_2\mapsto2, v_3\mapsto3, v_4\mapsto4, v_5\mapsto5, v_6\maps
 $\mathcal{O}$ is a finite set of \textbf{operators}.
 Each $o\in\mathcal{O}$ has a precondition $\text{pre}(o)$ and an effect $\text{eff}(o)$ which are both partial states over $\mathcal{V}$, and a cost $\text{c}(o)\in\mathbb{R}^+_0$.
 
-The operator $o$ is \textbf{applicable} in state $s$ iff $\text{pre}(o)\subseteq s$, the \textbf{resulting state} is $o\llbracket s\rrbracket$.
-$o\llbracket s\rrbracket[v] = \text{eff}(o)[v]$ holds for all $v\in \text{eff}(o)$ in resulting state $o\llbracket s\rrbracket$, while $o\llbracket s\rrbracket[v]=s[v]$ for all $v\notin \text{eff}(o)$. \mytodo{reformulate.}
-In 8-Tiles the operators encode the movement of one tile to the blank space.
+The operator $o$ is \textbf{applicable} in state $s$ iff $\text{pre}(o)\subseteq s$.
+We call the \textbf{resulting state} $o\llbracket s\rrbracket$.
+$o\llbracket s\rrbracket[v] = \text{eff}(o)[v]$ holds for all $v\in \text{eff}(o)$ in resulting state $o\llbracket s\rrbracket$ while the other variables do not change, i.e., $o\llbracket s\rrbracket[v]=s[v]$ for all $v\notin \text{eff}(o)$.
+In 8-Tiles, the operators encode the movement of one tile to the blank space.
 The precondition assures that the tile is next to the blank space, the effect swaps the values of the corresponding two variables, while all other tiles remain at the same position.
 
 In order to reach the goal multiple operators need to be applied in a specific order.
@@ -49,7 +46,8 @@ A state $s$ is reachable, if a plan $\pi$ is applicable in $I$ such that $\pi\ll
 An operator $o$ is reachable, if it is applicable in a reachable state.
 A state $s$ is a \textbf{dead-end state} if it does not extend the goal state, and no s-plan exists.
 
-%TODO: introduce transition normal form?
+\citeauthor{fivser2020strengthening} use the finite domain representation, where $\Pi$ is specified by a tuple $ \Pi = \langle \mathcal{V}, \mathcal{O}, I, G \rangle$ to represent problems as a \textbf{planning task}~\cite{helmert2009concise}.
+They can then be solved with heuristic search.
 
 \section{Heuristics}\label{sec:heuristics}
 A \textbf{heuristic} $h:\mathcal{R} \rightarrow \mathbb{R} \cup \{\infty\} $ estimates the cost of the optimal plan for a state $s$.
