@@ -1,0 +1,2 @@
+CPLEX_CFLAGS = -I$(DOWNWARD_CPLEX_ROOT)/include
+CPLEX_LDFLAGS = -L$(DOWNWARD_CPLEX_ROOT)/lib/x86-64_linux/static_pic/ -lcplex -ldl

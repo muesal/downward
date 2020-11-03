@@ -53,9 +53,25 @@ def run_translate(args):
         args.translate_time_limit, args.overall_time_limit)
     memory_limit = limits.get_memory_limit(
         args.translate_memory_limit, args.overall_memory_limit)
-    translate = get_executable(args.build, REL_TRANSLATE_PATH)
-    assert sys.executable, "Path to interpreter could not be found"
-    cmd = [sys.executable] + [translate] + args.translate_inputs + args.translate_options
+    if args.translator == "cpddl":
+        translate = get_executable(args.build, "pddl-pot")
+        args.translate_options.remove("--sas-file")
+        args.translate_options.remove("output.sas")
+        try:
+            call.check_call(
+                "translate",
+                [translate] + args.translate_options + args.translate_inputs,
+                stdout="output.sas",
+                time_limit=time_limit,
+                memory_limit=memory_limit)
+        except subprocess.CalledProcessError as err:
+            return (err.returncode, False)
+        else:
+            return (0, True)
+    else:
+        translate = get_executable(args.build, REL_TRANSLATE_PATH)
+        assert sys.executable, "Path to interpreter could not be found"
+        cmd = [sys.executable] + [translate] + args.translate_inputs + args.translate_options
 
     stderr, returncode = call.get_error_output_and_returncode(
         "translator",

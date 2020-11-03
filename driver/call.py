@@ -52,15 +52,20 @@ def _get_preexec_function(time_limit, memory_limit):
         return set_limits
 
 
-def check_call(nick, cmd, stdin=None, time_limit=None, memory_limit=None):
+# TODO: does not support both stdin and stdout!
+def check_call(nick, cmd, stdin=None, stdout=None, time_limit=None, memory_limit=None):
     print_call_settings(nick, cmd, stdin, time_limit, memory_limit)
 
     kwargs = {"preexec_fn": _get_preexec_function(time_limit, memory_limit)}
+
 
     sys.stdout.flush()
     if stdin:
         with open(stdin) as stdin_file:
             return subprocess.check_call(cmd, stdin=stdin_file, **kwargs)
+    elif stdout:
+        with open(stdout, "w") as stdout_file:
+            return subprocess.check_call(cmd, stdout=stdout_file, **kwargs)
     else:
         return subprocess.check_call(cmd, **kwargs)
 

@@ -125,6 +125,11 @@ def build(config_name, cmake_parameters, make_parameters):
             cwd=build_path)
     try_run([MAKE] + make_parameters, cwd=build_path)
 
+    try_run(["make", "boruvka", "opts"], cwd="src/cpddl")
+    try_run("make", cwd="src/cpddl")
+    try_run(["make","-C", "bin"], cwd="src/cpddl")
+    try_run(["cp", "../../src/cpddl/bin/pddl-pot", "bin/"], cwd=build_path)
+
     print("Built configuration {config_name} successfully.".format(**locals()))
 
 

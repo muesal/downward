@@ -389,6 +389,10 @@ def parse_args():
         "--log-level", choices=["debug", "info", "warning"],
         default="info",
         help="set log level (most verbose: debug; least verbose: warning; default: %(default)s)")
+    driver_other.add_argument(
+        "--translator", choices=["translate", "cpddl"],
+        default="translate",
+        help="choose whether to run the fast downward or cpddl translator (default: %(default)s)")
 
     driver_other.add_argument(
         "--plan-file", metavar="FILE", default="sas_plan",
