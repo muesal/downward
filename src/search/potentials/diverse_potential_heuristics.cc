@@ -159,9 +159,14 @@ static shared_ptr<Heuristic> _parse(OptionParser &parser) {
         Bounds("0", "infinity"));
     parser.add_option<int>(
         "init-const",
-        "Use the addition constraint on the initial state in potential optimizer",
+        "Use the additional constraint on the initial state in potential optimizer",
         "0",
         Bounds("0", "1"));
+    parser.add_option<int>(
+        "rand-const-num",
+        "Number of samples for the additional constraint on random sample states in potential optimizer",
+        "0",
+        Bounds("0", "infinity"));
 
     prepare_parser_for_admissible_potentials(parser);
     utils::add_rng_options(parser);

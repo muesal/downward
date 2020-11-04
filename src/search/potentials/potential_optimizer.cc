@@ -8,6 +8,7 @@
 #include "../utils/collections.h"
 #include "../utils/memory.h"
 #include "../utils/system.h"
+#include "../task_utils/sampling.h"
 
 #include <limits>
 #include <unordered_map>
@@ -31,7 +32,8 @@ PotentialOptimizer::PotentialOptimizer(const Options &opts)
       max_potential(opts.get<double>("max_potential")),
       num_lp_vars(0),
       use_mutexes(opts.get<int>("mutex") == 1),
-      initial_constraint(opts.get<int>("init-const") == 1) {
+      initial_constraint(opts.get<int>("init-const") == 1),
+      random_samples_constraint(opts.get<int>("rand-const-num")){
     task_properties::verify_no_axioms(task_proxy);
     task_properties::verify_no_conditional_effects(task_proxy);
     if (use_mutexes) {
@@ -226,7 +228,7 @@ void PotentialOptimizer::construct_lp() {
         utils::g_log << "Adding initial constraint." << endl;
         State init = task_proxy.get_initial_state();
         optimize_for_samples({init});
-        long double heuristic_value = 0;
+        double heuristic_value = 0;
         for (FactProxy fact : init) {
             int var_id = fact.get_variable().get_id();
             int value = fact.get_value();
@@ -241,6 +243,48 @@ void PotentialOptimizer::construct_lp() {
         }
 
         lp_solver.add_temporary_constraints({constraint});
+    }
+
+    // add the constraints: \sum_{f\in s} P(f) = h^P_s(s) for random_samples_constraint randomly sampled states s.
+    if (random_samples_constraint > 0) {
+        utils::g_log << "Adding random samples constraint." << endl;
+
+        // get the h-value of the initial state
+        State init = task_proxy.get_initial_state();
+        optimize_for_state(init);
+        double init_h = 0;
+        for (FactProxy fact : init) {
+            int var_id = fact.get_variable().get_id();
+            int value = fact.get_value();
+            assert(utils::in_bounds(var_id, fact_potentials));
+            assert(utils::in_bounds(value, fact_potentials[var_id]));
+            init_h += fact_potentials[var_id][value];
+        }
+        utils::RandomNumberGenerator rng(2011);
+        sampling::RandomWalkSampler sampler(task_proxy, rng);
+        for (int i = 0; i < random_samples_constraint; i++) {
+            // get the random state and optimize for it
+            State s = sampler.sample_state(init_h);
+            optimize_for_samples({s});
+
+            // get it's heuristic value
+            double heuristic_value = 0;
+            for (FactProxy fact : s) {
+                int var_id = fact.get_variable().get_id();
+                int value = fact.get_value();
+                assert(utils::in_bounds(var_id, fact_potentials));
+                assert(utils::in_bounds(value, fact_potentials[var_id]));
+                heuristic_value += fact_potentials[var_id][value];
+            }
+
+            // add the constraint
+            lp::LPConstraint constraint(heuristic_value, heuristic_value);
+            for (FactProxy fact : s) {
+                constraint.insert(lp_var_ids[fact.get_variable().get_id()][fact.get_value()], 1);
+            }
+
+            lp_solver.add_temporary_constraints({constraint});
+        }
     }
 }
 
@@ -370,7 +414,7 @@ void PotentialOptimizer::construct_mutex_lp() {
         utils::g_log << "Adding initial constraint." << endl;
         State init = task_proxy.get_initial_state();
         optimize_for_samples({init});
-        long double heuristic_value = 0;
+        double heuristic_value = 0;
         for (FactProxy fact : init) {
             int var_id = fact.get_variable().get_id();
             int value = fact.get_value();

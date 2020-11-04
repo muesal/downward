@@ -54,6 +54,7 @@ class PotentialOptimizer {
     MutexTable *table = nullptr;
     bool use_mutexes;
     bool initial_constraint;
+    int random_samples_constraint;
 
     int get_lp_var_id(const FactProxy &fact) const;
     void initialize();

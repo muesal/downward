@@ -264,9 +264,14 @@ namespace potentials {
                 Bounds("0", "1"));
         parser.add_option<int>(
                 "init-const",
-                "Use the addition constraint on the initial state in potential optimizer",
+                "Use the additional constraint on the initial state in potential optimizer",
                 "0",
                 Bounds("0", "1"));
+        parser.add_option<int>(
+                "rand-const-num",
+                "Number of samples for the additional constraint on random sample states in potential optimizer",
+                "0",
+                Bounds("0", "infinity"));
         parser.add_option<int>(
                 "m",
                 "use h2 heuristic",
@@ -297,9 +302,14 @@ namespace potentials {
                 Bounds("0", "1"));
         parser.add_option<int>(
                 "init-const",
-                "Use the addition constraint on the initial state in potential optimizer",
+                "Use the additional constraint on the initial state in potential optimizer",
                 "0",
                 Bounds("0", "1"));
+        parser.add_option<int>(
+                "rand-const-num",
+                "Number of samples for the additional constraint on random sample states in potential optimizer",
+                "0",
+                Bounds("0", "infinity"));
         parser.add_option<int>(
                 "m",
                 "use h2 heuristic",
