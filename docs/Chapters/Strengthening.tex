@@ -105,7 +105,7 @@ $o$ is not applicable in any (partial) state if $E^o_V$ is empty for any  $V\in\
 To show the reader why this property is useful in practice, we first introduce the Transition Normal Form.
 
 \section{Transition Normal Form}\label{sec:transition-normal-form}
-Planning tasks can be in Transition Normal Form (TNF).
+Planning tasks can be in Transition Normal Form (TNF,~\citeauthor{pommerening2015normal}).
 A planning task in TNF has a fully defined goal ($\text{vars}(G)=\mathcal{V}$) and all variables of the effect are also in the precondition for each operator $o\in\mathcal{O}$ ($\text{vars(pre}(o)) = \text{vars(eff}(o))$).
 These properties are essential to form the Linear Program, which we will do in the next section.
 Any planing task  $\Pi = \langle \mathcal{V}, \mathcal{O}, I, G \rangle$ can be transformed into TNF with the following rules cited from~\citeauthor{fivser2020strengthening}:
@@ -276,12 +276,12 @@ By calculating the potentials for this heuristic first and then taking it into a
 This approach can be combined with all previously discussed optimization functions.
 
 \section{Implementation}\label{sec:implementation}
-Our implementation of mutex based potential heuristics is embedded in the planning system Fast Downward and written in C++.
+Our implementation of mutex based potential heuristics is embedded in the planning system Fast Downward by \citeauthor{helmert2006fast} and written in C++.
 
 We first implemented Algorithm~\ref{alg:multi-fact}, which uses the Fast Downward hm-heuristic with $m=2$ to build a mutex table.
 The computation of the hm-heuristic in Fast Downward is very slow.
-Therefore we implemented a new generator for the mutex table, which has a very similar approach to the hm-heuristic, but which is optimized for finding mutexes.
-We show that it is faster in Chapter~\ref{ch:evaluation}
+Therefore, we implemented a new generator for the mutex table, which is very similar to the hm-heuristic, but optimized for finding mutexes.
+We show that it is faster in \mytodo{Chapter~\ref{ch:evaluation}}.
 
 Fast Downward has a potential optimizer, which initializes and constructs an LP-solver.
 We implemented a new LP-constructor which builds the constraints according to Equations~\eqref{eq:3} and~\eqref{eq:4}.
@@ -295,11 +295,11 @@ Using these states, we calculate the weight of each fact with $\mathcal{C}_f^k(\
 The weights are stored as vectors and passed to the potential optimizer, which uses them to generate the optimization function.
 
 The optimization function $\mathrm{opt}^{t,k}_\mathcal{M}$ was implemented implicitly.
-As all former mentioned methods can handle partial states of a cardinalities $\geq 1$, only one new method was needed.
+As all former mentioned methods can handle partial states of cardinalities $\geq 1$, only one new method was needed.
 It generates $n$ mutex based potential heuristics, each of which uses a random state of size $t$.
 With each of these we perform the same procedure as above with $p_f$.
 
-Running Fast Downward, the mutex based potential heuristic can be used with the command \texttt{--search "astar(mutex\_based\_potential())"}.
+Running Fast Downward, the mutex based potential heuristic can be used with the command \texttt{--search "astar(mutex\_based\_potential())"}, where astar can be replaced by any other search algorithm of Fast Downward.
 The size to which $p_f$ should be extended can be set with \texttt{k}, the default value is \texttt{k=2}.
 
 The command \texttt{--search "astar(mutex\_based\_ensemble\_potential())"} uses the mutex based ensemble heuristics.
@@ -309,4 +309,6 @@ The variables can be set manually and their respective default values are \textt
 
 Further, all potential heuristics can be solved using LP-constraints built with mutexes through the option \texttt{mutex=1}.
 The default value is \texttt{mutex=0} for all potential heuristics, except for the mutex based ones.
-The constraint for the initial state is added through \texttt{init-const=1}, the default value for this is  for all potential heuristics.
+The constraint for the initial state is added through \texttt{init-const=1}, the default value for this is $0$ for all potential heuristics.
+
+We will evaluate our implementation in the next chapter.

@@ -9,6 +9,8 @@
 \usepackage{comment}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
+\usepackage{tabularx}
+\usepackage[justification=centering]{caption}
 \floatname{algorithm}{Algorithm}
 \newtheorem{theorem}{Theorem}
 \newtheorem{definition}[theorem]{Definition}
@@ -16,6 +18,8 @@
 \renewcommand{\algorithmicensure}{\textbf{Output:}}
 \newcommand\mytodo[1]{\textbf{\textcolor{magenta}{#1}}}
 %\renewcommand\mytodo[1]{} % This hides all todos
+
+\makeatletter\AtBeginDocument{\let\@elt\relax}\makeatother
 
 %% ----------------------------------------------------------------
 
@@ -27,7 +31,7 @@
 \research		    {Artificial Intelligence \\ https://ai.dmi.unibas.ch}
 
 \examiner    		{Prof. Dr. Malte Helmert}
-\supervisor  		{Salom\'e Eriksson}
+\supervisor  		{Dr. Salom\'e Eriksson}
 
 \authors     		{Salome M\"uller}
 \email				{salo.mueller@unibas.ch}
