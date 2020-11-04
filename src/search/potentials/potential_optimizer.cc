@@ -430,6 +430,49 @@ void PotentialOptimizer::construct_mutex_lp() {
 
         lp_solver.add_temporary_constraints({constraint});
     }
+
+    // add the constraints: \sum_{f\in s} P(f) = h^P_s(s) for random_samples_constraint randomly sampled states s.
+    // this does not take mutexes into account
+    if (random_samples_constraint > 0) {
+        utils::g_log << "Adding random samples constraint." << endl;
+
+        // get the h-value of the initial state
+        State init = task_proxy.get_initial_state();
+        optimize_for_state(init);
+        double init_h = 0;
+        for (FactProxy fact : init) {
+            int var_id = fact.get_variable().get_id();
+            int value = fact.get_value();
+            assert(utils::in_bounds(var_id, fact_potentials));
+            assert(utils::in_bounds(value, fact_potentials[var_id]));
+            init_h += fact_potentials[var_id][value];
+        }
+        utils::RandomNumberGenerator rng(2011);
+        sampling::RandomWalkSampler sampler(task_proxy, rng);
+        for (int i = 0; i < random_samples_constraint; i++) {
+            // get the random state and optimize for it
+            State s = sampler.sample_state(init_h);
+            optimize_for_samples({s});
+
+            // get it's heuristic value
+            double heuristic_value = 0;
+            for (FactProxy fact : s) {
+                int var_id = fact.get_variable().get_id();
+                int value = fact.get_value();
+                assert(utils::in_bounds(var_id, fact_potentials));
+                assert(utils::in_bounds(value, fact_potentials[var_id]));
+                heuristic_value += fact_potentials[var_id][value];
+            }
+
+            // add the constraint
+            lp::LPConstraint constraint(heuristic_value, heuristic_value);
+            for (FactProxy fact : s) {
+                constraint.insert(lp_var_ids[fact.get_variable().get_id()][fact.get_value()], 1);
+            }
+
+            lp_solver.add_temporary_constraints({constraint});
+        }
+    }
 }
 
 void PotentialOptimizer::solve_and_extract() {
