@@ -273,11 +273,6 @@ namespace potentials {
                 "0",
                 Bounds("0", "infinity"));
         parser.add_option<int>(
-                "m",
-                "use h2 heuristic",
-                "2",
-                Bounds("0", "infinity"));
-        parser.add_option<int>(
                 "k",
                 "size of extended state",
                 "1",
@@ -309,11 +304,6 @@ namespace potentials {
                 "rand-const-num",
                 "Number of samples for the additional constraint on random sample states in potential optimizer",
                 "0",
-                Bounds("0", "infinity"));
-        parser.add_option<int>(
-                "m",
-                "use h2 heuristic",
-                "2",
                 Bounds("0", "infinity"));
         parser.add_option<int>(
                 "k",
