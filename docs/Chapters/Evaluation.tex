@@ -4,166 +4,265 @@
 
 We tested our implementation of the strengthened potential heuristics on 1827 STRIPS problems with the official domains from the International Planning Competition (IPCs).
 Further, we used Downward Lab~\cite{seipp-et-al-zenodo2017} to set up the tests and ran them on the sciCORE high-performance computing infrastructure.
-We set the time limit for each problem to 30 minutes, the memory limit to 7.6 GB.
-The different heuristics were all used in an $A^{*}$ search (\citeauthor{hart1968formal}).
+We set the time limit for each problem to 30 minutes and the memory limit to 7.6 GB.
+The different heuristics were all used in an $A^{\star}$ search (\citeauthor{hart1968formal}).
 
-We will compare the different optimization functions against each other and see whether the LP constraints built with dusambiguations brings a enhancement.
-Further, we will compare different ensemble heuristics and their respective amount of heuristics used, as well as the additional constraint on the initial state.
-We refere to the compared variants of heuristics as follows:
+We test whether the LP constraints built with disambiguations improves the performance and compare the different optimization functions against each other.
+Further, we compare different ensemble heuristics and their respective amount of heuristics used, as well as the additional constraints on the initial state and on random states.
+We refer to the compared variants of heuristics as follows:
 
 \begin{center}
     \begin{tabularx}{\textwidth}{@{}lX@{}}
-        \textbf{\texttt{lmc}} & The landmark-cut heuristic, introduced by~\citeauthor{helmert2010landmarks} \\
-        \texttt{init}: & The initial state potential heuristic~\eqref{eq:initial-state} \\
-        \texttt{all}: & The all states potential heuristic~\eqref{eq:all-states} \\
-        \texttt{max} & The maximization over \texttt{init} and \texttt{all} \\ %% max_AI
-        \texttt{div}: & The diversification heuristic \mytodo{ref? needed? D changes nothing\dots} \\
-        $\texttt{S}_\texttt{i}^\texttt{n}$: & The sample based potential heuristic~\eqref{eq:uniform-opt}, with \texttt{n} being the umber of heuristics, \texttt{i} The number of samples per heuristic. \\
-        $\texttt{M}_\texttt{k}$ & The strengthened all states potential heuristic with $\mathrm{opt}^k_\mathcal{M}$~\eqref{eq:opt1} \\
-        $\texttt{K}_\texttt{k}^\texttt{n}$ & The strengthened ensemble potential heuristic with $\mathrm{opt}^{t,k}_\mathcal{M}$~\eqref{eq:opt2} with $|t|=1$ \\
-        $\texttt{L}_\texttt{k}^\texttt{n}$ & The strengthened ensemble potential heuristic with $\mathrm{opt}^{t,k}_\mathcal{M}$~\eqref{eq:opt2} with $|t|=2$ \\
+        \textbf{\texttt{lmc}}: & The LM-Cut heuristic, introduced by~\citeauthor{helmert2010landmarks} \\
+        \textbf{\texttt{init}}: & The initial state potential heuristic~\eqref{eq:initial-state} \\
+        \textbf{\texttt{all}}: & The all states potential heuristic~\eqref{eq:all-states} \\
+        \textbf{\texttt{max}}: & The maximization over \texttt{init} and \texttt{all} \\ %% max_AI
+        \textbf{\texttt{div}}: & The diversification heuristic \mytodo{reference?} \\
+        \textbf{$\texttt{S}_\texttt{i}^\texttt{n}$}: & The sample based potential heuristic~\eqref{eq:uniform-opt}, with \texttt{n} being the umber of heuristics, \texttt{i} he number of samples per heuristic. \\
+        \textbf{$\texttt{M}_\texttt{k}$} & The strengthened all states potential heuristic with $\mathrm{opt}^k_\mathcal{M}$~\eqref{eq:opt1} \\
+        \textbf{$\texttt{K}_\texttt{k}^\texttt{n}$} & The strengthened ensemble potential heuristic with $\mathrm{opt}^{t,k}_\mathcal{M}$~\eqref{eq:opt2} with $|t|=1$ \\
+        \textbf{$\texttt{L}_\texttt{k}^\texttt{n}$} & The strengthened ensemble potential heuristic with $\mathrm{opt}^{t,k}_\mathcal{M}$~\eqref{eq:opt2} with $|t|=2$ \\
     \end{tabularx}
 \end{center}
 
+In addition, \textbf{\texttt{N}} refers to the non-strengthened LP, while \textbf{\texttt{D}} uses the LP strengthened with disambiguations.
+When the additional constraint on the initial state is used, \textbf{\texttt{I}} is appended to the name of the heuristic and \textbf{\texttt{R}} if the constraint on random states is used.
 
-In addition, \texttt{N} refers to the non-strengthened LP, while \texttt{D} uses the LP strengthened with disambiguations.
-When the additional constraint on the initial state is used, \texttt{I} is appended to the name of the heuristic \mytodo{ and \texttt{R} if the constraint on random states is used}.
-
-The attributes which we used to compare different configurations are:
+The attributes we use to compare different configurations are:
 
 \begin{center}
     \begin{tabularx}{\textwidth}{@{}lX@{}}
         \textbf{Coverage}: & The amount of problems solved with the respective configuration. \\
         \textbf{Expansions}: & The geometric mean of expansions needed to solve the problem. \\
-        Total Time: & The geometric mean of the total time to solve the problems. \\
-        Search Time & Total Time minus the time needed to build the mutex table. \\
-        Out of Memory: & The amount of problems which failed due to a lack of memory. \\
-        Out of Time: & The amount of problems which failed due to a lack of time. \\
+        \textbf{Total Time}: & The geometric mean of the total time to solve the problems. \\
+        \textbf{Search Time}: & Total time minus the time needed to build the mutex table. \\
+        \textbf{Out of Memory}: & The amount of problems which failed due to a lack of memory. \\
+        \textbf{Out of Time}: & The amount of problems which failed due to a lack of time. \\
     \end{tabularx}
 \end{center}
 
 The attributes expansions, total time and search time are the geometric mean over all problems which were solved by all configurations.
 The search time contains the time needed to build the Linear Program plus the time for the search.
-It always differs from total time, as total time also takes the time for translations and other preprocessing into account.
+It always differs from total time, as total time also takes the time for translation and other preprocessing into account.
+In all tables, the best value per attribute is written in bold.
+For coverage, this is the highest value, for the other attributes it is the lowest.
 
 \section{Results}\label{sec:results}
 The following table shows results for the heuristics which were already provided in the Fast Downward planning system.
 
-%% S_1^100 = S, S_1000^1 = S_N
+%% S_1^100 = S, S_1000^1 = S_N // TODO: div N, S_1 N
 \begin{table}[h!]
     \begin{center}
-        \begin{tabular}{|r|c|c|c|c|c|c|}
+        \begin{tabular}{|r|c|c|c|c|c|c|c|}
             \hline
-            & \textbf{\texttt{lmc}} & \textbf{\texttt{all-N}} & \textbf{\texttt{init-N}} & \textbf{\texttt{max-N}} & \textbf{$\texttt{S}_\texttt{1}^\texttt{100}$-\texttt{N}} & \textbf{$\texttt{S}_\texttt{1000}^\texttt{1}$-\texttt{N}} \\
+            & \textbf{\texttt{lmc}} & \textbf{\texttt{all-N}} & \textbf{\texttt{init-N}} & \textbf{\texttt{max-N}} & \textbf{\texttt{div}} & \textbf{$\texttt{S}_\texttt{1}^\texttt{100}$-\texttt{N}} & \textbf{$\texttt{S}_\texttt{1000}^\texttt{1}$-\texttt{N}} \\
             \hline \hline
-            Coverage & 958 & 929 & 891 & 948 &  & 961 \\ \hline
-            Expansions & 1856 & 11411 & 24145 & 9139 &  & 21266 \\ \hline
-            Total Time & 1.03 & 0.30 & 0.57 & 0.34 &  & 0.69 \\ \hline
-            Search Time & 0.95 & 0.24 & 0.47 & 0.26 &  & 0.46 \\ \hline
-            Out of Memory & 0 & 870 & 911 & 854 &  & 843 \\ \hline
-            Out of Time & 852 & 11 & 8 & 8 & 652 & 6 \\ \hline
+            \textbf{Coverage} & 958 & 929 & 891 & 948 &  &  & 961 \\ \hline
+            \textbf{Expansions} & 1856 & 11411 & 24145 & 9139 &  &  & 21266 \\ \hline
+            \textbf{Total Time} & 1.03 & 0.30 & 0.57 & 0.34 &  &  & 0.69 \\ \hline
+            \textbf{Search Time} & 0.95 & 0.24 & 0.47 & 0.26 &  &  & 0.46 \\ \hline
+            \textbf{Out of Memory} & 0 & 870 & 911 & 854 &  &  & 843 \\ \hline
+            \textbf{Out of Time} & 852 & 11 & 8 & 8 &  &  & 6 \\ \hline
         \end{tabular}
         \caption{Test results for the already provided heuristics.}
         \label{table:standard_heuristics}
     \end{center}
 \end{table}
 
-We see, that \texttt{lmc}, $\texttt{S}_\texttt{1000}^\texttt{1}$-\texttt{N} and \texttt{max-N} have the highest coverage over all problems.
-However, \texttt{lmc} has the lowest expansions and therefore the lowest out of memory errors, while \texttt{max} is the fastest of the three configurations, therefore having only few out of time errors.
+We see that \texttt{lmc}, $\texttt{S}_\texttt{1000}^\texttt{1}$-\texttt{N} and \texttt{max-N} have the highest coverage over all problems.
+Further, \texttt{lmc} has the lowest number of expansions and therefore the lowest out of memory errors, while \texttt{max} is the fastest of the three configurations, therefore having only few out of time errors.
 
 In the following subsections, we compare these results to the results we gathered with the features we implemented.
 
 
 \subsection{Mutex Based Linear Program}\label{subsec:mutex-based-linear-program}
-First, we compare the above with the LP built with mutexes and disambiguations.
+First, we compare the results from above with the ones obtained with the LP built with mutexes and disambiguations.
 The following table shows multiple configurations and their respective results.
-% TODO - in texttt. Punkt nach tabellenbeschreibung, beste zahl pro zeile fett
 \begin{table}[h!]
     \begin{center}
         \begin{tabular}{|r|c|c|c|c|c|c|}
             \hline
-            & \textbf{\texttt{all-D}} & \textbf{\texttt{init-D}} & \textbf{\texttt{max-N}} & \textbf{$\texttt{S}_\texttt{1}^\texttt{100}$-\texttt{D}}& \textbf{$\texttt{S}_\texttt{1000}^\texttt{1}$-\texttt{D}}\\
+            & \textbf{\texttt{all-D}} & \textbf{\texttt{init-D}} & \textbf{\texttt{max-D}} & \textbf{\texttt{div}} & \textbf{$\texttt{S}_\texttt{1}^\texttt{100}$\texttt{-D}}& \textbf{$\texttt{S}_\texttt{1000}^\texttt{1}$\texttt{-D}}\\
             \hline \hline
-            Coverage & 879 & 881 & 932 & 853 & \\ \hline
-            Expansions & 12941 & 19259 & 8511 & 6095 & \\ \hline
-            Total Time & 0.65 & 0.86 & 0.80 & 3.18 & \\ \hline
-            Search Time & 0.28 & 0.40 & 0.25 & 0.34 & \\ \hline
-            Out of Memory & 824 & 824 & 770 & 273 & \\ \hline
-            Out of Time & 75 & 73 & 76 & 652 & \\ \hline
+            \textbf{Coverage} & 879 & 881 & 932 & 837 & 853 & \textbf{952} \\ \hline
+            \textbf{Expansions} & 12941 & 19259 & 8511 & \textbf{5831} & 6095 & 15655 \\ \hline
+            \textbf{Total Time} & \textbf{0.65} & 0.86 & 0.80 & 4.15 & 3.18 & 1.42 \\ \hline
+            \textbf{Search Time} & 0.28 & 0.40 & 0.25 & \textbf{0.22} & 0.34 & 0.37 \\ \hline
+            \textbf{Out of Memory} & 824 & 824 & 770 & 560 & \textbf{273} & 729 \\ \hline
+            \textbf{Out of Time} & 75 & \textbf{73} & 76 & 381 & 652 & 97 \\ \hline
         \end{tabular}
-        \caption{Test results for mutex based Linear Program}
+        \caption{Test results for mutex based Linear Program.}
         \label{table:mutex_lp}
     \end{center}
 \end{table}
 
-\mytodo{
-D is better for all, for the rest: expansions are lower, less out of memory, way more out of time, compare search time.
-Search time: time for building lp, completing search.
-Roughly the same for both, but total time way higher.
-With a better hm, we'd have way better results.
-Mention that for computation of search time only those problems were taken into account that were solved by all configurations.
-}
+The coverage is lower for these configurations.
+However, the number of expansions is better for all configurations, which decreases the out of memory errors.
+
+The out of time errors, on the other hand, are higher.
+This is no surprise, as the total time is higher for all configurations as well.
+The search time is roughly the same, which indicates that the building of the mutex table is the most time consuming difference.
+Hence, it is the reason for the high amount of out of time errors, and therefore the relatively low coverage.
+
+We already greatly enhanced the performance of this part
+However, finding an even better way for building the mutex table would lead to a higher coverage.
+We optimized the (very slow) Fast Downward hm-heuristic for $m=2$ and ignored heuristic values, as we are only interested in the binary reachability.
+Before the optimization, the mutex table was built for 1450 problems, in 117 seconds on average.
+Now, 1776 mutex tables are built in 34 seconds on average.
+Thus, over 300 additional mutex tables can be built in less than 30 minutes, some of them in less than 20 seconds.
+
+Comparing the configurations amongst each other, we see that the coverages of $\texttt{S}_\texttt{1000}^\texttt{1}$\texttt{-D} and \texttt{max-D} are still good, as they only decrease by 10 problems.
+So does the coverage of \texttt{init}.
+These are also the heuristics, for which the expansions and search time sunk, as well as the out of memory errors.
+The other configurations were vastly worse with disambiguations.
+We can conclude this, too, from the higher expansions, search times, and little less out of memory errors.
+
+\mytodo{comparison for div and s-1-100 missing}
 
 \subsection{Mutex based optimization functions}\label{subsec:mutex-based-optimization-functions}
 Second, we look at the results for the mutex based potential heuristics.
+The mentioned configurations for ensemble heuristics (\texttt{K} and \texttt{L}) are chosen for display, as they have the highest coverage among the ones we tested (\autoref{table:ensemble-n}).
 
-\mytodo{choose the best Kkn, Lkn and k=3}
+\begin{table}[h!]
+    \begin{center}
+        \begin{tabular}{|r|c|c|c|c|c|c|c|c|}
+            \hline
+            & \textbf{$\texttt{M}_\texttt{1}$\texttt{-D}} & \textbf{$\texttt{M}_\texttt{2}$\texttt{-D}} & \textbf{$\texttt{K}_\texttt{1}^\texttt{10}$\texttt{-D}} & \textbf{$\texttt{K}_\texttt{2}^\texttt{50}$\texttt{-D}} & \textbf{$\texttt{L}_\texttt{1}^\texttt{10}$\texttt{-D}} & \textbf{$\texttt{L}_\texttt{2}^\texttt{10}$\texttt{-D}} & k=3\\
+            \hline \hline
+            \textbf{Coverage} & 900 & 859 & 907 & 888 & 922 & 840 & \\ \hline
+            \textbf{Expansions} & 9111 & 9045 & 6892 & 8603 & 6394 & 6278 & \\ \hline
+            \textbf{Total Time} & 0.65 & 1.07 & 0.74 & 3.95 & 0.74 & 2.13 & \\ \hline
+            \textbf{Search Time} & 0.21 & 0.21 & 0.65 & 3.76 & 0.65 & 2.03 & \\ \hline
+            \textbf{Out of Memory} & 802 & 726 & 720 & 495 & 681 & 589 & \\ \hline
+            \textbf{Out of Time} & 77 & 203 & 154 & 398 & 178 & 360 & \\ \hline
+        \end{tabular}
+        \caption{Test results for mutex based potential heuristics.}
+        \label{table:mutex_based_heuristics}
+    \end{center}
+\end{table}
+
+For the three different categories, \texttt{M}, \texttt{K} and \texttt{L}, we see that the configuration with smaller \texttt{k} is better.
+This is due to the higher time and memory consumption needed for bigger extensions, which can be concluded from the increasing sum of errors.
+Coincidentally, there is a shift in where more error occur.
+For bigger \texttt{k}, time becomes a problem before memory does.
+Configurations with \texttt{k=2}, and how fast it increases.
+\mytodo{For \texttt{k=3}\dots}
+
+The expansions however decrease, which indicates that the approach is very good, as the solution is found with less effort, once the search has started.
+
+The comparison of these results with table~\ref{table:standard_heuristics} shows, that the coverage is not higher.
+However, less out of memory errors occurred, while the out of time errors raised.
+This is, very similar to the results for the mutex based LP (sec.~\ref{subsec:mutex-based-linear-program}), due to the building of the mutex table.
+
+
+Currently, the implementation for mutex based potential heuristics is able to work with any $k\in \mathbb{N}$ smaller than the size of a state.
+An optimization for $k=1$ and $k=2$ could, similar to the optimization of building the mutex table, enhance the coverage as well.
+\mytodo{Especially, as the results for \texttt{k=3} are getting worse.
+The configuration with \texttt{k=3} we chose, is the best among the ones we tested.
+For even higher \texttt{k}, the coverage would drop vastly, as the memory and time limits are not high enough to extend multiple partial states to this size.}
+
+We also tested the configurations $\texttt{M}_\texttt{1}$\texttt{-N} and $\texttt{M}_\texttt{2}$\texttt{-N}, which have a higher coverage.
+With the non-mutex based LP, the expansions and therefore the amount of out of memory errors are higher.
+The mutex based LP variant on the other hand throws more out of time errors, as it takes five seconds longer to be build.
+
+\mytodo{ Plot vor expansion, search time.}
+\mytodo{more comparisons of how search time, expansions and errors differ. But where and how?}
+
+\subsection{Mutex Based Ensemble Heuristics}\label{subsec:mutex-based-ensemble-heuristics}
+The next table shows the coverage for different sample based ensemble heuristics, for different amounts of used heuristics.
 
 \begin{table}[h!]
     \begin{center}
         \begin{tabular}{|r|c|c|c|c|c|c|}
             \hline
-            & \textbf{$\texttt{M}_\texttt{1}$-\texttt{D}} & \textbf{$\texttt{M}_\texttt{2}$-\texttt{D}} & \textbf{$\texttt{K}_\texttt{k}^\texttt{n}$} & \textbf{$\texttt{L}_\texttt{k}^\texttt{n}$} & k=3\\
+            \textbf{\texttt{n}} & \textbf{5} & \textbf{10} & \textbf{50} & \textbf{100} & \textbf{250} & \textbf{500} \\
             \hline \hline
-            Coverage & 950 & 859 & & & \\ \hline
-            Expansions & 14086 & 9045 & & & \\ \hline
-            Total Time & 1.31 & 1.07 & & & \\ \hline
-            Search Time & 0.33 & 0.21 & & & \\ \hline
-            Out of Memory & 802 & 726 & & & \\ \hline
-            Out of Time & 77 & 203 & & & \\ \hline
+            \textbf{$\texttt{S}_\texttt{1}$} & \textbf{889} & 888 & 867 & 852 & 815 & 773 \\ \hline
+            \textbf{$\texttt{K}_\texttt{1}$} & 904 & \textbf{907} & 896 & 861 & 790 & 747 \\ \hline
+            \textbf{$\texttt{K}_\texttt{2}$} & 835 & 834 & \textbf{888} & 865 & 669 & 615 \\ \hline
+            \textbf{$\texttt{L}_\texttt{1}$} & 911 & \textbf{922} & 884 & 856 & 771 & 734 \\ \hline
+            \textbf{$\texttt{L}_\texttt{2}$} & \textbf{840} & \textbf{840} & 796 & 756 & 670 & 615 \\ \hline
         \end{tabular}
-        \caption{Test results for mutex based heuristics.}
-        \label{table:mutex_based_heuristics}
+        \caption{Comparison over different \texttt{n} for different ensemble heuristics.}
+        \label{table:ensemble-n}
     \end{center}
 \end{table}
 
-The comparison of these results with table~\ref{table:standard_heuristics} shows, that the coverage is not higher.
-However, less out of memory errors occurred, while the out of time errors raised.
-Combining this with the fact, that search and total time differ more for the potential based heuristics, we can conclude that the building of the mutex table is the part which takes a lot of time and is the reason for the relatively low coverage.
-
-We already greatly enhanced the performance of this part, but if we would find an even better way for building the mutex table, this would lead to a higher coverage.
-We optimized the (very slow) Fast Downward hm-heuristic for $m=2$ and ignored heuristic values, as we are only interested in the binary reachability.
-For certain problems, this lead to an enhancement of up to 99\%. \mytodo{give real numbers/examples, where we could do better and where we made the big difference}
-
-Currently, the implementation for mutex based potential heuristics is able to work with $k$ of arbitrary value, as long as they are not higher than the size of a state.
-An optimization for $k=1$ and $k=2$ could, similar to the hm-heuristic, enhance the coverage as well.
-
-We also tested the configurations \textbf{$\texttt{M}_\texttt{1}$-\texttt{N}} and \textbf{$\texttt{M}_\texttt{2}$-\texttt{N}}.
-What was interesting is, that the coverage for \textbf{$\texttt{M}_\texttt{1}$}
-
-\mytodo{ Plot vor expansion, search time. Mention that we chose the best for k=3, but it is still bad. complete table in appendix.}
-
-\subsection{Mutex Based Ensemble Heuristics}\label{subsec:mutex-based-ensemble-heuristics}
-hello there.
-\mytodo{
-compare different n over S, K, L
-}
+The best results are achieved with smaller \texttt{n}.
+The more heuristics are used, the more out of time errors occur.
+This is both because more heuristics need to be build and because they all need to be considered for each state which is evaluated.
+However, the expansions get lower the bigger the \texttt{n}.
+The best coverage has $\texttt{L}_\texttt{1}^\texttt{10}$ with 922.
+\mytodo{more comparisons of how search time, expansions and errors differ.}
 
 \subsection{Additional Constraint on the Initial State}\label{subsec:additional-constraint-on-the-initial-state}
-hello there.
+The best coverage was gained with the additional constraints \mytodo{on the initial state}.
+
+% todo DIV_N_I
+\begin{table}[h!]
+    \begin{center}
+        \begin{tabular}{|r|c|c|c|c|c|}
+            \hline
+            & \textbf{\texttt{all-N-I}} & \mytodo{\textbf{\texttt{div-D-I}}} & \textbf{$\texttt{S}_\texttt{1}^\texttt{100}$\texttt{-N-I}} & \textbf{$\texttt{M}_\texttt{1}$\texttt{-N-I}} & \textbf{$\texttt{M}_\texttt{1}$\texttt{-D-I}} \\
+            \hline \hline
+            \textbf{Coverage} & 965 & 844 & 963 & 946 & 950 \\ \hline
+            \textbf{Expansions} & 19468 & 11332 & 20391 & 20909 & 14086 \\ \hline
+            \textbf{Total Time} & 0.65 & 7.9 & 0.67 & 1.09 & 1.31 \\ \hline
+            \textbf{Search Time} & 0.42 & 0.33 & 0.45 & 0.44 & 0.33 \\ \hline
+            \textbf{Out of Memory} & 837 & 598 & 843 & 796 & 729 \\ \hline
+            \textbf{Out of Time} & 8 & 352 & 4 & 68 & 115 \\ \hline
+        \end{tabular}
+        \caption{Test results for the additional constraint on the initial state.}
+        \label{table:initial-constraint}
+    \end{center}
+\end{table}
+
 \mytodo{
-compare I with w/o I.
-Good results :)
+\texttt{all}: higher coverage, higher expansions, more time, less out of time/memory.
+\texttt{M-N}: higher coverage, higher expansions, more time, slightly  less out of time/memory.
+\texttt{M-D}: higher coverage, higher expansions, more time, slightly  less out of time/memory.
 }
 
 \subsection{Additional Constraint on Random States}\label{subsec:additional-constraint-on-random-states}
-hello there.
-\mytodo{
-compare I with w/o I.
-Good results :)
-}
 
+\begin{table}[h!]
+    \begin{center}
+        \begin{tabular}{|r|c|c|c|c|c|}
+            \hline
+            & \textbf{\texttt{all-N-I}} & \textbf{\texttt{div-N-I}} & \textbf{$\texttt{S}_\texttt{1}^\texttt{100}$\texttt{-N-I}} & \textbf{$\texttt{M}_\texttt{1}$\texttt{-N-I}} & \textbf{$\texttt{M}_\texttt{1}$\texttt{-D-I}} \\
+            \hline \hline
+            \textbf{Coverage} &  &  &  &  &  \\ \hline
+            \textbf{Expansions} &  &  &  &  &  \\ \hline
+            \textbf{Total Time} &  &  &  &  &  \\ \hline
+            \textbf{Search Time} &  &  &  &  &  \\ \hline
+            \textbf{Out of Memory} &  &  &  &  &  \\ \hline
+            \textbf{Out of Time} &  &  &  &  &  \\ \hline
+        \end{tabular}
+        \caption{Test results for the additional constraints on random states.}
+        \label{table:random-samples-constraint}
+    \end{center}
+\end{table}
 
-\section{Comparison to}\label{sec:comparison-to-fiser}
-hello there.
-\mytodo{compare to fiser et al. section necessary?}
+Here are two different tables. \mytodo{new subsection for second table?}
+\mytodo{we chose n=5 since our pretests (better word?) showed that this gives the best results}
+
+\begin{table}[h!]
+    \begin{center}
+        \begin{tabular}{|r|c|c|c|c|c|}
+            \hline
+            & \textbf{\texttt{all-N-I}} & \textbf{\texttt{div-N-I}} & \textbf{$\texttt{S}_\texttt{1}^\texttt{100}$\texttt{-N-I}} & \textbf{$\texttt{M}_\texttt{1}$\texttt{-N-I}} & \textbf{$\texttt{M}_\texttt{1}$\texttt{-D-I}} \\
+            \hline \hline
+            \textbf{Coverage} &  &  &  &  &  \\ \hline
+            \textbf{Expansions} &  &  &  &  &  \\ \hline
+            \textbf{Total Time} &  &  &  &  &  \\ \hline
+            \textbf{Search Time} &  &  &  &  &  \\ \hline
+            \textbf{Out of Memory} &  &  &  &  &  \\ \hline
+            \textbf{Out of Time} &  &  &  &  &  \\ \hline
+        \end{tabular}
+        \caption{Test results for the combination of the additional constraints on the initial state and random states.}
+        \label{table:initial-and-random-constraint}
+    \end{center}
+\end{table}
+
+\section{Comparison to~\citeauthor{fivser2020strengthening}}\label{sec:comparison-to-fiser}
+\mytodo{compare to fiser et al., with results of tests from cppdl}
