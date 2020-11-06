@@ -43,14 +43,8 @@ namespace potentials {
         }
 
         // variables assigned from beginning to end, therefore enough unassigned variables need to remain free
-        int before = assigned.size();
-        while (before > 0 && last_assigned < assigned[before - 1]) {
-            before--;
-        }
-        before = (int) assigned.size() - before - (k - 1);
-        for (size_t i = last_assigned; i < domains.size() -
-                                           before; i++) { //domains.size(), as there are exactly as many domains as variables in the state
-            if (unassigned(state, i) && i < domains.size()) { // if the variable is unassigned
+        for (size_t i = last_assigned; i < domains.size(); i++) { //domains.size(), as there are exactly as many domains as variables in the state
+            if (unassigned(state, i)) { // if the variable is unassigned
                 for (int d : domains[i]) {
                     state[i] = d;               // assign it to all domains and get all extensions
                     get_all_extensions(state, k - 1, (int) i + 1, assigned, domains, extended);
