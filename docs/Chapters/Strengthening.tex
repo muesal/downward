@@ -276,12 +276,18 @@ By calculating the potentials for this heuristic first and then taking it into a
 This approach can be combined with all previously discussed optimization functions.
 
 \subsection{Adding Constraints on Random States}\label{subsec:adding-constraints-on-random-states}
-Taking the idea of the additional constraint a step further, we decided to add constraints on random states.
-Similar to the constraint on the initial state, the constraints on random states gives more importance to these states.
+Taking the idea of the additional constraint a step further, we decided to add constraints on random states $s$:
 
-The states are generated with random walks of the size [half of the heuristic value for the initial state], the states in the middle of the way (heuristically speaking) are given more importance.
-\begin{equation}\sum_{f\in s}\mathtt{P}(f)=h^\mathtt{P}(s)\end{equation}
-\mytodo{proof-read}
+\begin{equation}\sum_{f\in s}\mathtt{P}(f)=h^\mathtt{P}(s).\end{equation}
+
+The states are generated with random walks.
+The length of the walks is binomially distributed around the ratio of the heuristic value of the initial state, $h^\mathtt{P}(I)$, divided by the average cost over all operators.
+Similarly to the additional constraint on the initial state, this gives more weight to states reachable with this amount of steps from the initial state.
+This rises the average heuristic value for the states in this area, which are the ones we are interested in.
+
+Since the states are generated randomly, the positive effect of these additional constraints can not be guaranteed.
+To avoid this, a considerable amount of generated states would be necessary, but this is computationally expensive.
+
 
 \section{Implementation}\label{sec:implementation}
 Our implementation of mutex based potential heuristics is embedded in the planning system Fast Downward by \citeauthor{helmert2006fast} and written in C++.
@@ -293,6 +299,9 @@ Therefore, we implemented a new generator for the mutex table, which is very sim
 Fast Downward has a potential optimizer, which initializes and constructs an LP-solver.
 We implemented a new LP-constructor which builds the constraints according to Equations~\eqref{eq:3} and~\eqref{eq:4}.
 For both the non-mutex and the mutex constructor, we added the option to use the additional constraints on the initial state and random states.
+They can be used individually or combined.
+The additional constraints on random states do not take mutexes into account for generating the states.
+The Linear Program is optimized for each state individually, and the new constraint is added to the LP before optimizing for the next state.
 
 Next, we implemented the optimization function $\mathrm{opt}^k_\mathcal{M}$.
 All partial states of cardinality one ($p_f = \{f\}$ for all $f\in\mathcal{F}$) are generated, and then recursively all partial states of size $k$ extending $p_f$ are created, using the disambiguation set $\mathcal{D}_{p_f}$.
@@ -311,7 +320,7 @@ The size to which $p_f$ should be extended can be set with \texttt{k}, the defau
 
 The command \texttt{--search "astar(mutex\_based\_ensemble\_potential())"} uses the mutex based ensemble heuristics.
 The variables can be set manually and their respective default values are \texttt{t=1}, \texttt{k=2} and \texttt{n=50}.
-\texttt{k} must be greater than \texttt{t}, but smaller than the size of a fully extended state. \mytodo{mention: This is not the same k as in the evaluation section?}
+\texttt{k} must be greater than \texttt{t}, but smaller than the size of a fully extended state.
 \texttt{n} can be chosen arbitrarily, however the evaluation in Chapter~\ref{ch:evaluation} shows that the results are best with \texttt{n=10}.
 
 Further, all potential heuristics can be solved using LP-constraints built with mutexes through the option \texttt{mutex=1}.
