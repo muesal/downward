@@ -106,12 +106,17 @@ The following table shows multiple configurations and their respective results.
 The coverage is lower for these configurations.
 However, the number of expansions is better for all configurations with respect to their non-mutex version, except for \texttt{all}.
 Due to the smaller amount of expanded states, less out of memory errors occur.
-The scatter plot \mytodo{ref} shows how the the amount of expansions differ between the two different LPs for all solved problems for \texttt{all} and $\texttt{S}_\texttt{1000}^\texttt{1}$.
+The scatter plot~\ref{fig:N_D_exp} shows how the the amount of expansions differ between the two different LPs for all solved problems for \texttt{all} and $\texttt{S}_\texttt{1000}^\texttt{1}$.
 Dots above the diagonal represent problems for which \texttt{D} has more expansions, dots below the diagonal represent problems for which \texttt{N} has more expansions.
 For \texttt{all}, more dots are above the diagonal, as it has a higher number of expansions.
 For $\texttt{S}_\texttt{1000}^\texttt{1}$, more dots are below the diagonal.
 
-\mytodo{include scatterplot}
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.6\textwidth]{N_D_exp}
+\caption{Number of expansions of \texttt{all} and $\texttt{S}_\texttt{1000}^\texttt{1}$ for both LPs per problem.}
+\label{fig:N_D_exp}
+\end{figure}
 
 The number of out of time errors, on the other hand, are higher.
 This is no surprise, as the total time is higher for all configurations as well.
@@ -228,8 +233,19 @@ The best coverage for all configurations is obtained with the additional constra
 None of the configurations shows a higher total time nor search time than before, despite the fact that the LP is solved twice.
 First, to optimize the heuristic value for the initial state, then for the actual optimization function.
 In addition, the number of expansions is smaller than before, and less time and memory errors occur in total.
+The following two plots show very nicely how the search time and the number of expansions dropped for \texttt{all-D}, compared to \texttt{all-N}.
 
-\mytodo{the following scatter plots show how good this is as well. Maybe time, expansions?}
+\begin{figure}[h!]
+\centering
+    \includegraphics[width=0.5\textwidth]{all_I_exp}
+    \caption{Number of expansions for \texttt{all} for both LPs per problem}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+    \includegraphics[width=0.5\textwidth]{all_I_search}
+    \caption{Search Time  for \texttt{all} for both LPs per problem}
+\end{figure}
 
 \subsection{Additional Constraints on Random States}\label{subsec:additional-constraint-on-random-states}
 In order to test the additional constraints on random states, we first tested different amounts of samples.

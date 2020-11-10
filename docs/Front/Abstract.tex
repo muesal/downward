@@ -1,7 +1,12 @@
 % !TEX root = ../Thesis.tex
 \chapter{Abstract}\label{ch:abstract}
-\mytodo{
-mutexes and disambiguations are an enhancement (verbesserung) but the er too expensive and therefore their coverage is not better.
-The additional constraint on the initial state on the other hand is good.
-A method which we developed, the additional constraints on random states, are an enhancement too, but not that much
-}
+
+Potential heuristics assign a numerical value, the potential, to each fact of a classical planning problem.
+The heuristic value of a state is the sum over the potentials belonging to the facts contained in the state.
+\citeauthor{fivser2020strengthening} recently proposed to strengthen potential heuristics utilizing mutexes and disambiguations.
+In this thesis, we embed the same enhancements in the planning system Fast Downward.
+The experimental evaluation shows that the strengthened potential heuristics are a refinement, but too computationally expensive to solve more problems than the non-strengthened potential heuristics.
+
+The potentials are obtained with a Linear Program.
+\citeauthor{fivser2020strengthening} introduced an additional constraint on the initial state and we propose additional constraints on random states.
+The additional constraints improve the amount of solved problems by up to 5\%.
