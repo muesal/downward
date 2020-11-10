@@ -1,4 +1,31 @@
 %! Author = salom
 %! Date = 18.09.2020
-\chapter{Introduction}
-My work is brilliant, as can be shown with this very nice example.
+\chapter{Introduction}\label{ch:introduction}
+
+Potential heuristics assign a potential, i.e., a numerical value, to each fact of a classical planning problem.
+They can be used in a heuristic search, the most common approach to solve such problems.
+The potentials are obtained with a Linear Program, which optimizes the potentials according to an optimization function.
+Different optimization functions yield different heuristics.
+The heuristic value of a state is the sum over the potentials of the fact in this state.
+
+In this thesis, we reproduce the work of~\citeauthor{fivser2020strengthening} who proposed to strengthen potential heuristics with mutexes and disambiguations.
+Mutexes are sets of facts, which can never appear together in any reachable state.
+They can be used to build disambiguation sets for partial states.
+They contain all remaining facts which can be assigned to this partial state, i.e., which are not mutex with any of the facts in the partial state.
+
+As introduced by~\citeauthor{fivser2020strengthening} we use mutexes and disambiguations to build a less restricted Linear Program.
+This does not lead to better heuristics, as slightly less problems are solved.
+
+Next, we use mutexes and disambiguations to strengthen the optimization functions.
+This leads to good single and ensemble heuristics, however not more problems can be solved, than with the non-strengthened optimization functions.
+
+Further, we add the additional constraint on the initial state to the constraints of the LP, as~\citeauthor{fivser2020strengthening} proposed.
+This does indeed enhance the performance, as the resulting heuristics solve more problems as the same heuristics computed without the additional constraint.
+
+Taking this idea one step further, we add additional constraints on random states.
+Therefore, random states are generated with random walks, and constraints gained by optimizing the LP for this states are added.
+These additional constraints do not enhance the performance of the resulting heuristics in comparison to the constraint on the initial state.
+They are, however, better than using no additional constraint at all, and could be further enhanced.
+
+Last, we compare our results to the evalulation of~\citeauthor{fivser2020strengthening}.
+It turns out, that the translation and preprocessing of the planning tasks they use, as well as their way for generating of the potentials, are faster than ours.

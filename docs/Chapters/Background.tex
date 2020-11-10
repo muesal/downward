@@ -9,6 +9,8 @@ This is a classical planning problem, in which 8 tiles are arranged in a 3x3-Gri
 One spot remains empty, the goal is to bring the tiles in a specific order by sliding them around.
 
 \section {Planning Tasks}\label{sec:planning-tasks}
+In order to solve a problem with an algorithm, we first need to establish mathematical expressions which represent the problem.
+
 We define $\mathcal{V}$ as the finite set of \textbf{variables}, each of the variables $V\in\mathcal{V}$ has a finite set of \textbf{domains} $\text{dom}(V)$.
 For 8-Tiles, the variables could be defined as the 9 fields in the grid ($v_1,\dots,v_9$), and their domains hold the values of all tiles and the blank space (1 to 8 and 0 for the blank tile).
 A \textbf{fact} $f=\langle V, v\rangle$ consists of a variable $V\in\mathcal{V}$ and one of its values $v\in\text{dom}(V)$.
