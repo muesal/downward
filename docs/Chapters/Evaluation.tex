@@ -124,7 +124,6 @@ The search time is roughly the same, which indicates that the building of the mu
 Hence, it is the reason for the high amount of out of time errors and the relatively low coverage.
 This holds especially for \texttt{div-D} and $\texttt{S}_\texttt{1}^\texttt{100}$\texttt{-D}, where the total time is much higher than before and the difference between the total and the search time is immense.
 Both heuristics build the LP multiple times and, in our implementation, each time the mutex table needs to be computed from a fresh start.
-\mytodo{plot for search time, e.g. div(N/D) vs. init (N/D)?}
 
 We already greatly enhanced the performance of building the mutex table.
 However, finding more efficient way for building the mutex table would lead to a higher coverage.
@@ -180,8 +179,6 @@ We also tested the configurations $\texttt{M}_\texttt{1}$\texttt{-N} and $\textt
 With the non-mutex based LP, the number of expansions and therefore the amount of out of memory errors are higher.
 The higher coverage is due to the saved effort by not building the mutex based LP.
 
-\mytodo{ Plot vor expansion, search time?}
-
 \subsection{Ensemble Heuristics}\label{subsec:mutex-based-ensemble-heuristics}
 Table~\ref{table:ensemble-n} shows the coverage for different sample based ensemble heuristics, for different amounts of used heuristics.
 
@@ -207,7 +204,7 @@ The more heuristics are used, the more out of time errors occur.
 This is both because more heuristics need to be computed and because they all need to be considered for each state which is evaluated.
 However, the number of expanions decrease with increasing $n$.
 The best coverage, 922, is achieved with $\texttt{L}_\texttt{1}^\texttt{10}$.
-\mytodo{more comparisons of how search time, expansions and errors differ. Run tests again}
+\mytodo{more comparison on how search time, expansions and errors evolve with bigger n will follow, tests still rungin for the last time.}
 
 \subsection{Additional Constraint on the Initial State}\label{subsec:additional-constraint-on-the-initial-state}
 The best coverage for all configurations is obtained with the additional constraints on the initial state.
@@ -312,7 +309,7 @@ With \texttt{init-N-R} and \texttt{all-N-I-R}, the coverage was 960.
 
 \section{Comparison to Fi{\v{s}}er et al.}\label{sec:comparison-to-fiser}
 In comparison to our results,~\citeauthor{fivser2020strengthening} obtained a higher coverage using mutexes and disambiguations.
-In order to find out why, we used their code (\texttt{cpddl}\mytodo{ref?)} for translating and preprocessing the planning tasks and generating the potentials.
+In order to find out why, we used their code (\texttt{cpddl}) for translating and preprocessing the planning tasks and generating the potentials.
 The potentials where then used in the Fast Downward $\textup{A}^\star$ search.
 The results can be seen in Table~\ref{table:fiser}.
 

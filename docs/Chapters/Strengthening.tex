@@ -45,7 +45,6 @@ More about this in Section~\ref{sec:transition-normal-form}.
 Mutexes can be used to reduce the domain of variables, which are not yet assigned in a partial state $p$.
 This property is very helpful, as it minimizes the amount of facts which are candidates for the not assigned variables in Equations~\eqref{eq:1} and~\eqref{eq:2} of Theorem~\ref{theorem:theorem 5}.
 
-\mytodo{make this algorithm look a little nicer\ldots}
 \begin{algorithm}[H]
     \caption{Multi-fact fixpoint disambiguation.}
     \label{alg:multi-fact}
@@ -287,7 +286,6 @@ This rises the average heuristic value for the states in this area, which are th
 
 Since the states are generated randomly, the positive effect of these additional constraints can not be guaranteed.
 To avoid this, a considerable amount of generated states would be necessary, but this is computationally expensive.
-
 
 \section{Implementation}\label{sec:implementation}
 Our implementation of mutex based potential heuristics is embedded in the planning system Fast Downward by \citeauthor{helmert2006fast} and written in C++.
