@@ -47,7 +47,7 @@ This property is very helpful, as it minimizes the amount of facts which are can
 We perform this reduction with the following algorithm~\citep{fivser2020strengthening}.
 
 \begin{algorithm}[H]
-    \caption{Multi-fact fixpoint disambiguation.}
+    \caption{Multi-fact fix-point disambiguation.}
     \label{alg:multi-fact}
     \begin{algorithmic}[1] % The number tells where the line numbering should start
         \Require A planning task $\Pi$ with variables $\mathcal{V}$ and facts $\mathcal{F}$, a partial state $p$, and a mutex-set $\mathcal{M}$.
@@ -74,7 +74,7 @@ At the beginning of the algorithm, the set $D_V$ contains all possible values fo
 In each iteration of the while-loop, all $f=\langle v, V\rangle$ which are in $A$ and in $D_V$ are removed from the corresponding $D_V$.
 On line~\ref{lst:line:A}, $A$ is extended with all facts that form a mutex with all facts remaining in $D_V$, i.e., which are a mutex with $p\cup\{f\}$ for all $f\in D_V$.
 
-In conclusion, after applying mutli-fact fixpoint disambiguation $p$ can be extended with any fact in $\mathcal{D}_p$ without reaching a dead-end state.
+In conclusion, after applying multi-fact fix-point disambiguation $p$ can be extended with any fact in $\mathcal{D}_p$ without reaching a dead-end state.
 If any $D_V\in\mathcal{D}_p$ is empty, then $p$ is already a dead-end itself.
 
 This algorithm is used for several applications during the remainder of this chapter.
@@ -194,7 +194,7 @@ The solution of the LP might differ vastly depending on the used optimization fu
 An optimization function $\mathrm{opt}$ is a linear combination of the LP-variables.
 In our case, the goal is to have best possible heuristic value for as many states as possible.
 Using different optimization functions optimizes different aspects of a heuristic.
-The perfect heuristic would be achieved if we optimized the potentials for each state separatly, but this is computationally too expensive.
+The perfect heuristic would be achieved if we optimized the potentials for each state separately, but this is computationally too expensive.
 
 In the first proposal for potential heuristics from~\cite{pommerening2015non}, the optimization for the initial state was used,
 \begin{equation}\mathrm{opt}_I=\sum_{f\in I}\mathtt{P}(f).\label{eq:initial-state}\end{equation}
@@ -245,7 +245,7 @@ We will now use Equation~\eqref{eq:ckf} to calculate the weight of each $f\in\ma
     \label{eq:opt1}
 \end{equation}
 
-The result is a modification of $\mathrm{opt}_S$ (Eq.~\eqref{eq:uniform-opt}) that des not assume uniformly distributed facts.
+The result is a modification of $\mathrm{opt}_S$ (Eq.~\eqref{eq:uniform-opt}) that does not assume uniformly distributed facts.
 Each fact is weighted according to its estimated appearance in all reachable states of size $k$ in relation to the other facts of the corresponding variable.
 The sum of the weights for all facts of one variable is 1.
 We can use this not only as a single heuristic, but also in ensemble heuristics.

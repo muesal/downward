@@ -37,7 +37,7 @@ The attributes we use to compare different configurations are:
     \begin{tabularx}{\textwidth}{@{}lX@{}}
         \textbf{Coverage}: & The amount of problems solved with the respective configuration. \\
         \textbf{Expansions}: & The number of state expansions needed to solve the problem. \\
-        \textbf{Total Time}: & The total time needed to solve the problems without preprocessing, in minutes. \\
+        \textbf{Total Time}: & The total time needed to solve the problems without pre processing, in minutes. \\
         \textbf{Search Time}: & The total time minus the time needed to build the mutex table, in minutes. \\
         \textbf{Out of Memory}: & The amount of problems which failed due to a lack of memory. \\
         \textbf{Out of Time}: & The amount of problems which failed due to a lack of time. \\
@@ -47,7 +47,7 @@ The attributes we use to compare different configurations are:
 The attributes expansions, total time and search time are the geometric mean over all problems which were solved by all configurations.
 The search time is not exclusively the time needed to perform the search, but the time needed for the search plus the time needed to build the Linear Program.
 In addition, it is not the standard attribute `search time' from the downward lab.
-It always differs from total time, as total time also takes the time for translation and other preprocessing into account.
+It always differs from total time, as total time also takes the time for translation and other pre processing into account.
 In all tables, the best value per attribute is written in bold.
 For coverage, this is the highest value and for the other attributes it is the lowest.
 
@@ -334,7 +334,7 @@ For \texttt{max(init-N-R, all-N-I-R)}, the coverage was 960.
 
 \section{Comparison to Fi{\v{s}}er et al.}\label{sec:comparison-to-fiser}
 In comparison to our results,~\cite{fivser2020strengthening} obtained a higher coverage using mutexes and disambiguations.
-In order to find out why, we used their code (\texttt{cpddl}\footnote{https://gitlab.com/danfis/cpddl/}) for translating and preprocessing the planning tasks and generating the potentials.
+In order to find out why, we used their code (\texttt{cpddl}\footnote{https://gitlab.com/danfis/cpddl/}) for translating and pre processing the planning tasks and generating the potentials.
 The potentials where then used in the Fast Downward $\textup{A}^\star$ search.
 The results can be seen in Table~\ref{table:fiser}.
 
