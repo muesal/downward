@@ -1,4 +1,47 @@
 %! Author = salom
 %! Date = 18.09.2020
-\chapter{Conclusion}
-In conclusion, I did well.
+\chapter{Conclusions}\label{ch:conclusions}
+In this work we consider potential heuristics to solve classical planning tasks.
+The potentials for each fact of the problem are computed with a Linear Program.
+The LP optimizes the potentials with regard to an optimization function, such that all given constraints hold.
+
+\cite{fivser2020strengthening} proposed to use mutexes and disambiguations for building the LP-constraints.
+It is an additional option, which can be used for all potential heuristics.
+However, the results we obtained with our implementation are not better than for the original LP.
+Our experimental evaluation shows that this is mainly due to the high amount of time needed to obtain the mutexes.
+
+Further, we strengthen an optimization function with mutexes and disambiguations as introduced by~\cite{fivser2020strengthening}
+We give a weight to each fact of the problem, according to its relative appearance in all reachable states.
+The optimization function maximizes the sum over all potentials multiplied with the weight of their respective fact.
+The evaluation shows that the resulting heuristic is good, but not better than the heuristics generated with other optimization functions.
+
+Like~\cite{fivser2020strengthening}, we also strengthened ensemble heuristics.
+For this approach, multiple heuristics are computed and for each state the maximal value of all heuristics is used as the heuristic value.
+In our case, for each heuristic we uniformly randomly sample a partial state of a given size.
+The weights of the facts represent their relative appearance in all reachable states, which extend this partial state.
+They are then used to compute the potentials for this heuristic.
+The results are better for this approach as for the single heuristic.
+A partial state of greater starting size yields better results.
+The question which remains open is how to select the partial states, other than uniformly at random, in order to solve more problems.
+
+Both of the approaches to strengthen optimization functions are good.
+Once the search has started, they are very efficient.
+However, computing the potentials needs a lot of time.
+The current implementation may extend partial states by an arbitrary amount of facts.
+But extending for more than two facts does decrease the amount of problems solved by using the resulting heuristic drastically.
+Optimizing the implementation for extending states by one or two additional facts could decrease the time needed and enhance the obtained results.
+
+Last, we add additional constraints to the Linear Program.
+The constraints are obtained by solving the LP for a state, i.e., the initial state or a random state.
+The resulting heuristic value for the respective state is then used in an additional constraint.
+The additional constraint on the initial state, proposed by~\cite{fivser2020strengthening}, yields very good results.
+It exceeds the additional constraints on random states.
+The results of the combination of both the additional constraints lies in between the results obtained by using them separately in terms of quality and efficiency.
+
+For the additional constraints on random states, we generate the states with a random walk.
+Using mutexes and disambiguations could improve the quality of the received states.
+Another approach to improve the results would be to solve the LP for multiple states at a time and add the respective constraints.
+This way, more states could be taken into account which would decrease the effect of a single outlier.
+
+The comparison of our results to the results from the evaluation of~\cite{fivser2020strengthening} shows that using mutexes and disambiguations has more relevance in their implementations.
+The translation and pre processing of the planning tasks and generating the potentials takes longer in Fast Downward, leaving less time for the search.

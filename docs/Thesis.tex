@@ -5,7 +5,19 @@
 \documentclass[a4paper, 10pt, oneside]{memoir}
 %% Use the option citeauthor to be able to use citet. The default cite will still work.
 \usepackage[citeauthor]{basilea}
-\newtheorem{definition}{Definition}
+\usepackage{stmaryrd}
+\usepackage{comment}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{tabularx}
+\usepackage[justification=centering]{caption}
+\floatname{algorithm}{Algorithm}
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}[theorem]{Definition}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+\makeatletter\AtBeginDocument{\let\@elt\relax}\makeatother
 
 %% ----------------------------------------------------------------
 
@@ -17,31 +29,28 @@
 \research		    {Artificial Intelligence \\ https://ai.dmi.unibas.ch}
 
 \examiner    		{Prof. Dr. Malte Helmert}
-\supervisor  		{Salom\'e Eriksson}
+\supervisor  		{Dr. Salom\'e Eriksson}
 
 \authors     		{Salome M\"uller}
 \email				{salo.mueller@unibas.ch}
-\immatriculnr		{2017-063-xxx}
+\immatriculnr		{2017-063-058}
 
 \date				{06. 11. 2020}
 
-% switch here for the german logo to logo-de
-\ulogo				{Template/logo-en} 
+\ulogo				{Template/logo-en}
 
 
 %% ----------------------------------------------------------------
 \begin{document}
-
-% for english use \selectlanguage{english}, for german use \selectlanguage{ngerman}
 \selectlanguage{english}
 
 \thesisfront
 \maketitle
 \pagestyle{thesis}
 %% ----------------------------------------------------------------
-% \input{./Front/Acknowledgment}
+\input{./Front/Acknowledgment}
 %% ----------------------------------------------------------------
-%\input{./Front/Abstract}
+\input{./Front/Abstract}
 %% ----------------------------------------------------------------
 \thesistoc
 %% ----------------------------------------------------------------
@@ -50,18 +59,18 @@
 \thesismain
 \input{./Chapters/Introduction}
 \input{./Chapters/Background}
-\input{./Chapters/Implementation}
+\input{./Chapters/Strengthening}
 \input{./Chapters/Evaluation}
 \input{./Chapters/Conclusion}
-%\input{./Chapters/Chapter1}
-%\input{./Chapters/Chapter2}
 %% ----------------------------------------------------------------
 \thesisappendix
 \thesisbib
+\begin{comment}
 \begin{appendices}
-	\input{./Back/AppendixA} 
+\input{./Back/AppendixA}
 \end{appendices}
-%% ----------------------------------------------------------------
+\end{comment}
+%--------------------------------------------------
 \thesisback
 \input{./Back/DeclarationOfAuthorship}
 %% ----------------------------------------------------------------
