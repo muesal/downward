@@ -38,16 +38,14 @@ The attributes we use to compare different configurations are:
         \textbf{Coverage}: & The amount of problems solved with the respective configuration. \\
         \textbf{Expansions}: & The number of state expansions needed to solve the problem. \\
         \textbf{Total Time}: & The total time needed to solve the problems without pre processing, in minutes. \\
-        \textbf{Search Time}: & The total time minus the time needed to build the mutex table, in minutes. \\
+        \textbf{Search Time}: & The time needed for the search only, in minutes. \\
         \textbf{Out of Memory}: & The amount of problems which failed due to a lack of memory. \\
         \textbf{Out of Time}: & The amount of problems which failed due to a lack of time. \\
     \end{tabularx}
 \end{center}
 
 The attributes expansions, total time and search time are the geometric mean over all problems which were solved by all configurations.
-The search time is not exclusively the time needed to perform the search, but the time needed for the search plus the time needed to build the Linear Program.
-In addition, it is not the standard attribute `search time' from the downward lab.
-It always differs from total time, as total time also takes the time for translation and other pre processing into account.
+The search time is exclusively the time needed to perform the search.
 In all tables, the best value per attribute is written in bold.
 For coverage, this is the highest value and for the other attributes it is the lowest.
 
@@ -120,9 +118,10 @@ For $\texttt{S}_\texttt{1000}^\texttt{1}$, more dots are below the diagonal.
 Due to the smaller amount of expanded states, less out of memory errors occur.
 The number of out of time errors, on the other hand, are higher.
 This is no surprise, as the total time is higher for all configurations as well.
-The search time is roughly the same, which indicates that the building of the mutex table is the most time consuming difference.
+The search time is roughly the same, which indicates that the building of the mutex table and the mutex based LP is the most time consuming difference.
 Hence, it is the reason for the high amount of out of time errors and the relatively low coverage.
 This holds especially for \texttt{div-D} and $\texttt{S}_\texttt{1}^\texttt{100}$\texttt{-D}, where the total time is much higher than before and the difference between total and search time is immense.
+The search itself is a lot faster, which indicates good heuristic values.
 Both heuristics build the LP multiple times and, in our implementation, each time the mutex table needs to be computed from a fresh start.
 
 We already greatly enhanced the performance of building the mutex table.
@@ -255,10 +254,12 @@ The plots~\ref{fig:exp_all} and~\ref{fig:search_all} show very nicely how the nu
 It is remarkable, that \texttt{all-N-I} has a better coverage than \texttt{max-N} (948).
 Presumably, \texttt{max} chooses \texttt{init} for states which are close to the initial state and \texttt{all} otherwise.
 \texttt{all-N-I} on the other hand has high heuristic values on average, with a main focus on on the initial state.
-This should result in two very similar heuristics.
-As plot~\ref{fig:search_max_all} shows the higher coverage of \texttt{all-N-I} is due to its lower search time.
-The configuration \texttt{max-N} takes longer to compute, as it must generate two independent LPs and compute he heuristic value twice per considered state.
-It takes less effort, to build an LP, solve it and then resolve it, as \texttt{all-N-I} does.
+This results in two very similar heuristics.
+The higher coverage of \texttt{all-N-I} is due to its lower time consumption.
+The configuration \texttt{max-N} takes longer to compute, as it must generate two independent LPs.
+It takes less effort, to build an LP, solve it and then resolve it, as \texttt{all-N-I} does, since the presolving of the LP is only done once.
+As plot~\ref{fig:search_max_all} shows, the search time is much lower for \texttt{all-N-I} than for \texttt{max}.
+This is because \texttt{max} must consider two heuristics for each evaluated state.
 
 \begin{figure}[h!]
 \centering
@@ -266,7 +267,6 @@ It takes less effort, to build an LP, solve it and then resolve it, as \texttt{a
     \caption{Search Time  for \texttt{all} for both LPs per problem}
     \label{fig:search_max_all}
 \end{figure}
-\newpage
 
 \subsection{Additional Constraints on Random States}\label{subsec:additional-constraint-on-random-states}
 In order to test the additional constraints on random states, we first tested different amounts of samples.
@@ -330,7 +330,6 @@ Using \texttt{max} of \texttt{init} and \texttt{all} with the additional constra
 It was a little lower with the additional constraints on random states for both \texttt{init} and \texttt{all} (\texttt{max(init-N-R, all-N-R)}, 927).
 However, it was the only configuration, where the combined additional constraints yielded a better coverage, as the single use of the additional constraint of the initial state.
 For \texttt{max(init-N-R, all-N-I-R)}, the coverage was 960.
-\newpage
 
 \section{Comparison to Fi{\v{s}}er et al.}\label{sec:comparison-to-fiser}
 In comparison to our results,~\cite{fivser2020strengthening} obtained a higher coverage using mutexes and disambiguations.
@@ -347,6 +346,7 @@ The results can be seen in Table~\ref{table:fiser}.
             \textbf{Coverage}       & 926       & 952       & 961   & 946           & 985   & \textbf{962}  & 923   \\ \hline
             \textbf{Expansions}     & 37795     & 29386     & 47314 & \textbf{24544}& 26908 & 31841         & 49766 \\ \hline
             \textbf{Total Time}     & 0.61      & 0.52      & 0.80  & \textbf{0.45} & 0.48  & 0.56          & 0.71  \\ \hline
+            \textbf{Search Time}    & 0.54      & 0.46      & 0.71  & \textbf{0.40} & 0.42  & 0.49          & 0.63  \\ \hline
             \textbf{Out of Memory}  & 833       & 807       & 792   & \textbf{643}  & 770   & 791           & 812   \\ \hline
             \textbf{Out of Time}    & \textbf{2}& \textbf{2}& 5     & 92            & 3     & 5             & 5     \\ \hline
         \end{tabular}
@@ -358,8 +358,7 @@ The results can be seen in Table~\ref{table:fiser}.
 For \texttt{all-N}, the coverage is worse than in our implementation.
 All other configurations yield a higher coverage with \texttt{cpddl}.
 
-Since \texttt{cpddl} uses a different preprocessor, we should not compare the relative attributes expansion and total time with our former results.
-The attribute search time is not listed, as \texttt{cpddl} computes the mutex table at another point in time and it is therefore not comparable as well.
+Since \texttt{cpddl} uses a different preprocessor, we should not compare the relative attributes expansion, total time and search time with our former results.
 
 What we can compare though are the out of time and out of memory errors.
 That they are significantly lower than before, especially the out of time errors, indicates that \texttt{cpddl} is faster than our implementation.
