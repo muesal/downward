@@ -1,0 +1,42 @@
+Welcome to the presentation about my thesis " Mutex based potential heuristics".
+The main goal of my thesis was to reproduce the work of daniel fiser et alii's recently published paper "strengthening potential heuristics with mutexes and disambiguations"
+
+
+Heuristics are used in Classical Planning to solve planning tasks.
+A planning tasks represents a problem such that it can be solved by an algorithm.
+For this, we respresent all possible states, the problem can be in, as states s, which contain facts.
+A fact is a pair of a variable uppercase V, and its assigned value lowercase v.
+To switch from one state to another, we introduce operators o.
+They have a cost, the prize payed for appliyng the operator on a state, a precondition, which holds facts a state must contain that the operator is appliable, and an effect, facts that are new in the resulting states.
+
+
+one example for a classical planning problem is 15-Puzzle.
+It consits of a 4 times 4 grid, and 15 tiles, such that one field remains empty.
+
+Initially, the tiles are in random order, as you can see on the laft hand side.
+This is one state of the problem, the respective facts are, that fiel one is assigned tile number nine, field two holds tile number 2 and so one.
+The operators which could be applied are to move tile 3 to the right, tile 7 down, 1 to the left and 4 upwards.
+The goal is to reach the goal state, which you can see on the right hand side and where the tiles are sorted by number.
+
+
+This is, where we use the heuristic.
+A heuristic is a function, which assignes each state a numerical value, or in our case all reachable states.
+Search alogirthms use this heuristical value to decide on where to coninue the search.
+The perfect heuristic assignes each state the cost of its optimal plan.
+The optimal plan is the path from the state to the goal state with minimal cost among all possible plans from this state to the goal.
+One research focus of the time being is to approach the perfect heuristic.
+
+One dimensional potential heuristics, which were the main foucs of my thesis, assign a numerical value, the potential, to each fact of the problem.
+The heuristic value of a state is the sum over the potentials of all facts in this state
+
+The potentials are obtained with a linear programm, or short LP.
+The LP consits of constraints, these are inequalities, and an optimization function, which is a linar combination potantials
+The LP computes potentials, such that the optimization function is optimized, and all inequalities hold.
+They assure, that the resulting heuristic has certain properties, like admissibility.
+
+By using different optimization function, we obtain different potentials and therefore different heuristics.
+With using mutexes and disambiguations we try to strengthen certain optimization functions, and make the LP less constrained.
+
+
+
+
