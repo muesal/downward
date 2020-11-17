@@ -40,6 +40,7 @@ PotentialOptimizer::PotentialOptimizer(const Options &opts)
         State initial = task_proxy.get_initial_state();
         table = new MutexTable(task_proxy);
     }
+    lp_solver.use_presolve(false);
     initialize();
 }
 

@@ -76,6 +76,15 @@ LPVariable::LPVariable(double lower_bound, double upper_bound,
       objective_coefficient(objective_coefficient) {
 }
 
+void LPSolver::use_presolve(bool enabled) const {
+    try {
+        lp_solver->setHintParam(OsiDoPresolveInInitial, enabled, OsiHintDo);
+        lp_solver->setHintParam(OsiDoPresolveInResolve, enabled, OsiHintDo);
+    } catch (CoinError &error) {
+        handle_coin_error(error);
+    }
+}
+
 LPSolver::~LPSolver() {
 }
 

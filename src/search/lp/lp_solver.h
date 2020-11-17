@@ -124,6 +124,7 @@ public:
     LP_METHOD(void set_constraint_upper_bound(int index, double bound))
     LP_METHOD(void set_variable_lower_bound(int index, double bound))
     LP_METHOD(void set_variable_upper_bound(int index, double bound))
+    LP_METHOD(void use_presolve(bool enabled) const)
 
     LP_METHOD(void solve())
 
