@@ -1,13 +1,17 @@
 Welcome to the presentation about my thesis " Mutex based potential heuristics".
-The main goal of my thesis was to reproduce the work of daniel fiser et alii's recently published paper "strengthening potential heuristics with mutexes and disambiguations"
+The main goal of my thesis was to reproduce the work of the paper of daniel fiser et alii with the title 
+	"strengthening potential heuristics with mutexes and disambiguations"
 
 
 Heuristics are used in Classical Planning to solve planning tasks.
 A planning tasks represents a problem such that it can be solved by an algorithm.
 For this, we respresent all possible states, the problem can be in, as states s, which contain facts.
-A fact is a pair of a variable uppercase V, and its assigned value lowercase v.
+A fact f is a pair of a variable uppercase V, and its assigned value lowercase v.
 To switch from one state to another, we introduce operators o.
-They have a cost, the prize payed for appliyng the operator on a state, a precondition, which holds facts a state must contain that the operator is appliable, and an effect, facts that are new in the resulting states.
+They have a cost, the prize payed for appliyng the operator on a state
+A precondition, which holds facts a state must contain that the operator is applicable
+And an effect, these are facts which must hold in the resulting states.
+If we apply multiple operators on a state, this is called a path, or a plan, if the resulting state is a goal state.
 
 
 one example for a classical planning problem is 15-Puzzle.
@@ -17,26 +21,163 @@ Initially, the tiles are in random order, as you can see on the laft hand side.
 This is one state of the problem, the respective facts are, that fiel one is assigned tile number nine, field two holds tile number 2 and so one.
 The operators which could be applied are to move tile 3 to the right, tile 7 down, 1 to the left and 4 upwards.
 The goal is to reach the goal state, which you can see on the right hand side and where the tiles are sorted by number.
+It can be reached by applying a plan on the initial state.
+The task of the search alorithm is, to find this plan. 
 
 
 This is, where we use the heuristic.
 A heuristic is a function, which assignes each state a numerical value, or in our case all reachable states.
 Search alogirthms use this heuristical value to decide on where to coninue the search.
 The perfect heuristic assignes each state the cost of its optimal plan.
-The optimal plan is the path from the state to the goal state with minimal cost among all possible plans from this state to the goal.
 One research focus of the time being is to approach the perfect heuristic.
 
 One dimensional potential heuristics, which were the main foucs of my thesis, assign a numerical value, the potential, to each fact of the problem.
-The heuristic value of a state is the sum over the potentials of all facts in this state
+The heuristic value of a state is the sum over the potentials of all facts within this state
+The ramining question is how to find the potentials to build a good heuristic
+
 
 The potentials are obtained with a linear programm, or short LP.
-The LP consits of constraints, these are inequalities, and an optimization function, which is a linar combination potantials
+The LP consits of an optimization functions and some constraints.
+The optimization function is a linear combination of the potentials.
+These are inequalities, in our case they assure admisibility of the resulting heuristic.
+A heuristic is admissible, if the heuristical value for any reachable state is never higher than the perfect heuristic for the same state.
+This is essential.
+A search algorithm can only find the optimal plan for a task, if the heuristic is admissible.
+
 The LP computes potentials, such that the optimization function is optimized, and all inequalities hold.
-They assure, that the resulting heuristic has certain properties, like admissibility.
 
 By using different optimization function, we obtain different potentials and therefore different heuristics.
 With using mutexes and disambiguations we try to strengthen certain optimization functions, and make the LP less constrained.
 
 
+A mutex is a set of facts which can never appear in any reachable state together.
+They can be used to derive disambiguations.
+The Disambiguation of a variable for a partial state contains all facts for this variable, which are non mutex with this partial state.
 
+Consider the variables A, B and C.
+They all have the same domain, namley 1, 2 and 3, these are the values which can be assigned to the variables.
+
+Further, we have a partial state of size one, where B and C are not yet assigned, and A is assigned 1.
+
+The mutex-set for this hypothetical problem contains the mutex <A1> <B1>.
+This means, that if a reachable state either holds <A1> or <B1>, it may not hold the other fact as well, as it then would be unreachable.
+
+Therefore our partial state may not be extended with <B1>, leaving <B2> and <B3>.
+These are exactly the facts in the disambiguation set, of B for our partial state <A1>.
+Looking at the domains of the variables and the mutex set, this is rather 'obviuos'.
+
+Our mutex set contains also the mutexes <B2> <C3> and <B3> <C3>.
+Since these mutexes do not contain <A1>, one might think, that the disambiguation of C contains all three values.
+
+However, this is not the case.
+If we assigned B with 2, than we may not assign C with 3.
+The same holds if we assign B with 3.
+
+Therefore, a state containig <A1> will never contain <C3> as well.
+This restricts the disambiguation of C for our partial state to <C1>, <C2>.
+
+Fiser et alii designed an algorithm, which makkes this restriction for the disambiguations of all facts, for any partial state.
+
+I included this algorithm in the planning system fast downward.
+In a first step, I used it to strengthen the LP-constraints.
+
+
+The constraints assure admissibility
+As some of you might know, a heuristic is admissible, if it is goal aware and consistent.
+The two inequalities which assure these properties, are our constraints.
+We will now look at the constraint for goal awareness.
+The inequalities for consitency are very similar, and we strengthen them in a similar way.
+But since they are a little more complicated and less intuitive I will not go in futher detail.
+
+The goal may be a partial state.
+A goal state, is any state which extends the goal.
+Goal awareness says, that for any of these goal state, the heuristical value must be smaller or equal to zero.
+In a state, all variables are assigned.
+for the variables which are in the goal, we know the corresponding facts.
+for the other variables, we do not know the facts, since we have not yet solved the problem.
+There we must assume the worst case, and therefore take the maximal potential of all facts for these variables.
+
+By using mutexes and disambiguations we can maller the amount of facts which are taken into account for this part of the equation.
+With the algorithm I described before, we can generate the disambiguations of these variables for the goal.
+And prune the facts which are not in any reachable goal state.
+
+
+On this plot you can see the exapsnions for each problem needed with the strengthed constraints, this is D, and without the strengthened consrtaints, N.
+The red dots are from the al-states-potential-heuristic which I showed you before
+The green dots are from a potential heuristic, where the potentials are optimized for 1000 randomly chosen states.
+
+The attribute expansions is the amount of states the search algorithm looks at before finding the solution.
+On this plot you can see, that tha all states potential heuristic with the strengthened constraints needs more expansions, since the dots are above the diagonal.
+For the other heuristic it is the opposite, it is better with the strengthened constraints.
+
+However with the strengthened LP constraints we could not solve more problems.
+Our results showed, that once the heuristic is presumamlby better than before.
+For most potential heuristics the search is faster when the potentials are generated with the strengthened constraints.
+However, creating the mutex table and the strengthened constraints is rather time consuming.
+And especially bigger problems can not be solved because the remaining time is not enough to omplete the search.
+
+
+Second, I used it to strengthen the optimization function.
+
+The best optimization function would be to optimize potentials for all reachable states.
+this would give us the highest heuristical value on average, however it is computationally infeasible to compute all reachable state.
+
+We estimate how many reachable states contain this fact.
+This is what ckf is for.
+For each partial state of size k containing f, we use the disambiguation set of the not yet assigned variables to set an upper bound
+on how many reachable states may exist, that extend this partial state.
+This value must then again be normalized with the total of ckf over all facts in the corresponding variable.
+
+This mutex based potential heuristic can also be used in ensemble heuristics.
+This an approach where multiple heuristics are used, and for each state the one with highest heuristical value is used.
+
+
+For mutex based ensemble potential heuristics for each heuristic a randomly generated partial state t is used.
+Then instead of CKF, we compute Kkf.
+The only difference there is that only states extending t are taken into account.
+
+
+The results for this mutex based potential functions are sumerized in this table.
+all-N is the all state potential heuristic with the non strengthened LP.
+M1 is the mutex based potential heuristic with k = 1.
+J-10-1 is the mutex based ensemble potential function.
+10 Heuristics are used, each randomly sampled state has size 3, and they are extended by one additional fact.
+
+the coverage, this is the amount of solved problems, is best for the all states potential heuristic..
+The expansions, this is again the amount of states which was considered by the search algorithm, is however better.
+For the ensemble heuristics it is better, the bigger the partial state t is.
+This indicates that the heuristic value is better for these heuristics.
+This also holds for bigger k.
+
+the total time which was needed to solve the problem is however getting bigger, due to the way more precomputation which must be made.
+
+In conclusion, the mutex based potential heuristics are good, but they are too computationly expensive, to yield a good coverage.
+
+
+In the end we tried another, not mutex related thing, namely additional constraints.
+For these we build the lp and optimize it for certain states, this gives hp.
+We then add the constraint, that the potentials of these states must be the same as this heuristical value for these states.
+
+Then we optimize it for the real otpimization function.
+
+We tred to different approaches, what fiser et alii proposed is an additional constraint on the initial state.
+Since this yielded really good results, in fact for all potential heuristics the coverage was higher with the additional constraint on the initial state.
+We also added additional constraints on random states.
+For this we generated some random states, by using a random walk, and added the constraints for these.
+This is good, but not better than the constraint on the initial state, but it could probably be further optimized.
+
+
+Here you can see two plots comparing the search times for different configurations.
+The left one shows, that for the all states potential heuristic the search time is lower with the additional constraint on the initial state.
+
+On the right side, we see, the comparison between the all states potential heuristic with the additional constraint on the initial state
+and the maximization of the all states potential heuristic and the potential heuristic gained by optimizing for the initial state.
+we assumed that this two cinfigurations would result in very similar heuristic values.
+however they do not as the search time is way lower for the all states potential heuristic.
+
+
+in conclusion the use of mutexes and disambiguations is good, but to computationally expensive to actually solve more problems 
+
+additional constraints good.
+Comp fiser: einfach erwähnen dass unseres Langsamer, aneredes preprocessing. 
 
